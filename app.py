@@ -1,7 +1,5 @@
-from loader import db
 from utils.db_api import db_gino
 from utils.set_bot_commands import set_default_commands
-from loguru import logger
 
 
 async def on_startup(dp):
