@@ -2,9 +2,9 @@ from aiogram.utils.markdown import hbold, hitalic
 
 from asyncpg import UniqueViolationError, NotNullViolationError
 
-from sqlalchemy import func, select, and_, text
+from sqlalchemy import select
 
-from data.convert import lessons_emoji, university_time
+from models.lessons import Lesson
 from models.week import UnderAboveWeek, Week, ThisNextWeek
 
 from utils.db_api.db_gino import db
@@ -42,10 +42,7 @@ async def get_some_day(day: Week, group: int, week: ThisNextWeek, subgroup: int,
         return hbold(f"{initial_message}:\n\nНет пар!")
     message = [hbold(f"{initial_message}:")]
     for lesson in timetable:
-        emoji = lessons_emoji.get(lesson[0])
-        lesson_value = lesson[1]
-        lesson_time = f"<i><u>{university_time.get(lesson[0])}</u></i>"
-        message.append(f"{emoji} {lesson_value} {lesson_time}")
+        message.append(Lesson(lesson[0]).do_lesson_str(lesson[1]))
     return '\n\n'.join(message)
 
 

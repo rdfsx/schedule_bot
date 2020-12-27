@@ -62,33 +62,30 @@ async def get_now(message: types.Message, user: User):
     schedule = await get_day_raw(day, group, subgroup, week)
     if not schedule:
         return await message.answer("Сегодня нет пар!", reply_markup=menu)
-    if now > Lesson(schedule[-1][0]).to_float_tuple()[1]:
+    if now > Lesson(schedule[-1][0]).to_float_list()[1]:
         return await message.answer("Сегодня больше не будет пар!", reply_markup=menu)
     now_lesson = ''
     next_lesson = ''
-    if now < Lesson(schedule[0][0]).to_float_tuple()[0]:
-        lesson = schedule[0][1]
-        time = Lesson(schedule[0][0])
+    if now < Lesson(schedule[0][0]).to_float_list()[0]:
         return await message.answer(
             hbold('Следующим:\n\n') +
-            f"{time.to_emoji()} {lesson} {time.to_str()}",
+            Lesson(schedule[0][0]).do_lesson_str(schedule[0][1]),
             reply_markup=menu
         )
     for num, lesson in enumerate(schedule):
         time = Lesson(lesson[0])
-        time_tuple = time.to_float_tuple()
+        time_tuple = time.to_float_list()
         if now > time_tuple[1]:
             continue
         begin = time_tuple[0]
         end = time_tuple[1]
         if begin <= now <= end:
-            now_lesson = f"{time.to_emoji()} {lesson[1]} {time.to_str()}"
+            now_lesson = Lesson(lesson[0]).do_lesson_str(lesson[1])
             num += 1
         elif now < begin:
             now_lesson = "Премена"
         if num < len(schedule) and now_lesson:
-            time = Lesson(schedule[num][0])
-            next_lesson = f"{time.to_emoji()} {schedule[num][1]} {time.to_str()}"
+            next_lesson = Lesson(schedule[num][0]).do_lesson_str(schedule[num][1])
             break
         elif now_lesson:
             next_lesson = "Сегодня больше не будет пар!"
