@@ -53,18 +53,19 @@ async def get_day_raw(day: Week, group: int, subgroup: int, week: ThisNextWeek =
     week = week.convert_week()
     join = Timetable.join(Lessons)
     statement = select([Timetable.lesson_num, Lessons.lesson]).select_from(join)
-    condition = statement\
-        .where(Timetable.day_week == day.name)\
-        .where(Timetable.week == week.name)\
-        .where(Timetable.group_id == group)\
+    condition = statement \
+        .where(Timetable.day_week == day.name) \
+        .where(Timetable.week == week.name) \
+        .where(Timetable.group_id == group) \
         .where(Timetable.subgroup == subgroup)
     return await condition.order_by(Timetable.lesson_num).gino.all()
 
 
 async def check_existence(day: Week, group: int, week: ThisNextWeek, subgroup: int) -> bool:
-    return await db.scalar(db.exists()
-                           .where(Timetable.day_week == day.name)
-                           .where(Timetable.week == week.convert_week())
-                           .where(Timetable.group_id == group)
-                           .where(Timetable.subgroup == subgroup).select()
-                           )
+    return await db.scalar(
+        db.exists()
+        .where(Timetable.day_week == day.name)
+        .where(Timetable.week == week.convert_week())
+        .where(Timetable.group_id == group)
+        .where(Timetable.subgroup == subgroup).select()
+    )
