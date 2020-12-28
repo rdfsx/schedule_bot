@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, sql, Integer, ForeignKey, SmallInteger
+from sqlalchemy import Column, String, sql, Integer, ForeignKey, SmallInteger, Index
 from sqlalchemy import Enum
 
 from models.week import UnderAboveWeek, Week
@@ -9,7 +9,7 @@ from utils.db_api.schemas.group import GroupsRelatedModel
 class Lessons(TimedBaseModel):
     __tablename__ = 'lessons'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, index=True)
     lesson = Column(String(300), nullable=False, unique=True)
 
     query: sql.Select
@@ -30,5 +30,7 @@ class Timetable(GroupsRelatedModel, LessonsRelatedModel, TimedBaseModel):
     lesson_num = Column(SmallInteger)
     week = Column(Enum(UnderAboveWeek, native_enum=False), nullable=False)
     subgroup = Column(SmallInteger, nullable=False)
+
+    group_idx = Index("group_idx", GroupsRelatedModel.group_id)
 
     query: sql.Select

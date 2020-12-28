@@ -8,4 +8,4 @@ class GroupFilter(BoundFilter):
     key = 'is_group'
 
     async def check(self, message: types.Message) -> bool:
-            return await select_group(message.text)
+        return await select_group(message.text)

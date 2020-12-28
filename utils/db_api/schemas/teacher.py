@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, sql, Integer, UniqueConstraint, ForeignKey
+from sqlalchemy import Column, String, sql, Integer, UniqueConstraint, ForeignKey, Index
 
 from utils.db_api.db_gino import TimedBaseModel, BaseModel, db
 from utils.db_api.schemas.user import UserRelatedModel
@@ -26,6 +26,8 @@ class TeacherRating(UserRelatedModel, TeacherRelatedModel, TimedBaseModel):
 
     rate = Column(Integer, nullable=False)
     link = Column(String(100))
+
+    rate_idx = Index("rate_idx", UserRelatedModel.user_id, TeacherRelatedModel.teacher_id)
 
     __table_args__ = UniqueConstraint(UserRelatedModel.user_id, TeacherRelatedModel.teacher_id)
 
