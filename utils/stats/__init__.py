@@ -1,1 +1,1 @@
-from .send_statistic import send_statistics
+from .chatbase import AsyncMessage
