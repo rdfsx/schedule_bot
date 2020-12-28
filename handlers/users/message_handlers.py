@@ -108,19 +108,6 @@ async def get_more(message: types.Message, user: User):
     )
 
 
-@dp.message_handler(GroupFilter())
-async def get_other_group(message: types.Message):
-    week = ThisNextWeek.this_week
-    group = await select_group(message.text)
-    day = Week.monday
-    result_message = [hbold(f"{day.value.title()} на этой неделе у группы {group.group}")]
-    for i in range(1, group.subgroups + 1):
-        initial_message = f"{i} подгруппа"
-        result_subgroup = await get_some_day(day, group.id, week, i, initial_message)
-        result_message.append(result_subgroup)
-    await message.answer('\n\n'.join(result_message), reply_markup=get_group_buttons(week, group.id, day))
-
-
 @dp.message_handler(TeacherFilter())
 async def get_teacher(message: types.Message, user: User):
     teachers = await select_teacher_by_name(message.text)
@@ -136,3 +123,16 @@ async def get_teacher(message: types.Message, user: User):
             rate = round(teacher.rating / teacher.count, 1)
             txt.append(hitalic(f"Рейтинг: {rate}/5, количество оценок: {teacher.count}"))
         await message.answer('\n'.join(txt), reply_markup=get_rating_kb(teacher.id, user.id, True if rating else False))
+
+
+@dp.message_handler(GroupFilter())
+async def get_other_group(message: types.Message):
+    week = ThisNextWeek.this_week
+    group = await select_group(message.text)
+    day = Week.monday
+    result_message = [hbold(f"{day.value.title()} на этой неделе у группы {group.group}")]
+    for i in range(1, group.subgroups + 1):
+        initial_message = f"{i} подгруппа"
+        result_subgroup = await get_some_day(day, group.id, week, i, initial_message)
+        result_message.append(result_subgroup)
+    await message.answer('\n\n'.join(result_message), reply_markup=get_group_buttons(week, group.id, day))
