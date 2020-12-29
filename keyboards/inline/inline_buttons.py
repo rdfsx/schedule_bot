@@ -5,7 +5,6 @@ from keyboards.inline.callback_datas import day_week_inline, other_week_inline, 
     delete_teacher_rating
 from models.week import ThisNextWeek, Week
 
-
 kb_more = InlineKeyboardMarkup(
     inline_keyboard=[
         [InlineKeyboardButton(text='Сброс настроек', callback_data='reset')],
@@ -20,6 +19,10 @@ search_kb = InlineKeyboardMarkup(inline_keyboard=[
 
 search_teacher = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton('Рейтинг преподавателей', switch_inline_query_current_chat='#p ')]
+])
+
+cancel_markup = InlineKeyboardMarkup(inline_keyboard=[
+    [InlineKeyboardButton(text='Отмена', callback_data='cancel')]
 ])
 
 
@@ -43,11 +46,14 @@ def get_rating_kb(teacher_id: str, user_id: str, rating_exist: bool = False) -> 
             ))
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            buttons,
-            [InlineKeyboardButton(
-                text='Расписание преподавателя',
-                callback_data=teacher_schedule.new(teacher_id=teacher_id))]
-        ])
+            buttons
+            #    ,
+            #    [InlineKeyboardButton(
+            #        text='Расписание преподавателя',
+            #        callback_data=teacher_schedule.new(teacher_id=teacher_id))]
+            #
+        ]
+    )
 
 
 def get_group_buttons(week: ThisNextWeek, group: int, day: Week) -> InlineKeyboardMarkup:

@@ -5,3 +5,4 @@ class StatesAdmin(StatesGroup):
     BROADCAST = State()
     FUCK = State()
     GROUP = State()
+    ANSWER = State()
