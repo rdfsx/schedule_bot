@@ -8,7 +8,7 @@ class User(GroupsRelatedModel, TimedBaseModel):
     __tablename__ = 'users'
 
     id = Column(BigInteger, primary_key=True)
-    subgroup = Column(SmallInteger, nullable=False)
+    subgroup = Column(SmallInteger)
 
     query: sql.Select
 

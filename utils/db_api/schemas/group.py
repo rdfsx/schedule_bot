@@ -18,5 +18,4 @@ class Groups(TimedBaseModel):
 class GroupsRelatedModel(BaseModel):
     __abstract__ = True
 
-    group_id = Column(ForeignKey(f"{Groups.__tablename__}.id", ondelete='CASCADE', onupdate='CASCADE'),
-                      nullable=False)
+    group_id = Column(ForeignKey(f"{Groups.__tablename__}.id", ondelete='CASCADE', onupdate='CASCADE'))
