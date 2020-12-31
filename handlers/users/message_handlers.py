@@ -101,11 +101,15 @@ async def get_now(message: types.Message, user: User):
 
 @dp.message_handler(Text(equals=['еще', 'ещё'], ignore_case=True))
 async def get_more(message: types.Message, user: User):
-    await message.answer(
-        f'Выбранная группа {hbold((await select_group_id(user.group_id)).group)}\n'
-        f'Подгруппа: {hbold(user.subgroup)}',
-        reply_markup=kb_more
-    )
+    if not user.group_id:
+        txt = ["Выберите действие:"]
+    else:
+        txt = [
+            f'Выбранная группа {hbold((await select_group_id(user.group_id)).group)}\n'
+            f'Подгруппа: {hbold(user.subgroup)}',
+            f'Выберите действие:'
+        ]
+    await message.answer('\n'.join(txt), reply_markup=kb_more)
 
 
 @dp.message_handler(TeacherFilter())

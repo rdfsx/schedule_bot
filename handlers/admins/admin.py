@@ -13,7 +13,7 @@ from keyboards.inline.callback_datas import message_for_admin
 from keyboards.inline.inline_buttons import cancel_markup
 from loader import dp, bot
 
-from states.admin_state import StatesAdmin
+from states.admin_state import AnswerAdmin, BroadcastAdmin
 
 from utils.admin_tools.broadcast import broadcaster
 from utils.db_api.commands.commands_user import select_all_users, count_users
@@ -27,7 +27,7 @@ async def get_count_users(message: types.Message):
 
 @dp.message_handler(Command('broadcast'), user_id=admins)
 async def broadcast_message(message: types.Message):
-    await StatesAdmin.BROADCAST.set()
+    await BroadcastAdmin.BROADCAST.set()
     await message.answer('Введите сообщение, которое хотели бы отправить всем, кто есть в базе:',
                          reply_markup=cancel_markup)
 
@@ -39,7 +39,7 @@ async def cancel_broadcast(call: CallbackQuery, state: FSMContext):
     await call.message.answer('Отменено.')
 
 
-@dp.message_handler(state=StatesAdmin.BROADCAST, user_id=admins)
+@dp.message_handler(state=BroadcastAdmin.BROADCAST, user_id=admins)
 async def broadcast_to_users(message: types.Message, state: FSMContext):
     users = await select_all_users()
     create_task(broadcaster(users, message.text))
@@ -80,7 +80,7 @@ async def hot_handled(message: types.Message):
 
 @dp.callback_query_handler(message_for_admin.filter(), user_id=admins)
 async def get_other_schedule(call: CallbackQuery, state: FSMContext, callback_data: dict):
-    await StatesAdmin.ANSWER.set()
+    await AnswerAdmin.ANSWER.set()
     await state.update_data({
         'message_id': callback_data.get('message_id'),
         'from_user_id': callback_data.get('from_user_id')
@@ -89,7 +89,7 @@ async def get_other_schedule(call: CallbackQuery, state: FSMContext, callback_da
     await call.message.answer("Введите сообщение:", reply_markup=cancel_markup)
 
 
-@dp.message_handler(state=StatesAdmin.ANSWER, user_id=admins)
+@dp.message_handler(state=AnswerAdmin.ANSWER, user_id=admins)
 async def answer_to_user_msg(message: types.Message, state: FSMContext):
     data = await state.get_data()
     try:
