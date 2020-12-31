@@ -4,8 +4,7 @@ import random
 from aiogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessageContent, CallbackQuery
 from aiogram.utils.markdown import hbold, hitalic
 
-from config import faculties, ERROR, PREPODS
-from data.convert import sticker
+from data.convert import faculties, ERROR, PREPODS, sticker
 
 from keyboards.inline.callback_datas import day_week_inline, teacher_inline, delete_teacher_rating, other_week_inline
 from keyboards.inline.inline_buttons import check_week, get_rating_kb, get_group_buttons, search_kb

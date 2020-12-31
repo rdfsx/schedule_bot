@@ -1,5 +1,5 @@
 from aiogram import types
-from aiogram.dispatcher.filters import Command, Text
+from aiogram.dispatcher.filters import Command
 
 from data.convert import sticker
 

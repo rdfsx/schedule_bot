@@ -1,3 +1,4 @@
+week_correction = 0
 
 to_rus = {
     'monday': 'понедельник',
@@ -59,3 +60,29 @@ lessons_emoji = {
 }
 
 sticker = 'CAADAgADAwAD_RDZHHMtrppgZOhvFgQ'
+
+faculties = {
+    'FAIS': 'https://abiturient.gstu.by/sites/default/files/images/tax-faculties/fais.jpeg',
+    'GEF': 'https://abiturient.gstu.by/sites/default/files/images/tax-faculties/gef.jpeg',
+    'MTF': 'https://abiturient.gstu.by/sites/default/files/images/tax-faculties/mtf.jpeg',
+    'EF': 'https://abiturient.gstu.by/sites/default/files/images/tax-faculties/ef.jpeg',
+    'MSF': 'https://abiturient.gstu.by/sites/default/files/images/tax-faculties/msf.jpeg'
+}
+
+ERROR = 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/237/pensive-face_1f614.png'
+FAIS = 'https://abiturient.gstu.by/sites/default/files/images/tax-faculties/fais.jpeg'
+GEF = 'https://abiturient.gstu.by/sites/default/files/images/tax-faculties/gef.jpeg'
+MTF = 'https://abiturient.gstu.by/sites/default/files/images/tax-faculties/mtf.jpeg'
+EF = 'https://abiturient.gstu.by/sites/default/files/images/tax-faculties/ef.jpeg'
+MSF = 'https://abiturient.gstu.by/sites/default/files/images/tax-faculties/msf.jpeg'
+
+PREPOD_PIC = 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/237/teacher_1f9d1-200d-1f3eb.png'
+PREPOD_PIC2 = 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/237/teacher-light-skin-tone_1f9d1-1f3fb-200d-1f3eb.png'
+PREPOD_PIC3 = 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/237/teacher-medium-light-skin-tone_1f9d1-1f3fc-200d-1f3eb.png'
+PREPOD_PIC4 = 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/237/teacher-medium-skin-tone_1f9d1-1f3fd-200d-1f3eb.png'
+PREPOD_PIC5 = 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/237/teacher-medium-dark-skin-tone_1f9d1-1f3fe-200d-1f3eb.png'
+PREPOD_PIC6 = 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/237/teacher-dark-skin-tone_1f9d1-1f3ff-200d-1f3eb.png'
+
+PREPODS = [
+    PREPOD_PIC, PREPOD_PIC2, PREPOD_PIC3, PREPOD_PIC4
+]

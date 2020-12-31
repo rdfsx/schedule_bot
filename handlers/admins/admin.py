@@ -107,3 +107,13 @@ async def answer_to_user_msg(message: types.Message, state: FSMContext):
         await message.reply("Сообщение отправлено!")
 
     await state.reset_state()
+
+
+@dp.message_handler(Command('add_group'), user_id=admins)
+async def add_group(message: types.Message, state: FSMContext):
+    pass
+
+
+@dp.message_handler(Command('add_teacher'), user_id=admins)
+async def add_group(message: types.Message, state: FSMContext):
+    pass
