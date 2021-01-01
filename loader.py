@@ -7,7 +7,7 @@ import config
 from utils.db_api.db_gino import db
 
 bot = Bot(token=config.BOT_TOKEN, parse_mode=types.ParseMode.HTML)
-storage = RedisStorage2()
+storage = RedisStorage2(host=config.redis_ip)
 dp = Dispatcher(bot, storage=storage)
 
 __all__ = ['bot', 'storage', 'dp', 'db']
