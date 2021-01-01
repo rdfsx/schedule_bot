@@ -1,6 +1,8 @@
 # Schedule bot
 
-![mock (4) (2) (demo)](https://user-images.githubusercontent.com/72616425/103445702-d653a000-4c88-11eb-8f22-67ef3ed9e0eb.gif)
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/72616425/103445702-d653a000-4c88-11eb-8f22-67ef3ed9e0eb.gif" alt="mock (4) (2) (demo)"/>
+</p>
 
 [![MIT License](https://img.shields.io/pypi/l/aiogram.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/aiogram)
