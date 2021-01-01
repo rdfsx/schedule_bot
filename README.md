@@ -16,31 +16,31 @@
 
 1. Установим git, если он ещё не установлен
 
-```bash
+```console
 $ sudo apt install git -y
 ```
 
 2. Установим docker-compose
 
-```bash
+```console
 $ sudo apt install docker-compose -y
 ```
 
 3. Склонируем репозиторий бота
 
-```bash
+```console
 $ git clone https://github.com/rdfsx/schedule_bot.git
 ```
 
 4. Переходим в папку с ботом
 
-```bash
+```console
 $ cd schedule_bot
 ```
 
 5. Создаём файл .env, куда пропишем данные для запуска, в том числе токен бота из Botfather
 
-```
+```console
 $ nano .env
 ```
 Прописываем:
@@ -60,7 +60,7 @@ DATABASE=postgres
 
 Запускаем бота
 
-```bash
+```console
 $ cd schedule_bot
 
 $ sudo docker-compose up
