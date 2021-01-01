@@ -1,3 +1,5 @@
+import asyncio
+
 from utils.db_api import db_gino
 from utils.set_bot_commands import set_default_commands
 
@@ -16,6 +18,7 @@ async def on_startup(dp):
     await logger.setup()
 
     print("Подключаем БД")
+    await asyncio.sleep(7)
     await db_gino.on_startup(dp)
     print("Готово")
 
