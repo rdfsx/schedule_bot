@@ -1,6 +1,99 @@
 # Schedule bot
 
+[![MIT License](https://img.shields.io/pypi/l/aiogram.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+
 Бот-помощник для студента, который показывает расписание занятий, а также имеет систему рейтинга преподавателей.
+
+## Структура репозитория 
+
+├── app.py
+├── config.py
+├── Dockerfile
+├── install_docker.sh
+├── LICENSE
+├── loader.py
+├── README.md
+├── requirements.txt
+├── docker-compose.yml
+├── data
+|   ├── __init__.py
+│   ├── convert.py
+│   └── messages.py
+├── filters
+│   ├── __init__.py
+│   ├── is_admin.py
+│   ├── is_day.py
+│   ├── is_group.py
+│   └── is_teacher.py
+├── handlers
+│   ├── admins
+│   │   ├── admin.py
+│   │   └── __init__.py
+│   ├── errors
+│   │   ├── error_handler.py
+│   │   └── __init__.py
+│   ├── __init__.py
+│   └── users
+│       ├── commands.py
+│       ├── __init__.py
+│       ├── inline_handlers.py
+│       ├── message_handlers.py
+│       └── start.py
+├── keyboards
+│   ├── default
+│   │   ├── __init__.py
+│   │   └── menu.py
+│   ├── __init__.py
+│   └── inline
+│       ├── callback_datas.py
+│       ├── __init__.py
+│       └── inline_buttons.py
+├── middlewares
+│   ├── acl.py
+│   ├── chatbaser.py
+│   ├── __init__.py
+│   └── throttling.py
+├── models
+│   ├── fuckult.py
+│   ├── __init__.py
+│   ├── lessons.py
+│   └── week.py
+├── states
+│   ├── __init__.py
+│   ├── admin_state.py
+│   └── user_state.py
+└── utils
+    ├── __init__.py
+    ├── set_bot_commands.py
+    ├── notify_admins.py
+    ├── admin_tools
+    │   ├── broadcast.py
+    │   └── __init__.py
+    ├── db_api
+    │   ├── db_gino.py
+    │   ├── __init__.py
+    │   ├── commands
+    │   │   ├── commands_teacher.py
+    │   │   ├── commands_timetable.py
+    │   │   ├── commands_user.py
+    │   │   ├── coomands_group.py
+    │   │   └── __init__.py
+    │   └── schemas
+    │       ├── group.py
+    │       ├── __init__.py
+    │       ├── schedule.py
+    │       ├── teacher.py
+    │       └── user.py
+    ├── misc
+    │   ├── __init__.py
+    │   ├── logger.py
+    │   └── throttling.py
+    ├── redis
+    │   ├── consts.py
+    │   └── __init__.py
+    └── stats
+        ├── chatbase.py
+        └── __init__.py
 
 ## Установка
 
