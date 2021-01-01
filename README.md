@@ -1,6 +1,8 @@
 # Schedule bot
 
 [![MIT License](https://img.shields.io/pypi/l/aiogram.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/aiogram)
+
 
 Бот-помощник для студента, который показывает расписание занятий, а также имеет систему рейтинга преподавателей.
 
