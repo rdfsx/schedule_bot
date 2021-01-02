@@ -1,4 +1,5 @@
 from sqlalchemy import Column, BigInteger, sql, SmallInteger, ForeignKey
+from sqlalchemy.orm import relationship
 
 from utils.db_api.db_gino import TimedBaseModel, BaseModel
 from utils.db_api.schemas.schedule import GroupsRelatedModel
