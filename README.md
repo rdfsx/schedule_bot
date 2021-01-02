@@ -83,83 +83,103 @@ $ sudo docker-compose up
 ├── README.md
 ├── requirements.txt
 ├── docker-compose.yml
+|
 ├── data
 |   ├── __init__.py
 │   ├── convert.py
 │   └── messages.py
-├── filters
+|
+├── filters                                                # Фильтры для обработчиков сообщений
 │   ├── __init__.py
 │   ├── is_admin.py
 │   ├── is_day.py
 │   ├── is_group.py
 │   └── is_teacher.py
-├── handlers
-│   ├── admins
+|
+├── handlers                                               # Хэндлеры (обработчики)
+│   ├── __init__.py
+|   |
+│   ├── admins                                             # Только сообщения администратора
 │   │   ├── admin.py
 │   │   └── __init__.py
-│   ├── errors
+|   |
+│   ├── errors                                             # Обработка исключений
 │   │   ├── error_handler.py
 │   │   └── __init__.py
+|   |
+│   └── users                                              # Сообщения от пользователя
+|       ├── __init__.py
+│       ├── commands.py                                    # Обработка комманд
+│       ├── inline_handlers.py                             # Инлайн-запросы
+│       ├── message_handlers.py                            # Текстовые сообщения (кроме комманд)
+│       └── start.py                                       # Регистрация пользователя
+|
+├── keyboards                                              # Кнопки (инлайн и обычные)
 │   ├── __init__.py
-│   └── users
-│       ├── commands.py
-│       ├── __init__.py
-│       ├── inline_handlers.py
-│       ├── message_handlers.py
-│       └── start.py
-├── keyboards
+|   |
 │   ├── default
 │   │   ├── __init__.py
 │   │   └── menu.py
-│   ├── __init__.py
+|   |
 │   └── inline
-│       ├── callback_datas.py
 │       ├── __init__.py
-│       └── inline_buttons.py
-├── middlewares
+│       ├── callback_datas.py                              # Создание callback-data (информация, которая передаётся при нажатии на инлайн-кнопку)
+│       └── inline_buttons.py                              
+|
+├── middlewares                                            # Мидлвари (обработка сообщений между запросами)
+│   ├── __init__.py
 │   ├── acl.py
-│   ├── chatbaser.py
+│   ├── chatbaser.py                                       # Отправка статистики на сервис chatbase.com
+│   └── throttling.py                                      # Троттлинг (ограничение количества отправляемых пользователем запросов)
+|
+├── models                                                 # Классы enum
 │   ├── __init__.py
-│   └── throttling.py
-├── models
 │   ├── fuckult.py
-│   ├── __init__.py
 │   ├── lessons.py
 │   └── week.py
-├── states
+|
+├── states                                                 # Состояния для машины состояний (FSM)
 │   ├── __init__.py
 │   ├── admin_state.py
 │   └── user_state.py
-└── utils
+|
+└── utils                                                  # Утилиты
     ├── __init__.py
-    ├── set_bot_commands.py
-    ├── notify_admins.py
+    ├── set_bot_commands.py                                # Установка комманд для бота,
+    ├── notify_admins.py                                   # Оповещения администраторов
+    |
     ├── admin_tools
-    │   ├── broadcast.py
+    │   ├── broadcast.py                                   # Рассылка сообщения по пользователям
     │   └── __init__.py
-    ├── db_api
-    │   ├── db_gino.py
+    |
+    ├── db_api                                             # Работа с базой данных
     │   ├── __init__.py
-    │   ├── commands
+    │   ├── db_gino.py                                     # Инициализация
+    |   |
+    │   ├── commands                                       # Комманды для различных действий в таблицах
     │   │   ├── commands_teacher.py
     │   │   ├── commands_timetable.py
     │   │   ├── commands_user.py
     │   │   ├── coomands_group.py
     │   │   └── __init__.py
-    │   └── schemas
-    │       ├── group.py
+    |   |
+    │   └── schemas                                        # Схемы таблиц
     │       ├── __init__.py
+    │       ├── group.py
     │       ├── schedule.py
     │       ├── teacher.py
     │       └── user.py
+    |
     ├── misc
     │   ├── __init__.py
-    │   ├── logger.py
+    │   ├── logger.py                                      # Логгирование
     │   └── throttling.py
-    ├── redis
+    |
+    ├── redis                                              # Работа с базой данных для хранения состояний
     │   ├── consts.py
     │   └── __init__.py
-    └── stats
+    |
+    └── stats                                              # Работа с chatbase.com
         ├── chatbase.py
         └── __init__.py
 ```
