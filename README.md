@@ -127,7 +127,7 @@ $ sudo docker-compose up
 │       ├── callback_datas.py                              # Создание callback-data (информация, которая передаётся при нажатии на инлайн-кнопку)
 │       └── inline_buttons.py                              
 |
-├── middlewares                                            # Мидлвари (обработка сообщений между запросами)
+├── middlewares                                            # Мидлвари (обработка апдейта перед хэндлером)
 │   ├── __init__.py
 │   ├── acl.py
 │   ├── chatbaser.py                                       # Отправка статистики на сервис chatbase.com
