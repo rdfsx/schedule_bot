@@ -110,7 +110,7 @@ $ sudo docker-compose up
 |   |
 │   └── users                                              # Сообщения от пользователя
 |       ├── __init__.py
-│       ├── commands.py                                    # Обработка комманд
+│       ├── commands.py                                    # Обработка команд
 │       ├── inline_handlers.py                             # Инлайн-запросы
 │       ├── message_handlers.py                            # Текстовые сообщения (кроме комманд)
 │       └── start.py                                       # Регистрация пользователя
@@ -157,7 +157,7 @@ $ sudo docker-compose up
     │   ├── __init__.py
     │   ├── db_gino.py                                     # Подключение к базе данных
     |   |
-    │   ├── commands                                       # Комманды для различных действий в таблицах
+    │   ├── commands                                       # Работа с таблицами
     │   │   ├── commands_teacher.py
     │   │   ├── commands_timetable.py
     │   │   ├── commands_user.py
