@@ -74,14 +74,15 @@ $ sudo docker-compose up
 
 ## Структура репозитория 
 ```
-├── app.py
-├── config.py
+
+├── app.py                                                 # Тут запускаем бота
+├── config.py                                              # Подтягиваем данные для работы бота из .env
 ├── Dockerfile
 ├── install_docker.sh
 ├── LICENSE
-├── loader.py
+├── loader.py                                              # Инициализация бота, базы данных, машины состояний и т.д. 
 ├── README.md
-├── requirements.txt
+├── requirements.txt                                       # Зависимости
 ├── docker-compose.yml
 |
 ├── data
@@ -154,7 +155,7 @@ $ sudo docker-compose up
     |
     ├── db_api                                             # Работа с базой данных
     │   ├── __init__.py
-    │   ├── db_gino.py                                     # Инициализация
+    │   ├── db_gino.py                                     # Подключение к базе данных
     |   |
     │   ├── commands                                       # Комманды для различных действий в таблицах
     │   │   ├── commands_teacher.py
@@ -175,7 +176,7 @@ $ sudo docker-compose up
     │   ├── logger.py                                      # Логгирование
     │   └── throttling.py
     |
-    ├── redis                                              # Работа с базой данных для хранения состояний
+    ├── redis                                              # Работа с базой данных redis для хранения состояний
     │   ├── consts.py
     │   └── __init__.py
     |
