@@ -3,7 +3,7 @@ from data.convert import to_eng
 
 from keyboards.inline.callback_datas import day_week_inline, other_week_inline, teacher_inline, teacher_schedule, \
     delete_teacher_rating
-from models.week import ThisNextWeek, Week
+from enums.week import ThisNextWeek, Week
 
 kb_more = InlineKeyboardMarkup(
     inline_keyboard=[

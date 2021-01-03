@@ -11,7 +11,7 @@ from keyboards.inline.callback_datas import day_week_inline, teacher_inline, del
 from keyboards.inline.inline_buttons import check_week, get_rating_kb, get_group_buttons, search_kb
 
 from loader import dp
-from models.week import Week, ThisNextWeek
+from enums.week import Week, ThisNextWeek
 from states import States
 
 from utils.db_api.commands.commands_teacher import select_all_teachers, set_rating, select_teacher_id, delete_rating

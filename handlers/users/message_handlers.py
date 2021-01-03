@@ -11,8 +11,8 @@ from keyboards.default import menu
 from keyboards.inline.inline_buttons import check_week, kb_more, get_group_buttons, get_rating_kb
 
 from loader import dp
-from models.lessons import Lesson
-from models.week import Week, ThisNextWeek
+from enums.lessons import Lesson
+from enums.week import Week, ThisNextWeek
 
 from utils.db_api.commands.commands_teacher import select_teacher_by_name, get_rating
 from utils.db_api.commands.coomands_group import select_group, select_group_id

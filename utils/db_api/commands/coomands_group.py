@@ -4,7 +4,7 @@ from asyncpg import UniqueViolationError
 
 from sqlalchemy import func
 
-from models.fuckult import Fuckult
+from enums.fuckult import Fuckult
 from utils.db_api.db_gino import db
 from utils.db_api.schemas.group import Groups
 

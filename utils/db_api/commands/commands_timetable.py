@@ -4,8 +4,8 @@ from asyncpg import UniqueViolationError, NotNullViolationError
 
 from sqlalchemy import select
 
-from models.lessons import Lesson
-from models.week import UnderAboveWeek, Week, ThisNextWeek
+from enums.lessons import Lesson
+from enums.week import UnderAboveWeek, Week, ThisNextWeek
 
 from utils.db_api.db_gino import db
 from utils.db_api.schemas.group import Groups

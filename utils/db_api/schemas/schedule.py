@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String, sql, Integer, ForeignKey, SmallInteger, Index
 from sqlalchemy import Enum
 
-from models.week import UnderAboveWeek, Week
+from enums.week import UnderAboveWeek, Week
 from utils.db_api.db_gino import TimedBaseModel, BaseModel
 from utils.db_api.schemas.group import GroupsRelatedModel
 
