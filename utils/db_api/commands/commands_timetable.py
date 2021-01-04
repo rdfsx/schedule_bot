@@ -1,4 +1,4 @@
-from aiogram.utils.markdown import hbold, hitalic
+from aiogram.utils.markdown import hbold
 
 from asyncpg import UniqueViolationError, NotNullViolationError
 

@@ -1,3 +1,5 @@
+from typing import Optional
+
 from asyncpg import UniqueViolationError
 
 from loader import dp
@@ -8,16 +10,17 @@ from utils.db_api.schemas.user import User
 from utils.notify_admins import notify_new_user
 
 
-async def add_user(user_id: int, group: str, subgroup: int = 1) -> None:
+async def add_user(user_id: int, group: Optional[str] = None, subgroup: Optional[int] = 1):
     group_id = await Groups.select('id').where(Groups.group == group).gino.scalar()
     try:
         user = User(id=user_id, group_id=group_id, subgroup=subgroup)
         await user.create()
-        await notify_new_user(dp, user_id, group)
 
     except UniqueViolationError:
         user = await User.get(user_id)
-        await user.update(group_id=group_id, subgroup=subgroup).apply()
+        if not user.group_id and group is not None:
+            await user.update(group_id=group_id, subgroup=subgroup).apply()
+            await notify_new_user(dp, user_id, group)
 
 
 async def select_all_users():
@@ -32,6 +35,8 @@ async def count_users():
     return await db.func.count(User.id).gino.scalar()
 
 
-async def update_user_group(user_id: int, group: str, subgroup: int=1):
+async def update_user_group(user_id: int, group: str, subgroup: int = 1):
     user = await User.get(user_id)
-    await user.update(group=group, subgroup=subgroup).apply()
+    if not user.group_id and group is not None:
+        await notify_new_user(dp, user_id, group)
+        await user.update(group=group, subgroup=subgroup).apply()

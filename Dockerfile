@@ -1,9 +1,6 @@
-FROM python:3.7-slim
+FROM python:3.8.6
 
-WORKDIR /botname
-
-COPY requirements.txt /botname/
-RUN pip install -r /botname/requirements.txt
-COPY . /botname/
-
-CMD python3 /botname/bot.py
+WORKDIR /src
+COPY requirements.txt /src
+RUN pip install -r requirements.txt
+COPY . /src

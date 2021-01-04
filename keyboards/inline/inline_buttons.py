@@ -46,7 +46,8 @@ def get_rating_kb(teacher_id: str, user_id: str, rating_exist: bool = False) -> 
             ))
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            buttons
+            buttons,
+            [InlineKeyboardButton('Рейтинг преподавателей', switch_inline_query_current_chat='#p ')]
             #    ,
             #    [InlineKeyboardButton(
             #        text='Расписание преподавателя',

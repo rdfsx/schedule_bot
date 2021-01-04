@@ -1,6 +1,6 @@
 from enum import Enum
 from datetime import datetime
-from config import week_correction
+from data.convert import week_correction
 
 
 class Week(Enum):

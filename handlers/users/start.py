@@ -5,7 +5,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.builtin import CommandStart
 from aiogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessageContent
 
-from config import faculties, ERROR
+from data.convert import faculties, ERROR
 from data.messages import hello_message
 from filters import GroupFilter
 
@@ -22,6 +22,7 @@ from utils.db_api.commands.coomands_group import select_all_groups, select_group
 @dp.message_handler(CommandStart())
 async def bot_start(message: types.Message):
     await States.GROUP.set()
+    await add_user(message.from_user.id)
     await message.answer(f"Приветствую, {message.from_user.full_name}!\n"
                          "Найди свою группу:", reply_markup=search_kb)
 

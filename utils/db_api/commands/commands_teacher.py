@@ -1,9 +1,7 @@
 import re
 
 from asyncpg import UniqueViolationError
-from sqlalchemy import func, text, or_
-
-from utils.db_api.db_gino import db
+from sqlalchemy import func, or_
 
 from utils.db_api.schemas.teacher import Teacher, TeacherRating
 
@@ -21,7 +19,7 @@ async def select_all_teachers(teacher: str, offset: int = 0, limit: int = 20):
     teacher = teacher.replace(' ', '').casefold()
     return await Teacher.query\
         .where(func.replace(Teacher.full_name, ' ', '').ilike(f"%{teacher}%"))\
-        .order_by(Teacher.id).limit(limit).offset(offset).gino.all()
+        .order_by(Teacher.full_name).limit(limit).offset(offset).gino.all()
 
 
 async def select_teacher_by_name(teacher: str):

@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String, sql, Integer, UniqueConstraint, ForeignKey, Index
 
-from utils.db_api.db_gino import TimedBaseModel, BaseModel, db
+from utils.db_api.db_gino import TimedBaseModel, BaseModel
 from utils.db_api.schemas.user import UserRelatedModel
 
 

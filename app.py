@@ -1,5 +1,10 @@
+import asyncio
+
 from utils.db_api import db_gino
+from loader import db
 from utils.set_bot_commands import set_default_commands
+
+from loader import db
 
 
 async def on_startup(dp):
@@ -14,8 +19,20 @@ async def on_startup(dp):
     await logger.setup()
 
     print("Подключаем БД")
+    await asyncio.sleep(7)
     await db_gino.on_startup(dp)
     print("Готово")
+
+    print("Создаем таблицы")
+    await db.gino.create_all()
+
+    print("Чистим базу")
+    await db.gino.drop_all()
+
+    print("Готово")
+
+    print("Создаем таблицы")
+    await db.gino.create_all()
 
     await on_startup_notify(dp)
     await set_default_commands(dp)
