@@ -52,32 +52,6 @@ async def broadcast_to_users(message: types.Message, state: FSMContext):
     await message.answer('\n'.join(txt))
 
 
-@dp.message_handler()
-async def hot_handled(message: types.Message):
-    markup = InlineKeyboardMarkup(inline_keyboard=[
-        [
-            InlineKeyboardButton(
-                text='Ответить',
-                callback_data=message_for_admin.new(
-                    from_user_id=message.from_user.id,
-                    message_id=message.message_id
-                )
-            )
-        ]
-    ])
-    for admin in admins:
-        txt = [
-            f'Сообщение от пользователя:',
-            f'Имя: <a href="tg://user?id={message.from_user.id}">{message.from_user.full_name}</a>',
-            f"username: @{message.from_user.username}",
-            "",
-            "Текст:",
-            message.text,
-        ]
-        await bot.send_message(admin, '\n'.join(txt), reply_markup=markup)
-    await message.answer(hello_message, reply_markup=menu)
-
-
 @dp.callback_query_handler(message_for_admin.filter(), user_id=admins)
 async def get_other_schedule(call: CallbackQuery, state: FSMContext, callback_data: dict):
     await AnswerAdmin.ANSWER.set()

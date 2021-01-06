@@ -27,9 +27,9 @@ async def select_teacher_by_name(teacher: str):
     return await Teacher.query.where(
         or_(
             Teacher.full_name == teacher,
-            func.replace(Teacher.full_name, ' ', '').ilike(f"{teacher_formatted}%")
+            func.replace(Teacher.full_name, ' ', '').ilike(f"{teacher_formatted} %")
         )
-    ).order_by(Teacher.id).gino.all()
+    ).order_by(Teacher.full_name).gino.all()
 
 
 async def select_teacher_id(teacher_id: int):

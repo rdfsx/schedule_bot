@@ -2,15 +2,19 @@ from datetime import datetime
 
 from aiogram import types
 from aiogram.dispatcher.filters import Text
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.markdown import hbold, hitalic
 
+from config import admins
 from data.convert import to_rus
+from data.messages import hello_message
 from filters import DayFilter, GroupFilter, TeacherFilter
 
 from keyboards.default import menu
+from keyboards.inline.callback_datas import message_for_admin
 from keyboards.inline.inline_buttons import check_week, kb_more, get_group_buttons, get_rating_kb
 
-from loader import dp
+from loader import dp, bot
 from models.lessons import Lesson
 from models.week import Week, ThisNextWeek
 
@@ -140,3 +144,29 @@ async def get_other_group(message: types.Message):
         result_subgroup = await get_some_day(day, group.id, week, i, initial_message)
         result_message.append(result_subgroup)
     await message.answer('\n\n'.join(result_message), reply_markup=get_group_buttons(week, group.id, day))
+
+
+@dp.message_handler()
+async def hot_handled(message: types.Message):
+    markup = InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(
+                text='Ответить',
+                callback_data=message_for_admin.new(
+                    from_user_id=message.from_user.id,
+                    message_id=message.message_id
+                )
+            )
+        ]
+    ])
+    for admin in admins:
+        txt = [
+            f'Сообщение от пользователя:',
+            f'Имя: <a href="tg://user?id={message.from_user.id}">{message.from_user.full_name}</a>',
+            f"username: @{message.from_user.username}",
+            "",
+            "Текст:",
+            message.text,
+        ]
+        await bot.send_message(admin, '\n'.join(txt), reply_markup=markup)
+    await message.answer(hello_message, reply_markup=menu)

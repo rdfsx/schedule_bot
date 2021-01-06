@@ -8,7 +8,7 @@ class Teacher(TimedBaseModel):
     __tablename__ = 'teachers'
 
     id = Column(Integer, primary_key=True, index=True, unique=True)
-    full_name = Column((String(150)), unique=True, nullable=False)
+    full_name = Column((String(150)), nullable=False)
     rating = Column(Integer, default=0)
     count = Column(Integer, default=0)
 
