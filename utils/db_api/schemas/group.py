@@ -7,7 +7,7 @@ from utils.db_api.db_gino import TimedBaseModel, BaseModel
 class Groups(TimedBaseModel):
     __tablename__ = 'groups'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, unique=True)
     group = Column(String(20), unique=True, nullable=False)
     fuck = Column(Enum(Fuckult, native_enum=False), nullable=False)
     subgroups = Column(SmallInteger, nullable=False)

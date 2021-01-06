@@ -7,7 +7,7 @@ from utils.db_api.schemas.schedule import GroupsRelatedModel
 class User(GroupsRelatedModel, TimedBaseModel):
     __tablename__ = 'users'
 
-    id = Column(BigInteger, primary_key=True)
+    id = Column(BigInteger, primary_key=True, unique=True)
     subgroup = Column(SmallInteger)
 
     query: sql.Select

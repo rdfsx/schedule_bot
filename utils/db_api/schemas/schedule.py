@@ -9,7 +9,7 @@ from utils.db_api.schemas.group import GroupsRelatedModel
 class Lessons(TimedBaseModel):
     __tablename__ = 'lessons'
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, unique=True)
     lesson = Column(String(300), nullable=False, unique=True)
 
     query: sql.Select
@@ -24,7 +24,7 @@ class LessonsRelatedModel(BaseModel):
 class Timetable(GroupsRelatedModel, LessonsRelatedModel, TimedBaseModel):
     __tablename__ = 'timetables'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, unique=True)
     day_week = Column(Enum(Week, native_enum=False), nullable=False)
     lesson_time = Column(String(20))
     lesson_num = Column(SmallInteger)
