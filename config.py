@@ -14,25 +14,26 @@ admins = [
     os.getenv('ADMIN_ID')
 ]
 
-ip = os.getenv('ip')
-
-redis_ip = os.getenv('redis_ip')
+REDIS_HOST = str(os.getenv("REDIS_HOST"))
+REDIS_PORT = 6379
 
 aiogram_redis = {
-    'host': redis_ip
+    'host': REDIS_HOST
 }
 
 redis = {
-    'address': (redis_ip, 6379),
+    'address': (REDIS_HOST, REDIS_PORT),
     'encoding': 'utf8'
 }
 
-DATABASE = str(os.getenv('DATABASE'))
+POSTGRES_DB = str(os.getenv('POSTGRES_DB'))
 
-PGUSER = str(os.getenv('PGUSER'))
+POSTGRES_USER = str(os.getenv('POSTGRES_USER'))
 
-PGPASSWORD = str(os.getenv('PGPASSWORD'))
+POSTGRES_PASSWORD = str(os.getenv('POSTGRES_PASSWORD'))
 
-db_host = ip
+POSTGRES_HOST = str(os.getenv('POSTGRES_HOST'))
 
-POSTGRES_URI = f"postgresql://{PGUSER}:{PGPASSWORD}@{db_host}/{DATABASE}"
+POSTGRES_PORT = 5432
+
+POSTGRES_URI = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"

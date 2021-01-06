@@ -1,24 +1,22 @@
-version: '3.1'
+version: "3"
 
 services:
   db:
     container_name: database
-    image: sameersbn/postgresql:10-2
+    image: postgres:alpine
+    restart: on-failure
     environment:
-      PG_PASSWORD: $PGPASSWORD
-    restart: always
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DB: $POSTGRES_DB
     ports:
       - 5432:5432
-    networks:
-      - botnet
     volumes:
-      - ./postgres:/var/lib/postgresql
+    - .postgresql:/var/lib/postgresql
 
   redis:
     container_name: redis
     image: redis:alpine
-    networks:
-      - botnet
     restart: on-failure
     volumes:
       - .redis:/var/lib/redis
@@ -30,18 +28,13 @@ services:
     build:
       context: .
     command: python app.py
-    networks:
-      - botnet
     restart: always
     env_file:
-      - ".env"
-    volumes:
-      - .:/src
+      - .env
+    environment:
+      REDIS_HOST: redis
+      POSTGRES_HOST: db
+      RUN_MIGRATIONS: 'true'
     depends_on:
       - db
       - redis
-
-
-networks:
-  botnet:
-    driver: bridge
