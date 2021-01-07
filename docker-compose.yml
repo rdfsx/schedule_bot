@@ -31,6 +31,8 @@ services:
     restart: always
     env_file:
       - .env
+    volumes:
+      - .:/src
     environment:
       REDIS_HOST: redis
       POSTGRES_HOST: db
