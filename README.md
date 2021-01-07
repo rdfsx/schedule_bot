@@ -52,12 +52,15 @@ $ nano .env
 ADMIN_ID=ваш id в telegram
 BOT_TOKEN=токен бота
 STATISTICS_TOKEN=1 (токен с сайта chatbase.com, необязательно)
-ip=db
-redis_ip=redis
-PGUSER=postgres
-PGPASSWORD=пароль придумайте какой-нибудь
 
-DATABASE=postgres
+REDIS_HOST=localhost
+REDIS_PORT=6379
+
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_DB=localhost
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=пароль придумайте какой-нибудь
 ```
 
 ## Использование
