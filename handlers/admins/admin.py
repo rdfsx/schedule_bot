@@ -83,6 +83,11 @@ async def answer_to_user_msg(message: types.Message, state: FSMContext):
     await state.reset_state()
 
 
+@dp.message_handler(Command('backup'), user_id=admins)
+async def do_packup(message: types.Message, state: FSMContext):
+    pass
+
+
 @dp.message_handler(Command('add_group'), user_id=admins)
 async def add_group(message: types.Message, state: FSMContext):
     pass
