@@ -6,5 +6,5 @@ base_message = """
 
 hello_message = """
 Приветствую в боте!
-Исходный код достпен на github https://github.com/rdfsx/schedule_bot не забываем ставить звуздочку
+Исходный код доступен на github https://github.com/rdfsx/schedule_bot не забываем ставить звездочку
 """
