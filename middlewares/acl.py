@@ -1,5 +1,5 @@
 from aiogram import types
-from aiogram.dispatcher.handler import CancelHandler
+from aiogram.dispatcher.handler import CancelHandler, current_handler
 from aiogram.dispatcher.middlewares import BaseMiddleware
 from aiogram.types import ReplyKeyboardRemove
 
@@ -22,6 +22,8 @@ class ACLMiddleware(BaseMiddleware):
         data['user'] = user
 
     async def on_pre_process_message(self, message: types.Message, data: dict):
+        if message.text == '/start':
+            return  # TODO переделать нахуй
         await self.setup_chat(data, message.from_user)
 
     async def on_pre_process_callback_query(self, query: types.CallbackQuery, data: dict):

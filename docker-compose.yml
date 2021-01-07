@@ -12,7 +12,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-    - .postgresql:/var/lib/postgresql
+    - ./postgresql:/var/lib/postgresql
 
   redis:
     container_name: redis
