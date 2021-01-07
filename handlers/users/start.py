@@ -59,7 +59,7 @@ async def check_group(message: types.Message, state: FSMContext):
     if group.subgroups == 1:
         await add_user(user_id=message.from_user.id, group=group.group)
         await state.reset_state()
-        return await message.answer(hello_message, reply_markup=menu)
+        return await message.answer(hello_message, reply_markup=menu, disable_web_page_preview=True)
     await States.SUBGROUP.set()
     await state.update_data(group=group.id)
     await message.answer('Выберите свою подгруппу:', reply_markup=subgroup_menu(group.subgroups))
@@ -78,4 +78,4 @@ async def final(message: types.Message, state: FSMContext):
         return await message.answer('Выберите свою подгруппу:', reply_markup=subgroup_menu(group.subgroups))
     await add_user(user_id=message.from_user.id, group=group.group, subgroup=int(message.text))
     await state.reset_state()
-    await message.answer(hello_message, reply_markup=menu)
+    await message.answer(hello_message, reply_markup=menu, disable_web_page_preview=True)

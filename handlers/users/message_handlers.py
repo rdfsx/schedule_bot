@@ -7,7 +7,7 @@ from aiogram.utils.markdown import hbold, hitalic
 
 from config import admins
 from data.convert import to_rus
-from data.messages import hello_message
+from data.messages import base_message
 from filters import DayFilter, GroupFilter, TeacherFilter
 
 from keyboards.default import menu
@@ -169,4 +169,4 @@ async def hot_handled(message: types.Message):
             message.text,
         ]
         await bot.send_message(admin, '\n'.join(txt), reply_markup=markup)
-    await message.answer(hello_message, reply_markup=menu)
+    await message.answer(base_message, reply_markup=menu)

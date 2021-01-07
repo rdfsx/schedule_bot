@@ -19,8 +19,8 @@ async def add_user(user_id: int, group: Optional[str] = None, subgroup: Optional
     except UniqueViolationError:
         user = await User.get(user_id)
         if not user.group_id and group is not None:
-            await user.update(group_id=group_id, subgroup=subgroup).apply()
             await notify_new_user(dp, user_id, group)
+        await user.update(group_id=group_id, subgroup=subgroup).apply()
 
 
 async def select_all_users():

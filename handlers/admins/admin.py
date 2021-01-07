@@ -7,7 +7,7 @@ from aiogram.dispatcher.filters import Command
 from aiogram.utils.exceptions import BotBlocked, UserDeactivated, TelegramAPIError
 
 from config import admins
-from data.messages import hello_message
+from data.messages import base_message
 from keyboards.default import menu
 from keyboards.inline.callback_datas import message_for_admin
 from keyboards.inline.inline_buttons import cancel_markup
