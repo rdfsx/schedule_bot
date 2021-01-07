@@ -83,6 +83,32 @@ async def answer_to_user_msg(message: types.Message, state: FSMContext):
     await state.reset_state()
 
 
+@dp.message_handler()
+async def hot_handled(message: types.Message):
+    markup = InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(
+                text='Ответить',
+                callback_data=message_for_admin.new(
+                    from_user_id=message.from_user.id,
+                    message_id=message.message_id
+                )
+            )
+        ]
+    ])
+    for admin in admins:
+        txt = [
+            f'Сообщение от пользователя:',
+            f'Имя: <a href="tg://user?id={message.from_user.id}">{message.from_user.full_name}</a>',
+            f"username: @{message.from_user.username}",
+            "",
+            "Текст:",
+            message.text,
+        ]
+        await bot.send_message(admin, '\n'.join(txt), reply_markup=markup)
+    await message.answer(base_message, reply_markup=menu)
+
+
 @dp.message_handler(Command('backup'), user_id=admins)
 async def do_packup(message: types.Message, state: FSMContext):
     pass
