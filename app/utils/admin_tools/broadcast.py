@@ -4,7 +4,7 @@ import asyncio
 from aiogram.utils import exceptions
 
 from app.config import admins
-from loader import bot
+from app.loader import bot
 
 
 async def send_message(user_id: int, txt: str, disable_notification: bool = False) -> bool:

@@ -9,7 +9,7 @@ from aiogram.utils.exceptions import BotBlocked, UserDeactivated, TelegramAPIErr
 from app.config import admins
 from app.keyboards.inline import message_for_admin
 from app.keyboards.inline import cancel_markup
-from loader import dp, bot
+from app.loader import dp, bot
 
 from app.states.admin_state import AnswerAdmin, BroadcastAdmin
 

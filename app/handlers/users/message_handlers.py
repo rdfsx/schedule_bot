@@ -14,7 +14,7 @@ from app.keyboards import menu
 from app.keyboards.inline import message_for_admin
 from app.keyboards.inline import check_week, kb_more, get_group_buttons, get_rating_kb
 
-from loader import dp, bot
+from app.loader import dp, bot
 from app.models.lessons import Lesson
 from app.models import Week, ThisNextWeek
 

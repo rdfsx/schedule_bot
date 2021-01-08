@@ -2,7 +2,7 @@ from typing import Optional
 
 from asyncpg import UniqueViolationError
 
-from loader import dp
+from app.loader import dp
 
 from app.utils import db
 from app.utils.db_api.schemas.group import Groups

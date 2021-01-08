@@ -4,7 +4,7 @@ from app.utils.db_api import db_gino
 from app.utils import main
 from app.utils import set_default_commands
 
-from loader import db
+from app.loader import db
 
 
 async def on_startup(dp):

@@ -3,7 +3,7 @@ from aiogram.dispatcher.handler import CancelHandler
 from aiogram.dispatcher.middlewares import BaseMiddleware
 from aiogram.types import ReplyKeyboardRemove
 
-from loader import bot
+from app.loader import bot
 from app.utils.db_api.commands import add_user
 from app.utils import User
 

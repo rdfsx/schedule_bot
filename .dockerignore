@@ -1,0 +1,15 @@
+# Project
+.idea/
+.*ignore
+README.md
+
+# Cache
+*.py[cod]
+__pycache__
+
+# Texts
+*.mo
+
+# Docker
+docker-compose*.yml
+Dockerfile

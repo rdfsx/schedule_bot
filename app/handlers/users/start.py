@@ -12,7 +12,7 @@ from app.filters import GroupFilter
 from app.keyboards import menu, subgroup_menu
 from app.keyboards.inline import search_kb
 
-from loader import dp
+from app.loader import dp
 from app.states import States
 
 from app.utils.db_api.commands import add_user

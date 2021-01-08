@@ -9,7 +9,7 @@ from app.data import faculties, ERROR, PREPODS, sticker
 from app.keyboards.inline import day_week_inline, teacher_inline, delete_teacher_rating, other_week_inline
 from app.keyboards.inline import check_week, get_rating_kb, get_group_buttons, search_kb
 
-from loader import dp
+from app.loader import dp
 from app.models import Week, ThisNextWeek
 from app.states import States
 

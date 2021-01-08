@@ -6,7 +6,7 @@ from app.data import sticker
 from app.keyboards.inline import search_kb
 from app.keyboards.inline import search_teacher
 
-from loader import dp
+from app.loader import dp
 from app.states import States
 
 
