@@ -1,5 +1,11 @@
-from .errors import dp
-from .admins import dp
-from .users import dp
+import logging
 
-__all__ = ['dp']
+from aiogram import Dispatcher
+
+from . import private, errors
+
+
+def setup(dp: Dispatcher):
+    errors.setup(dp)
+    private.setup(dp)
+    logging.info("Handlers are successfully configured")

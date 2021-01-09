@@ -1,3 +1,4 @@
+
 version: "3"
 
 services:
@@ -12,7 +13,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-    - ./postgresql:/var/lib/postgresql/data
+    - .postgresql:/var/lib/postgresql
 
   redis:
     container_name: redis
@@ -27,12 +28,9 @@ services:
     container_name: bot
     build:
       context: .
-    command: python app.py
-    restart: always
+    restart: on-failure
     env_file:
       - .env
-    volumes:
-      - .:/src
     environment:
       REDIS_HOST: redis
       POSTGRES_HOST: db

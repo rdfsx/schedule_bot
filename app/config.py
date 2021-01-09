@@ -1,39 +1,24 @@
-import os
+from pathlib import Path
 
-from dotenv import load_dotenv
+from environs import Env
 
-load_dotenv()
+env = Env()
+env.read_env()
 
-BOT_TOKEN = str(os.getenv('BOT_TOKEN'))
 
-STATISTICS_TOKEN = str(os.getenv('STATISTICS_TOKEN'))
+BOT_TOKEN = env.str("BOT_TOKEN")
+SKIP_UPDATES = env.bool("SKIP_UPDATES", False)
+WORK_PATH: Path = Path(__file__).parent.parent
 
-LOGS_BASE_PATH = "../"
+SUPERUSER_IDS = env.list("SUPERUSER_IDS")
 
-admins = [
-    os.getenv('ADMIN_ID')
-]
 
-REDIS_HOST = str(os.getenv("REDIS_HOST"))
-REDIS_PORT = 6379
+REDIS_HOST = env.str("REDIS_HOST", default="localhost")
+REDIS_PORT = env.int("REDIS_PORT", default=6379)
 
-aiogram_redis = {
-    'host': REDIS_HOST
-}
-
-redis = {
-    'address': (REDIS_HOST, REDIS_PORT),
-    'encoding': 'utf8'
-}
-
-POSTGRES_DB = str(os.getenv('POSTGRES_DB'))
-
-POSTGRES_USER = str(os.getenv('POSTGRES_USER'))
-
-POSTGRES_PASSWORD = str(os.getenv('POSTGRES_PASSWORD'))
-
-POSTGRES_HOST = str(os.getenv('POSTGRES_HOST'))
-
-POSTGRES_PORT = 5432
-
+POSTGRES_HOST = env.str("POSTGRES_HOST", default="localhost")
+POSTGRES_PORT = env.int("POSTGRES_PORT", default=5432)
+POSTGRES_DB = env.str("POSTGRES_DB")
+POSTGRES_USER = env.str("POSTGRES_USER")
+POSTGRES_PASSWORD = env.str("POSTGRES_PASSWORD")
 POSTGRES_URI = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"

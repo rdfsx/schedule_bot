@@ -1,19 +1,19 @@
+import logging
+from contextlib import suppress
 from typing import List
 
-from aiogram import Dispatcher
-from gino import Gino
 import sqlalchemy as sa
+from gino import UninitializedError, Gino
 from sqlalchemy import Column, DateTime
-
-from app import config
+from sqlalchemy.sql import Select
 
 db = Gino()
 
 
-# Пример из https://github.com/aiogram/bot/blob/master/app/models/db.py
-
 class BaseModel(db.Model):
     __abstract__ = True
+
+    query: Select
 
     def __str__(self):
         model = self.__class__.__name__
@@ -26,17 +26,28 @@ class BaseModel(db.Model):
         values_str = " ".join(f"{name}={value!r}" for name, value in values.items())
         return f"<{model} {values_str}>"
 
+    @classmethod
+    async def clear(cls):
+        await cls.gino.drop()
+        await cls.gino.create()
+        logging.warning(f'Table {cls.__table__} was cleared')
+
 
 class TimedBaseModel(BaseModel):
     __abstract__ = True
 
     created_at = Column(DateTime(True), server_default=db.func.now())
-    updated_at = Column(DateTime(True),
-                        default=db.func.now(),
-                        onupdate=db.func.now(),
-                        server_default=db.func.now())
+    updated_at = Column(
+        DateTime(True), default=db.func.now(), onupdate=db.func.now(), server_default=db.func.now()
+    )
 
 
-async def on_startup(dispatcher: Dispatcher):
-    print("Установка связи с PostgreSQL")
-    await db.set_bind(config.POSTGRES_URI)
+async def connect(postgres_uri):
+    await db.set_bind(postgres_uri)
+    logging.info('PostgreSQL is successfully configured')
+
+
+async def close_connection():
+    with suppress(UninitializedError):
+        logging.info('Closing a database connection')
+        await db.pop_bind().close()
