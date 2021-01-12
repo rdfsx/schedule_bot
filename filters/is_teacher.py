@@ -8,5 +8,5 @@ class TeacherFilter(BoundFilter):
     key = 'is_teacher'
 
     async def check(self, message: types.Message) -> bool:
-        if 1 < len(message.text) < 50 and message.text.replace(" ", "").isalpha():
+        if 1 < len(message.text) < 50 and message.text.replace(" ", "").replace(".", "").isalpha():
             return await select_teacher_by_name(message.text)
