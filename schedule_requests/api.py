@@ -11,6 +11,6 @@ class API:
 
     async def request(self, method: str, params: Dict[str, Any]) -> str:
         url = self.db_url + method + ".php?"
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url, params=params) as response:
+        async with aiohttp.ClientSession(timeout=3) as session:
+            async with session.get(url, params=params, timeout=2) as response:
                 return await response.text()
