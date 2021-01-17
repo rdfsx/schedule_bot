@@ -11,3 +11,4 @@ gino~=1.0.1
 asyncpg~=0.21.0
 requests~=2.25.1
 git+git://github.com/google/chatbase-python.git@master#egg=chatbase
+beautifulsoup4~=4.9.3

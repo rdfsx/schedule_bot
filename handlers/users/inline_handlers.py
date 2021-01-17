@@ -5,12 +5,15 @@ from aiogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessag
 from aiogram.utils.markdown import hbold, hitalic
 
 from data.convert import faculties, ERROR, PREPODS, sticker
+from keyboards.default import menu
 
-from keyboards.inline.callback_datas import day_week_inline, teacher_inline, delete_teacher_rating, other_week_inline
+from keyboards.inline.callback_datas import day_week_inline, teacher_inline, delete_teacher_rating, other_week_inline, \
+    teacher_schedule
 from keyboards.inline.inline_buttons import check_week, get_rating_kb, get_group_buttons, search_kb
 
 from loader import dp
 from models.week import Week, ThisNextWeek
+from schedule_requests.client_prepod import ClientPrepod
 from states import States
 
 from utils.db_api.commands.commands_teacher import select_all_teachers, set_rating, select_teacher_id, delete_rating
@@ -132,6 +135,22 @@ async def delete_teacher_rating_func(call: CallbackQuery, user: User, callback_d
         txt.append(f"Вы отменили оценку.\nРейтинг: {rate}/5, количество оценок: {teacher.count}")
     await call.answer('Рейтинг обновлён.')
     await call.message.edit_text(('\n'.join(txt)), reply_markup=(get_rating_kb(teacher.id, user.id, False)))
+
+
+@dp.callback_query_handler(teacher_schedule.filter())
+async def get_teacher_schedule(call: CallbackQuery, user: User, callback_data: dict):
+    teacher_id = callback_data.get('teacher_id')
+    teacher = await select_teacher_id(int(teacher_id))
+    teacher_list = teacher.full_name.split(" ")
+    teacher_initials = f"{teacher_list[0]} {teacher_list[1][0]}.{teacher_list[2][0]}."
+    schedule = ClientPrepod(teacher_initials).get_prep_schedule()
+    txt = [hbold(f"{teacher.full_name}")]
+    if schedule:
+        txt += schedule
+    else:
+        txt.append("Похоже, что в ближайшую неделю у этого преподавателя не будет занятий.")
+    await call.answer()
+    await call.message.answer("\n\n".join(txt), reply_markup=menu)
 
 
 @dp.callback_query_handler(text='sticker')

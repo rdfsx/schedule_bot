@@ -48,11 +48,10 @@ def get_rating_kb(teacher_id: str, user_id: str, rating_exist: bool = False) -> 
         inline_keyboard=[
             buttons,
             [InlineKeyboardButton('Рейтинг преподавателей', switch_inline_query_current_chat='#p ')]
-            #    ,
-            #    [InlineKeyboardButton(
-            #        text='Расписание преподавателя',
-            #        callback_data=teacher_schedule.new(teacher_id=teacher_id))]
-            #
+            ,
+            [InlineKeyboardButton(
+                text='Расписание преподавателя',
+                callback_data=teacher_schedule.new(teacher_id=teacher_id))]
         ]
     )
 
