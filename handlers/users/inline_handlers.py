@@ -11,7 +11,7 @@ from keyboards.inline.callback_datas import day_week_inline, teacher_inline, del
     teacher_schedule
 from keyboards.inline.inline_buttons import check_week, get_rating_kb, get_group_buttons, search_kb
 
-from loader import dp
+from loader import dp, bot
 from models.week import Week, ThisNextWeek
 from schedule_requests.client_prepod import ClientPrepod
 from states import States
@@ -138,7 +138,8 @@ async def delete_teacher_rating_func(call: CallbackQuery, user: User, callback_d
 
 
 @dp.callback_query_handler(teacher_schedule.filter())
-async def get_teacher_schedule(call: CallbackQuery, user: User, callback_data: dict):
+async def get_teacher_schedule(call: CallbackQuery, callback_data: dict):
+    await bot.send_chat_action(call.from_user.id, "typing")
     teacher_id = callback_data.get('teacher_id')
     teacher = await select_teacher_id(int(teacher_id))
     teacher_list = teacher.full_name.split(" ")
