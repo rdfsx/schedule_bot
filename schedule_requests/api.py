@@ -1,6 +1,7 @@
 from typing import Optional, Any, Dict
 
 import aiohttp
+from aiohttp import ClientConnectorError
 
 DEFAULT_DB_URL = "http://rasp.gstu.by/rasp_df/db/"
 
@@ -11,6 +12,9 @@ class API:
 
     async def request(self, method: str, params: Dict[str, Any]) -> str:
         url = self.db_url + method + ".php?"
-        async with aiohttp.ClientSession(timeout=3) as session:
-            async with session.get(url, params=params, timeout=2) as response:
-                return await response.text()
+        try:
+            async with aiohttp.ClientSession(timeout=3) as session:
+                async with session.get(url, params=params, timeout=2) as response:
+                    return await response.text()
+        except ClientConnectorError:
+            return ''
