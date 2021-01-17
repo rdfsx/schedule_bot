@@ -3,6 +3,7 @@ import random
 
 from aiogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessageContent, CallbackQuery
 from aiogram.utils.markdown import hbold, hitalic
+from aiohttp import ClientConnectorError
 
 from data.convert import faculties, ERROR, PREPODS, sticker
 from keyboards.default import menu
@@ -144,7 +145,12 @@ async def get_teacher_schedule(call: CallbackQuery, callback_data: dict):
     teacher = await select_teacher_id(int(teacher_id))
     teacher_list = teacher.full_name.split(" ")
     teacher_initials = f"{teacher_list[0]} {teacher_list[1][0]}.{teacher_list[2][0]}."
-    schedule = await ClientPrepod(teacher_initials).get_prep_schedule()
+    try:
+        schedule = await ClientPrepod(teacher_initials).get_prep_schedule()
+    except ClientConnectorError:
+        return await call.message.answer(f"<b>{teacher.full_name}</b>\n\n"
+                                         f"Похоже, что университетский сервер с расписанием не работает🤷‍♂️",
+                                         reply_markup=menu)
     txt = [hbold(f"{teacher.full_name}")]
     if schedule:
         txt += schedule
