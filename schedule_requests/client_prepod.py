@@ -15,7 +15,7 @@ class ClientPrepod:
         self.api = api_ or API()
         self.prepod = prepod
 
-    def __get_html(self,
+    async def __get_html(self,
                    sem: Sem,
                    fuckult: FuckultSchedule,
                    date: Optional[str] = datetime.now().strftime('%Y-%m-%d')) -> str:
@@ -25,24 +25,24 @@ class ClientPrepod:
             'fuckult': fuckult.value,
             'theDate': date
         }
-        return self.api.request("get/getRaspByPrepod", params).text
+        return await self.api.request("get/getRaspByPrepod", params)
 
-    def __get_timetable(self) -> ResultSet:
+    async def __get_timetable(self) -> ResultSet:
         text: str = ''
         sem = Sem.summer
         fuckult = FuckultSchedule.df
         for i in range(2):
             for j in range(2):
-                text += self.__get_html(sem, fuckult)
+                text += await self.__get_html(sem, fuckult)
                 fuckult = fuckult.next()
             sem = sem.next()
         soup = BeautifulSoup(text, 'html.parser')
         return soup.find_all('td')
 
-    def __get_rows(self) -> list:
+    async def __get_rows(self) -> list:
         day_week: str = ''
         lessons: list = []
-        timetable = self.__get_timetable()
+        timetable = await self.__get_timetable()
         for td in timetable:
             for key in to_eng.keys():
                 if key in td.get_text().lower():
@@ -72,8 +72,8 @@ class ClientPrepod:
                     lessons.append(result)
         return lessons
 
-    def get_prep_schedule(self) -> list:
-        lessons = self.__get_rows()
+    async def get_prep_schedule(self) -> list:
+        lessons = await self.__get_rows()
         days = set([dic["day_week"] for dic in lessons if dic["day_week"] in list(map(lambda d: d.value, Week))])
         today = Week.today()
         sorted_days: list = []

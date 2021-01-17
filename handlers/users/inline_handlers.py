@@ -144,7 +144,7 @@ async def get_teacher_schedule(call: CallbackQuery, callback_data: dict):
     teacher = await select_teacher_id(int(teacher_id))
     teacher_list = teacher.full_name.split(" ")
     teacher_initials = f"{teacher_list[0]} {teacher_list[1][0]}.{teacher_list[2][0]}."
-    schedule = ClientPrepod(teacher_initials).get_prep_schedule()
+    schedule = await ClientPrepod(teacher_initials).get_prep_schedule()
     txt = [hbold(f"{teacher.full_name}")]
     if schedule:
         txt += schedule
