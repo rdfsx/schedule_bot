@@ -1,9 +1,11 @@
-from typing import Optional
+import asyncio
+import random
+from typing import Optional, List
 
 from bs4 import BeautifulSoup, ResultSet
 
 from data.convert import to_eng, to_rus, university_time, lessons_emoji
-from models.week import Week
+from models.week import Week, ThisNextWeek
 from schedule_requests.api import API
 from models.schedule import FuckultSchedule, Sem
 
@@ -15,78 +17,106 @@ class ClientPrepod:
         self.api = api_ or API()
         self.prepod = prepod
 
-    async def __get_html(self,
-                   sem: Sem,
-                   fuckult: FuckultSchedule,
-                   date: Optional[str] = datetime.now().strftime('%Y-%m-%d')) -> str:
+    async def __get_prepod_html(self,
+                                sem: Sem,
+                                fuckult: FuckultSchedule,
+                                date: Optional[str] = datetime.now().strftime('%Y-%m-%d')) -> str:
         params = {
             'prepod': f"'{self.prepod}'",
             'sem': sem.value,
             'fuckult': fuckult.value,
-            'theDate': date
+            'theDate': date,
+            'brouser': 'Opera'
         }
         return await self.api.request("get/getRaspByPrepod", params)
 
+    @staticmethod
+    def __get_sem() -> Sem:
+        date = datetime.today()
+        if datetime(month=1, day=24, year=date.year) <= date < datetime(month=6, day=30, year=date.year):
+            sem = Sem.summer
+        else:
+            sem = Sem.winter
+        return sem
+
     async def __get_timetable(self) -> ResultSet:
         text: str = ''
-        sem = Sem.summer
+        sem = self.__get_sem()
         fuckult = FuckultSchedule.df
         for i in range(2):
-            for j in range(2):
-                text += await self.__get_html(sem, fuckult)
-                fuckult = fuckult.next()
-            sem = sem.next()
+            text += await self.__get_prepod_html(sem, fuckult)
+            fuckult = fuckult.next()
+            await asyncio.sleep(round(random.uniform(1, 3), 2))
         soup = BeautifulSoup(text, 'html.parser')
         return soup.find_all('td')
 
-    async def __get_rows(self) -> list:
-        day_week: str = ''
+    async def __get_prepod_rows(self) -> list:
         lessons: list = []
+        week_str = ThisNextWeek.this_week.convert_week()
         timetable = await self.__get_timetable()
         for td in timetable:
-            for key in to_eng.keys():
-                if key in td.get_text().lower():
-                    if to_eng[key] != '':
-                        day_week = to_rus[key]
             try:
                 title = td['title']
             except KeyError:
                 continue
+            text = " ".join(td.get_text().split())
             title_list = title.split(" ")
             date_num = [s for s in title_list if "~" in s][0]
+            lesson_num = int(date_num.split("~")[1])
             kind = [s for s in title_list if "l" in s][0]
-            kind_str = '(лекц)' if int(kind.replace("l", "")) == 1 else '(практ)'
-            span = int(td['rowspan'])
             date = date_num.split("~")[0]
-            lesson = int(date_num.split("~")[1])
-            text = " ".join(td.get_text().split())
-            if text:
-                for i in range(span):
-                    result = {
-                        'lesson': lesson + i,
-                        'date': date,
-                        'day_week': day_week,
-                        'kind_str': kind_str,
-                        'text': text
-                    }
-                    lessons.append(result)
+            kind_str = '(лекц)' if int(kind.replace("l", "")) == 1 else '(практ)'
+            month = int(date.split(".")[1].lstrip("0"))
+            day = int(date.split(".")[0].lstrip("0"))
+            day_week = datetime(datetime.now().year, month, day).strftime('%A').lower()
+            result: List[str] = []
+            week: str = ''
+            if td['rowspan'] == '#':
+                if (week_str.name == "under" and 'tp' in title) or (week_str.name == "above" and 'bt' in title):
+                    week = "<b>На этой неделе:</b>"
+                else:
+                    week = "<b>На следующей неделе:</b>"
+                if not text:
+                    text = ""
+                result.append(f"{text}")
+            elif td['rowspan'].isdigit():
+                if text:
+                    for i in range(int(td['rowspan'])):
+                        result.append(text)
+            else:
+                continue
+            if result:
+                for lesson in result:
+                    lessons.append(
+                        {
+                            'lesson': lesson_num,
+                            'date': date,
+                            'week': week,
+                            'day_week': day_week,
+                            'kind_str': kind_str,
+                            'text': lesson
+                        }
+                    )
         return lessons
 
     async def get_prep_schedule(self) -> list:
-        lessons = await self.__get_rows()
-        days = set([dic["day_week"] for dic in lessons if dic["day_week"] in list(map(lambda d: d.value, Week))])
+        lessons = await self.__get_prepod_rows()
+        days = set([dic["day_week"] for dic in lessons if dic["day_week"] in list(map(lambda d: d.name, Week))])
         today = Week.today()
         sorted_days: list = []
         result: list = []
         for i in range(len(Week)):
-            if today.value in days:
-                sorted_days.append(today.value)
+            if today.name in days:
+                sorted_days.append(today.name)
             today = today.next()
         for day in sorted_days:
             lessons_day = [dictionary for dictionary in lessons if dictionary["day_week"] == day]
-            result.append(f"<b>{lessons_day[0]['day_week'].title()} {lessons_day[0]['date']}</b>")
+            result.append(f"<b>{Week[lessons_day[0]['day_week']].value.title()} {lessons_day[0]['date']}</b>")
             for les in lessons_day:
-                result.append(f"{lessons_emoji.get(les['lesson'])}<b>{les['kind_str']}</b> "
-                              f"{les['text']} "
-                              f"<i><u>{university_time.get(les['lesson'])}</u></i>")
+                if les['text']:
+                    result.append(f"{lessons_emoji.get(les['lesson'])}{les['week']} <b>{les['kind_str']}</b> "
+                                  f"{les['text']} "
+                                  f"<i><u>{university_time.get(les['lesson'])}</u></i>")
+                else:
+                    result.append(f"{lessons_emoji.get(les['lesson'])}{les['week']} Нет пары.")
         return result

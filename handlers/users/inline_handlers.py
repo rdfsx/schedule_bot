@@ -148,8 +148,11 @@ async def get_teacher_schedule(call: CallbackQuery, callback_data: dict):
     try:
         schedule = await ClientPrepod(teacher_initials).get_prep_schedule()
     except ClientConnectorError:
+        await call.answer()
         return await call.message.answer(f"<b>{teacher.full_name}</b>\n\n"
-                                         f"Похоже, что университетский сервер с расписанием не работает🤷‍♂️",
+                                         f"Похоже, что университетский сервер с расписанием не работает️.\n"
+                                         f"Либо сотрудники отдела автоматизированных систем снова обиделись и "
+                                         f"внесли ip-адрес бота в чёрный список🤷‍♂",
                                          reply_markup=menu)
     txt = [hbold(f"{teacher.full_name}")]
     if schedule:
