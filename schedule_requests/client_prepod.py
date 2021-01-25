@@ -30,18 +30,9 @@ class ClientPrepod:
         }
         return await self.api.request("get/getRaspByPrepod", params)
 
-    @staticmethod
-    def __get_sem() -> Sem:
-        date = datetime.today()
-        if datetime(month=1, day=24, year=date.year) <= date < datetime(month=6, day=30, year=date.year):
-            sem = Sem.summer
-        else:
-            sem = Sem.winter
-        return sem
-
     async def __get_timetable(self) -> ResultSet:
         text: str = ''
-        sem = self.__get_sem()
+        sem = Sem.get_sem()
         fuckult = FuckultSchedule.df
         for i in range(2):
             text += await self.__get_prepod_html(sem, fuckult)
