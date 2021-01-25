@@ -91,12 +91,18 @@ class ClientGroup:
     async def compare_all_groups(self):
         pass
 
+    async def update_group_timetable(self):
+        pass
+
+    async def update_all_groups_timetable(self):
+        pass
 
 
 
-wtf = ClientGroup("ИС-41")
+
+# wtf = ClientGroup("ИС-41")
 
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(wtf.wtf())
-loop.close()
+# loop = asyncio.get_event_loop()
+# loop.run_until_complete(wtf.wtf())
+# loop.close()
