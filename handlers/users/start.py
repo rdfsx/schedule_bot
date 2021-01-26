@@ -16,7 +16,7 @@ from loader import dp
 from states import States
 
 from utils.db_api.commands.commands_user import add_user
-from utils.db_api.commands.coomands_group import select_all_groups, select_group, select_group_id
+from utils.db_api.commands.coomands_group import select_groups_limit, select_group, select_group_id
 
 
 @dp.message_handler(CommandStart())
@@ -32,7 +32,7 @@ async def get_all_groups(inline_query: InlineQuery):
     limit = 20
     offset = 0 if inline_query.offset == '' else int(inline_query.offset)
     results = []
-    data = await select_all_groups(inline_query.query, offset, limit)
+    data = await select_groups_limit(inline_query.query, offset, limit)
     if data:
         for group in data:
             results.append(InlineQueryResultArticle(

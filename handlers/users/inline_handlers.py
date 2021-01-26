@@ -18,7 +18,7 @@ from schedule_requests.client_prepod import ClientPrepod
 from states import States
 
 from utils.db_api.commands.commands_teacher import select_all_teachers, set_rating, select_teacher_id, delete_rating
-from utils.db_api.commands.coomands_group import select_all_groups, select_group_id
+from utils.db_api.commands.coomands_group import select_groups_limit, select_group_id
 from utils.db_api.schemas.user import User
 from utils.db_api.commands.commands_timetable import get_some_day
 
@@ -73,7 +73,7 @@ async def get_groups(inline_query: InlineQuery):
     limit = 20
     offset = 0 if inline_query.offset == '' else int(inline_query.offset)
     results = []
-    data = await select_all_groups(inline_query.query, offset, limit)
+    data = await select_groups_limit(inline_query.query, offset, limit)
     if data:
         for group in data:
             results.append(InlineQueryResultArticle(

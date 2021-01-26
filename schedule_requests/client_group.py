@@ -12,11 +12,13 @@ from models.schedule import FuckultSchedule, Sem
 
 from datetime import datetime, timedelta
 
+from utils.db_api.commands.commands_timetable import add_lesson
+from utils.db_api.commands.coomands_group import select_all_groups
+
 
 class ClientGroup:
-    def __init__(self, group: str, api_: Optional[API] = None):
+    def __init__(self, api_: Optional[API] = None):
         self.api = api_ or API()
-        self.group = group
 
     async def __get_timetable_html(self, groups: str, sem: Sem) -> str:
         date = datetime.today() - timedelta(days=datetime.today().weekday() % 7)
@@ -51,7 +53,7 @@ class ClientGroup:
             groups_list.append(text)
         return groups_list
 
-    async def __get_groups_timetable(self):
+    async def __get_groups_timetable(self, group: str):
         sem = Sem.get_sem()
         groups_list = await self.get_all_groups()
         groups_str = await self.__get_all_groups_str(groups_list)
@@ -63,7 +65,7 @@ class ClientGroup:
                 title = td[1]['title']
             except KeyError:
                 continue
-            if td[1].get_text() == self.group:
+            if td[1].get_text() == group:
                 if td[1]['colspan'] == '1':
                     one_subgroup = True
             title_list = title.split(" ")
@@ -74,10 +76,13 @@ class ClientGroup:
             except IndexError:
                 continue
             if quantity_groups > 1:
-                if groups_list.index(group1) < groups_list.index(self.group) < groups_list.index(group1) + quantity_groups:
+                if groups_list.index(group1) < groups_list.index(group) < groups_list.index(group1) + quantity_groups:
                     result_raw.append(td[1])
-            if self.group in title:
+            if group in title:
                 result_raw.append(td[1])
+
+    async def get_timetable(self):
+        pass
 
     async def __get_group_rows(self):
         pass
@@ -89,13 +94,17 @@ class ClientGroup:
         pass
 
     async def compare_all_groups(self):
-        pass
+        groups = await select_all_groups()
+        for group in groups:
+            timetable = await get_timetable(group)
+
+
+
+
 
     async def update_group_timetable(self):
         pass
 
-    async def update_all_groups_timetable(self):
-        pass
 
 
 

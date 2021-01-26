@@ -1,4 +1,5 @@
 import re
+from typing import Optional
 
 from asyncpg import UniqueViolationError
 
@@ -18,10 +19,14 @@ async def add_group(group: str, fuck: Fuckult, subgroups: int = 1):
         pass
 
 
-async def select_all_groups(group: str, offset: int = 0, limit: int = 20):
+async def select_groups_limit(group: str, offset: int = 0, limit: int = 20):
     group = re.sub('[ -]', '', group.casefold())
     return await Groups.query.where(func.replace(Groups.group, '-', '').ilike(f"%{group}%"))\
         .order_by(Groups.id).limit(limit).offset(offset).gino.all()
+
+
+async def select_all_groups():
+    return await Groups.query.gino.all()
 
 
 async def select_group_id(group_id: int):
