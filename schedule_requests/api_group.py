@@ -19,8 +19,6 @@ from utils.db_api.commands.coomands_group import select_all_groups
 class APIMethodsGroup:
     def __init__(self, api_: Optional[API] = None):
         self.api = api_ or API()
-        self.groups_list_db: List[str] = asyncio.run(select_all_groups())
-        self.groups_list_gstu: List[str] = asyncio.run(self.get_all_groups())
 
     async def __get_timetable_html(self, groups: str, sem: Sem) -> str:
         date = datetime.today() - timedelta(days=datetime.today().weekday() % 7)
@@ -33,8 +31,9 @@ class APIMethodsGroup:
         }
         return await self.api.request("get/getRaspKaf", params)
 
-    async def __get_all_groups_str(self) -> str:
-        result = "','".join(self.groups_list_db)
+    @staticmethod
+    async def __get_all_groups_str(groups: List[str]) -> str:
+        result = "','".join(groups)
         return f"'{result}'"
 
     async def get_all_groups(self) -> list:
@@ -79,7 +78,7 @@ class APIMethodsGroup:
             if group in title:
                 result_raw.append(td[1])
 
-    async def get_timetable(self, group: str):
+    async def get_timetable(self, group: str, group_list: List[str]):
         return [["wtf"]]
 
     async def __get_group_rows(self):
@@ -98,8 +97,10 @@ class APIMethodsGroup:
         pass
 
     async def compare_all_groups(self):
-        for group in self.groups_list_gstu:
-            actual_timetable = await self.get_timetable(group)
+        groups_db = await select_all_groups()
+        groups_gstu = await self.get_all_groups()
+        for group in groups_db:
+            actual_timetable = await self.get_timetable(group, groups_gstu)
             db_timetable = await get_all_schedule(group)
             await APIMethodsGroup.compare_group(actual_timetable, db_timetable)
 
@@ -115,9 +116,9 @@ class APIMethodsGroup:
 
 
 
-wtf = APIMethodsGroup()
+# wtf = ClientGroup("ИС-41")
 
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(wtf.get_all_groups_str())
-loop.close()
+# loop = asyncio.get_event_loop()
+# loop.run_until_complete(wtf.wtf())
+# loop.close()
