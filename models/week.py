@@ -27,7 +27,7 @@ class Week(Enum):
 
 
 class UnderAboveWeek(Enum):
-    under, above = range(2)
+    under, above, all = range(3)
 
     def next(self):
         if self == self.under:
