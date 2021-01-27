@@ -12,7 +12,7 @@ from models.schedule import FuckultSchedule, Sem
 from datetime import datetime
 
 
-class ClientPrepod:
+class APIMethodsPrepod:
     def __init__(self, prepod: str, api_: Optional[API] = None):
         self.api = api_ or API()
         self.prepod = prepod

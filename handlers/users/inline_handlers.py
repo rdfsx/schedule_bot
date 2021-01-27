@@ -14,7 +14,7 @@ from keyboards.inline.inline_buttons import check_week, get_rating_kb, get_group
 
 from loader import dp, bot
 from models.week import Week, ThisNextWeek
-from schedule_requests.client_prepod import ClientPrepod
+from schedule_requests.api_prepod import APIMethodsPrepod
 from states import States
 
 from utils.db_api.commands.commands_teacher import select_all_teachers, set_rating, select_teacher_id, delete_rating
@@ -146,7 +146,7 @@ async def get_teacher_schedule(call: CallbackQuery, callback_data: dict):
     teacher_list = teacher.full_name.split(" ")
     teacher_initials = f"{teacher_list[0]} {teacher_list[1][0]}.{teacher_list[2][0]}."
     try:
-        schedule = await ClientPrepod(teacher_initials).get_prep_schedule()
+        schedule = await APIMethodsPrepod(teacher_initials).get_prep_schedule()
     except ClientConnectorError:
         await call.answer()
         return await call.message.answer(f"<b>{teacher.full_name}</b>\n\n"

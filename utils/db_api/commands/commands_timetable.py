@@ -6,6 +6,7 @@ from sqlalchemy import select
 
 from models.lessons import Lesson
 from models.week import UnderAboveWeek, Week, ThisNextWeek
+from utils.db_api.commands.coomands_group import select_group
 
 from utils.db_api.db_gino import db
 from utils.db_api.schemas.group import Groups
@@ -56,6 +57,15 @@ async def get_day_raw(day: Week, group: int, subgroup: int, week: ThisNextWeek =
         .where(Timetable.group_id == group) \
         .where(Timetable.subgroup == subgroup)
     return await condition.order_by(Timetable.lesson_num).gino.all()
+
+
+async def get_all_schedule(group: str):
+    group_id = await select_group(group)
+    join = Timetable.join(Lessons)
+    statement = select([Timetable.lesson_num, Timetable.subgroup, Timetable.week, Lessons.lesson]).select_from(join)
+    condition = statement \
+        .where(Timetable.group_id == group_id)
+    return await condition.gino.all()
 
 
 async def check_existence(day: Week, group: int, week: ThisNextWeek, subgroup: int) -> bool:

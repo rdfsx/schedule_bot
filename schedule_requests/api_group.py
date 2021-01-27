@@ -12,13 +12,15 @@ from models.schedule import FuckultSchedule, Sem
 
 from datetime import datetime, timedelta
 
-from utils.db_api.commands.commands_timetable import add_lesson
+from utils.db_api.commands.commands_timetable import add_lesson, get_day_raw, get_all_schedule
 from utils.db_api.commands.coomands_group import select_all_groups
 
 
-class ClientGroup:
+class APIMethodsGroup:
     def __init__(self, api_: Optional[API] = None):
         self.api = api_ or API()
+        self.groups_list_db: List[str] = asyncio.run(select_all_groups())
+        self.groups_list_gstu: List[str] = asyncio.run(self.get_all_groups())
 
     async def __get_timetable_html(self, groups: str, sem: Sem) -> str:
         date = datetime.today() - timedelta(days=datetime.today().weekday() % 7)
@@ -31,21 +33,17 @@ class ClientGroup:
         }
         return await self.api.request("get/getRaspKaf", params)
 
-    async def __get_all_groups_html(self) -> str:
+    async def __get_all_groups_str(self) -> str:
+        result = "','".join(self.groups_list_db)
+        return f"'{result}'"
+
+    async def get_all_groups(self) -> list:
         sem = Sem.get_sem()
         params = {
             'sem': sem.value,
             'brouser': 'Opera'
         }
-        return await self.api.request("nazn/select", params)
-
-    @staticmethod
-    async def __get_all_groups_str(groups: List[str]) -> str:
-        result = "','".join(groups)
-        return f"'{result}'"
-
-    async def get_all_groups(self) -> list:
-        groups = await self.__get_all_groups_html()
+        groups = await self.api.request("nazn/select", params)
         soup = BeautifulSoup(groups, 'html.parser')
         groups_list: list = []
         for li in soup.find_all('li'):
@@ -81,8 +79,8 @@ class ClientGroup:
             if group in title:
                 result_raw.append(td[1])
 
-    async def get_timetable(self):
-        pass
+    async def get_timetable(self, group: str):
+        return [["wtf"]]
 
     async def __get_group_rows(self):
         pass
@@ -90,13 +88,21 @@ class ClientGroup:
     async def get_group_timetable(self):
         pass
 
-    async def compare_group(self):
+    @staticmethod
+    async def compare_group(actual_timetable: List[List[str]], db_timetable: List[List[str]]) -> bool:
+        actual_timetable.sort()
+        db_timetable.sort()
+        return True if actual_timetable == db_timetable else False
+
+    async def update_group(self):
         pass
 
     async def compare_all_groups(self):
-        groups = await select_all_groups()
-        for group in groups:
-            timetable = await get_timetable(group)
+        for group in self.groups_list_gstu:
+            actual_timetable = await self.get_timetable(group)
+            db_timetable = await get_all_schedule(group)
+            await APIMethodsGroup.compare_group(actual_timetable, db_timetable)
+
 
 
 
@@ -109,9 +115,9 @@ class ClientGroup:
 
 
 
-# wtf = ClientGroup("ИС-41")
+wtf = APIMethodsGroup()
 
 
-# loop = asyncio.get_event_loop()
-# loop.run_until_complete(wtf.wtf())
-# loop.close()
+loop = asyncio.get_event_loop()
+loop.run_until_complete(wtf.get_all_groups_str())
+loop.close()
