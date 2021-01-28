@@ -13,7 +13,7 @@ from models.schedule import FuckultSchedule, Sem
 
 from datetime import datetime, timedelta
 
-from utils.db_api.commands.commands_timetable import add_lesson, get_day_raw, get_all_schedule
+from utils.db_api.commands.commands_timetable import add_lesson, get_day_raw, get_all_schedule, select_all_rows
 from utils.db_api.commands.coomands_group import select_all_groups, add_group, update_group, select_group
 
 
@@ -152,8 +152,20 @@ class APIMethodsGroup:
     async def compare_all_groups(self):
         groups_from_db = await select_all_groups()
         groups_from_request = await self.get_all_groups()
-        groups_timetable = self.__get_timetable_html(groups_from_request)
-        soup = BeautifulSoup(groups_timetable, 'html.parser')
+        actual_groups_timetable = await self.__get_timetable_html(groups_from_request)
+        db_groups_timetable = await select_all_rows()
+        soup = BeautifulSoup(actual_groups_timetable, 'html.parser')
+        for td in soup:
+            if not td.get_text():
+                continue
+            request_rows = await self.get_lessons_from_soup(td, groups_from_request)
+            if not request_rows:
+                continue
+            for db_row in db_groups_timetable:
+                for request_row in request_rows:
+                    if
+
+
         for group in groups_from_db:
             actual_timetable = sorted(await self.get_timetable(soup, group, groups_from_request))
             db_timetable = sorted(await get_all_schedule(group))

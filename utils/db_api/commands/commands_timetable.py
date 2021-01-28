@@ -76,3 +76,7 @@ async def check_existence(day: Week, group: int, week: ThisNextWeek, subgroup: i
         .where(Timetable.group_id == group)
         .where(Timetable.subgroup == subgroup).select()
     )
+
+
+async def select_all_rows():
+    return await Timetable.join(Lessons).join(Groups).query.gino.all()
