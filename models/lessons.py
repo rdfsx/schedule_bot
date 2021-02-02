@@ -20,3 +20,12 @@ class Lesson(Enum):
 
     def do_lesson_str(self, lesson: str) -> str:
         return f"{self.to_emoji()} {lesson} {self.to_str()}"
+
+
+class LessonKind(Enum):
+    lec = 'лекц.'
+    prac = 'практ.'
+    lab = 'лаб.'
+
+    def to_str(self) -> str:
+        return f"<i>({self.value})</i>"

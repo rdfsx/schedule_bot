@@ -1,10 +1,12 @@
+from typing import Optional
+
 from aiogram.utils.markdown import hbold
 
 from asyncpg import UniqueViolationError, NotNullViolationError
 
 from sqlalchemy import select
 
-from models.lessons import Lesson
+from models.lessons import Lesson, LessonKind
 from models.week import UnderAboveWeek, Week, ThisNextWeek
 from utils.db_api.commands.coomands_group import select_group
 
@@ -21,7 +23,9 @@ async def add_lesson(lesson: str):
         pass
 
 
-async def add_timetable(day_week: Week, lesson_num: int, week: UnderAboveWeek, group: str, subgroup: int, lesson: str):
+async def add_timetable(day_week: Week, lesson_num: int, week: UnderAboveWeek, group: str, subgroup: int, lesson: str,
+                        lesson_kind: Optional[LessonKind] = None, teacher: Optional[str] = None):
+    await add_lesson(lesson)
     try:
         timetable = Timetable(
             day_week=day_week,
@@ -29,7 +33,9 @@ async def add_timetable(day_week: Week, lesson_num: int, week: UnderAboveWeek, g
             week=week,
             group_id=await Groups.select('id').where(Groups.group == group).gino.scalar(),
             subgroup=subgroup,
-            lesson_id=await Lessons.select('id').where(Lessons.lesson == lesson).gino.scalar()
+            lesson_id=await Lessons.select('id').where(Lessons.lesson == lesson).gino.scalar(),
+            lesson_kind=lesson_kind,
+            teacher=teacher,
         )
         await timetable.create()
 
@@ -79,4 +85,12 @@ async def check_existence(day: Week, group: int, week: ThisNextWeek, subgroup: i
 
 
 async def select_all_rows():
-    return await Timetable.join(Lessons).join(Groups).query.gino.all()
+    rows = [Timetable.id, Timetable.day_week, Timetable.lesson_num, Timetable.week, Groups.group, Timetable.subgroup,
+            Lessons.lesson, Timetable.lesson_kind]
+    for row in await db.select(rows).select_from(Timetable.join(Lessons).join(Groups)).gino.all():
+        yield row.id, list(row)[1:]
+
+
+async def delete_row(row_id: int):
+    print('delete')
+    return await Timetable.delete.where(Timetable.id == row_id).gino.status()

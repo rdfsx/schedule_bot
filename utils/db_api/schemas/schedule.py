@@ -1,9 +1,11 @@
 from sqlalchemy import Column, String, sql, Integer, ForeignKey, SmallInteger, Index
 from sqlalchemy import Enum
 
+from models.lessons import LessonKind
 from models.week import UnderAboveWeek, Week
 from utils.db_api.db_gino import TimedBaseModel, BaseModel
 from utils.db_api.schemas.group import GroupsRelatedModel
+from utils.db_api.schemas.teacher import Teacher
 
 
 class Lessons(TimedBaseModel):
@@ -30,6 +32,8 @@ class Timetable(GroupsRelatedModel, LessonsRelatedModel, TimedBaseModel):
     lesson_num = Column(SmallInteger)
     week = Column(Enum(UnderAboveWeek, native_enum=False), nullable=False)
     subgroup = Column(SmallInteger, nullable=False)
+    lesson_kind = Column(Enum(LessonKind, native_enum=False))
+    teacher = Column(Integer, ForeignKey(f"{Teacher.__tablename__}.id"))
 
     group_idx = Index("group_idx", GroupsRelatedModel.group_id)
 

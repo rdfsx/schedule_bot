@@ -48,7 +48,7 @@ async def count_groups():
     return await db.func.count(Groups.id).gino.scalar()
 
 
-async def update_group(group: str, fuck: Optional[Fuckult], subgroups: Optional[int]):
+async def update_group(group: str, fuck: Fuckult, subgroups: Optional[int]):
     group = await Groups.get(group)
     if group.fuck != fuck or group.subgroups != subgroups:
         group.update(fuck=fuck, subgroups=subgroups).apply()
