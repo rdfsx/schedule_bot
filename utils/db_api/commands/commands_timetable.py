@@ -4,7 +4,7 @@ from aiogram.utils.markdown import hbold
 
 from asyncpg import UniqueViolationError, NotNullViolationError
 
-from sqlalchemy import select
+from sqlalchemy import select, or_
 
 from models.lessons import Lesson, LessonKind
 from models.week import UnderAboveWeek, Week, ThisNextWeek
@@ -49,19 +49,19 @@ async def get_some_day(day: Week, group: int, week: ThisNextWeek, subgroup: int,
         return hbold(f"{initial_message}:\n\nНет пар!")
     message = [hbold(f"{initial_message}:")]
     for lesson in timetable:
-        message.append(Lesson(lesson[0]).do_lesson_str(lesson[1]))
+        message.append(Lesson(lesson[0]).do_lesson_str(lesson[1], lesson[2]))
     return '\n\n'.join(message)
 
 
 async def get_day_raw(day: Week, group: int, subgroup: int, week: ThisNextWeek = ThisNextWeek.this_week):
     week = week.convert_week()
     join = Timetable.join(Lessons)
-    statement = select([Timetable.lesson_num, Lessons.lesson]).select_from(join)
+    statement = select([Timetable.lesson_num, Lessons.lesson, Timetable.lesson_kind]).select_from(join)
     condition = statement \
         .where(Timetable.day_week == day.name) \
-        .where(Timetable.week == week.name) \
+        .where(or_(Timetable.week == week.name, Timetable.week == week.all)) \
         .where(Timetable.group_id == group) \
-        .where(Timetable.subgroup == subgroup)
+        .where(or_(Timetable.subgroup == subgroup, Timetable.subgroup == 0))
     return await condition.order_by(Timetable.lesson_num).gino.all()
 
 
@@ -92,5 +92,4 @@ async def select_all_rows():
 
 
 async def delete_row(row_id: int):
-    print('delete')
     return await Timetable.delete.where(Timetable.id == row_id).gino.status()

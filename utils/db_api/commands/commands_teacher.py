@@ -1,9 +1,8 @@
-import re
-
 from asyncpg import UniqueViolationError
 from sqlalchemy import func, or_
 
-from utils.db_api.schemas.teacher import Teacher, TeacherRating
+from utils.db_api.schemas.teacher import Teacher
+from utils.db_api.schemas.teacher_rating import TeacherRating
 
 
 async def add_teacher(full_name: str):

@@ -5,6 +5,15 @@ from typing import List, Tuple
 from data.convert import lessons_emoji, university_time
 
 
+class LessonKind(Enum):
+    lec = 'лекц.'
+    prac = 'практ.'
+    lab = 'лаб.'
+
+    def to_str(self) -> str:
+        return f"<i>({self.value})</i>"
+
+
 class Lesson(Enum):
     les_1, les_2, les_3, les_4, les_5, les_6, les_7, les_8 = range(1, 9)
 
@@ -18,14 +27,5 @@ class Lesson(Enum):
         time = university_time.get(self.value).replace(" ", "").split('-')
         return [float(time[0]), float(time[1])]
 
-    def do_lesson_str(self, lesson: str) -> str:
-        return f"{self.to_emoji()} {lesson} {self.to_str()}"
-
-
-class LessonKind(Enum):
-    lec = 'лекц.'
-    prac = 'практ.'
-    lab = 'лаб.'
-
-    def to_str(self) -> str:
-        return f"<i>({self.value})</i>"
+    def do_lesson_str(self, lesson: str, lesson_kind: LessonKind) -> str:
+        return f"{self.to_emoji()} {lesson_kind.to_str()} {lesson} {self.to_str()}"

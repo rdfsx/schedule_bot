@@ -12,13 +12,13 @@ from utils.db_api.schemas.group import Groups
 
 async def add_group(group: str, fuck: Fuckult, subgroups: Optional[int] = 1):
     try:
-        group = Groups(group=group, fuck=fuck, subgroups=subgroups)
-        await group.create()
+        new_group = Groups(group=group, fuck=fuck, subgroups=subgroups)
+        await new_group.create()
 
     except UniqueViolationError:
-        group = await Groups.get(group)
+        group = await select_group(group)
         if group.fuck != fuck or group.subgroups != subgroups:
-            group.update(fuck=fuck, subgroups=subgroups).apply()
+            await group.update(fuck=fuck, subgroups=subgroups).apply()
 
 
 async def select_groups_limit(group: str, offset: Optional[int] = 0, limit: Optional[int] = 20):

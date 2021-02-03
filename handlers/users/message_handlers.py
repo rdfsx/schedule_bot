@@ -105,10 +105,12 @@ async def get_now(message: types.Message, user: User):
 
 @dp.message_handler(Text(equals=['еще', 'ещё'], ignore_case=True))
 async def get_more(message: types.Message, user: User):
+    week = ThisNextWeek.this_week.convert_week()
     if not user.group_id:
         txt = ["Выберите действие:"]
     else:
         txt = [
+            f'Сейчас неделя <b>{"над" if week.above else "под"}</b> чертой\n'
             f'Выбранная группа {hbold((await select_group_id(user.group_id)).group)}\n'
             f'Подгруппа: {hbold(user.subgroup)}',
             f'Выберите действие:'

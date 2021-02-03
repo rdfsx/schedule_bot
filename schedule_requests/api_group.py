@@ -1,25 +1,20 @@
-import asyncio
-import collections
-import operator
-import random
+
 import re
-from typing import Optional, List, Any, Coroutine, Union
+from typing import Optional, List
 
 import bs4
-from bs4 import BeautifulSoup, ResultSet
+from bs4 import BeautifulSoup
 
-from data.convert import to_eng, to_rus, university_time, lessons_emoji
+from models.fuckult import Fuckult
 from models.lessons import LessonKind
-from models.week import Week, ThisNextWeek, UnderAboveWeek
+from models.week import Week, UnderAboveWeek
 from schedule_requests.api import API
-from models.schedule import FuckultSchedule, Sem
+from models.schedule import Sem
 
 from datetime import datetime, timedelta
 
-from schedule_requests.test_schr import group_list, groups
-from utils.db_api.commands.commands_timetable import add_lesson, get_day_raw, get_all_schedule, select_all_rows, \
-    delete_row, add_timetable
-from utils.db_api.commands.coomands_group import select_all_groups, add_group, update_group, select_group
+from utils.db_api.commands.commands_timetable import select_all_rows, delete_row, add_timetable
+from utils.db_api.commands.coomands_group import add_group, select_group
 
 
 class APIMethodsGroup:
@@ -81,22 +76,22 @@ class APIMethodsGroup:
             return
         subgroup: int = 0
         lesson_kind: LessonKind = LessonKind.lec
-        if int(element['colspan']) > group_db.subgroups:
-            i = group_db.subgroups
+        colspan = int(element['colspan'])
+        if colspan > group_db.subgroups:
+            i = 0
             j = 0
-            while i <= int(element['colspan']):
+            quantity = 0
+            while i <= colspan:
                 idx = groups_list.index(group) + j
                 if idx > len(groups_list):
                     break
                 gr = groups_list[idx]
                 gr_info = await select_group(gr)
                 i += gr_info.subgroups
-                if i <= int(element['colspan']):
+                if i <= colspan:
                     quantity += 1
                 j += 1
-        elif int(element['colspan']) == 0:
-            lesson_kind = LessonKind.lec
-        elif group_db.subgroups != int(element['colspan']):
+        elif 0 < colspan < group_db.subgroups:
             lesson_kind = LessonKind.lab
             subgroup = 1 if 'pr' in title else 2
         else:
@@ -116,26 +111,29 @@ class APIMethodsGroup:
         return row1 == row2
 
     async def compare_all_groups(self):
-        groups_from_request = group_list  # await self.get_all_groups()
-        actual_groups_timetable = groups  # await self.__get_timetable_html(groups_from_request)
+        groups_from_request = await self.get_all_groups()
+        actual_groups_timetable = await self.__get_timetable_html(groups_from_request)
         db_groups_timetable = select_all_rows()
         soup = BeautifulSoup(actual_groups_timetable, 'html.parser')
         async for db_row in db_groups_timetable:
             have = False
             for td in soup.find_all('td'):
-                print(td)
-                if not td.get_text():
+                text = "".join(td.get_text().split())
+                if not text:
+                    td.decompose()
+                    continue
+                elif text in groups_from_request:
+                    await add_group(text, Fuckult.FAIS, int(td['colspan']))
                     td.decompose()
                     continue
                 request_rows = await self.get_lessons_from_soup(td, groups_from_request)
+                print(td)
                 if not request_rows:
                     td.decompose()
                     continue
-                if db_row[1] in request_rows:
-                    request_rows.remove(db_row[1])
-                    have = True
-                if not request_rows:
+                if db_row[1] in request_rows and request_rows.index(db_row[1])+1 == len(request_rows):
                     td.decompose()
+                    have = True
             if not have:
                 await delete_row(db_row[0])
         for td in soup.find_all('td'):
@@ -144,10 +142,3 @@ class APIMethodsGroup:
                 for row in request_rows:
                     await add_timetable(*row)
                     print(row)
-
-# wtf = ClientGroup("ИС-41")
-
-
-# loop = asyncio.get_event_loop()
-# loop.run_until_complete(wtf.wtf())
-# loop.close()

@@ -77,10 +77,11 @@ async def get_groups(inline_query: InlineQuery):
     if data:
         for group in data:
             results.append(InlineQueryResultArticle(
-                id=str(hashlib.md5(group.group.encode()).hexdigest()),
+                id=str(group.id),
                 title=group.group,
                 input_message_content=InputTextMessageContent(group.group),
-                thumb_url=faculties.get(group.fuck.name)))
+                )
+            )
     else:
         not_found = 'Нет такой группы'
         results = [InlineQueryResultArticle(

@@ -4,7 +4,7 @@ from typing import Optional, List
 
 from bs4 import BeautifulSoup, ResultSet
 
-from data.convert import to_eng, to_rus, university_time, lessons_emoji
+from data.convert import university_time, lessons_emoji
 from models.week import Week, ThisNextWeek
 from schedule_requests.api import API
 from models.schedule import FuckultSchedule, Sem
@@ -105,7 +105,7 @@ class APIMethodsPrepod:
             result.append(f"<b>{Week[lessons_day[0]['day_week']].value.title()} {lessons_day[0]['date']}</b>")
             for les in lessons_day:
                 if les['text']:
-                    result.append(f"{lessons_emoji.get(les['lesson'])}{les['week']} <b>{les['kind_str']}</b> "
+                    result.append(f"{lessons_emoji.get(les['lesson'])}{les['week']} <i>{les['kind_str']}</i> "
                                   f"{les['text']} "
                                   f"<i><u>{university_time.get(les['lesson'])}</u></i>")
                 else:
