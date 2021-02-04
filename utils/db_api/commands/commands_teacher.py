@@ -7,7 +7,7 @@ from utils.db_api.schemas.teacher_rating import TeacherRating
 
 async def add_teacher(full_name: str):
     try:
-        teacher = Teacher(full_name=full_name)
+        teacher = Teacher(full_name=full_name.rstrip())
         await teacher.create()
 
     except UniqueViolationError:

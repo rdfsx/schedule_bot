@@ -1,3 +1,4 @@
+from loguru import logger
 
 import re
 from typing import Optional, List
@@ -5,6 +6,8 @@ from typing import Optional, List
 import bs4
 from bs4 import BeautifulSoup
 
+from config import admins
+from loader import bot
 from models.fuckult import Fuckult
 from models.lessons import LessonKind
 from models.week import Week, UnderAboveWeek
@@ -13,6 +16,7 @@ from models.schedule import Sem
 
 from datetime import datetime, timedelta
 
+from utils.db_api.commands.commands_teacher import select_teacher_by_name, add_teacher
 from utils.db_api.commands.commands_timetable import select_all_rows, delete_row, add_timetable
 from utils.db_api.commands.coomands_group import add_group, select_group
 
@@ -107,14 +111,26 @@ class APIMethodsGroup:
         return result
 
     @staticmethod
-    def compare_rows(row1: list, row2: list) -> bool:
-        return row1 == row2
+    async def is_prepod_in_db(text: str):
+        text = text.replace("\t", "").strip().split("\n")
+        teacher = re.findall(r"[А-ЯЁ][а-яё]+\s+[А-ЯЁ]\.+[А-ЯЁ]\.", text[-1])
+        if teacher:
+            find_row = teacher[0].split(" ")
+            find_teachers = await select_teacher_by_name(find_row[0])
+            for available_teacher in find_teachers:
+                teacher_split = available_teacher.split(' ')
+                teacher_initials = f"{teacher_split[0]} {teacher_split[1]}.{teacher_split[2]}."
+                if teacher_initials == teacher:
+                    return
+        await add_teacher(teacher[0].replace(".", ". "))
 
     async def compare_all_groups(self):
         groups_from_request = await self.get_all_groups()
         actual_groups_timetable = await self.__get_timetable_html(groups_from_request)
         db_groups_timetable = select_all_rows()
         soup = BeautifulSoup(actual_groups_timetable, 'html.parser')
+        logger.info("Starting schedule update.")
+        count_del = 0
         async for db_row in db_groups_timetable:
             have = False
             for td in soup.find_all('td'):
@@ -126,8 +142,8 @@ class APIMethodsGroup:
                     await add_group(text, Fuckult.FAIS, int(td['colspan']))
                     td.decompose()
                     continue
+                await self.is_prepod_in_db(td.get_text())
                 request_rows = await self.get_lessons_from_soup(td, groups_from_request)
-                print(td)
                 if not request_rows:
                     td.decompose()
                     continue
@@ -136,9 +152,14 @@ class APIMethodsGroup:
                     have = True
             if not have:
                 await delete_row(db_row[0])
+                count_del += 1
+        count_add = 0
         for td in soup.find_all('td'):
             request_rows = await self.get_lessons_from_soup(td, groups_from_request)
             if request_rows:
                 for row in request_rows:
                     await add_timetable(*row)
-                    print(row)
+                    count_add += 1
+        logger.info(f"Schedule update. {count_add} rows added, {count_del} rows deleted.")
+        for admin in admins:
+            await bot.send_message(admin, f"Обновление расписания: добавлено {count_add} строк, удалено {count_del}.")

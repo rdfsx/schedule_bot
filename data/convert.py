@@ -75,6 +75,7 @@ GEF = 'https://abiturient.gstu.by/sites/default/files/images/tax-faculties/gef.j
 MTF = 'https://abiturient.gstu.by/sites/default/files/images/tax-faculties/mtf.jpeg'
 EF = 'https://abiturient.gstu.by/sites/default/files/images/tax-faculties/ef.jpeg'
 MSF = 'https://abiturient.gstu.by/sites/default/files/images/tax-faculties/msf.jpeg'
+DEFAULT_PIC = 'https://export.by/images/uploads/2017/02/07/thumb/1000_230/70248-1486471366.jpg'
 
 PREPOD_PIC = 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/237/teacher_1f9d1-200d-1f3eb.png'
 PREPOD_PIC2 = 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/237/teacher-light-skin-tone_1f9d1-1f3fb-200d-1f3eb.png'
