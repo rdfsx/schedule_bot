@@ -27,14 +27,15 @@ class APIMethodsGroup:
 
     async def __get_timetable_html(self, groups: List[str], sem: Optional[Sem] = Sem.get_sem()) -> str:
         date = datetime.today() - timedelta(days=datetime.today().weekday() % 7)
+        groups = "','".join(groups)
         params = {
-            'GRU': "','".join(groups),
+            'GRU': f"'{groups}'",
             'sem': sem.value,
             'Type': 'Print',
             'theDate': date.strftime('%Y-%m-%d'),
             'brouser': 'Opera'
         }
-        return await self.api.request("get/getRaspKaf", params)
+        return await self.api.request("get/getRaspKaf", params, 10)
 
     async def get_all_groups(self) -> list:
         sem = Sem.get_sem()
@@ -113,16 +114,19 @@ class APIMethodsGroup:
     @staticmethod
     async def is_prepod_in_db(text: str):
         text = text.replace("\t", "").strip().split("\n")
-        teacher = re.findall(r"[А-ЯЁ][а-яё]+\s+[А-ЯЁ]\.+[А-ЯЁ]\.", text[-1])
-        if teacher:
-            find_row = teacher[0].split(" ")
+        search_teacher = re.findall(r"[А-ЯЁ][а-яё]+\s+[А-ЯЁ]\.+[А-ЯЁ]\.", text[-1])
+        if search_teacher:
+            teacher = search_teacher[0]
+            find_row = teacher.split(" ")
             find_teachers = await select_teacher_by_name(find_row[0])
             for available_teacher in find_teachers:
-                teacher_split = available_teacher.split(' ')
-                teacher_initials = f"{teacher_split[0]} {teacher_split[1]}.{teacher_split[2]}."
+                teacher_split = available_teacher.full_name.replace(".", "").split(' ')
+                teacher_initials = f"{teacher_split[0]} {teacher_split[1][0]}.{teacher_split[2][0]}."
                 if teacher_initials == teacher:
+                    print('there is')
                     return
-        await add_teacher(teacher[0].replace(".", ". "))
+            print(teacher[0].replace(".", ". "))
+            await add_teacher(teacher[0].replace(".", ". "))
 
     async def compare_all_groups(self):
         groups_from_request = await self.get_all_groups()

@@ -12,6 +12,7 @@ from keyboards.default import menu
 from keyboards.inline.callback_datas import message_for_admin
 from keyboards.inline.inline_buttons import cancel_markup
 from loader import dp, bot
+from schedule_requests.api_group import APIMethodsGroup
 
 from states.admin_state import AnswerAdmin, BroadcastAdmin
 
@@ -81,6 +82,11 @@ async def answer_to_user_msg(message: types.Message, state: FSMContext):
         await message.reply("Сообщение отправлено!")
 
     await state.reset_state()
+
+
+@dp.message_handler(Command('update_schedule'), user_id=admins)
+async def update_schedule():
+    create_task(APIMethodsGroup().compare_all_groups())
 
 
 @dp.message_handler(Command('backup'), user_id=admins)

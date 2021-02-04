@@ -7,7 +7,10 @@ from utils.db_api.schemas.teacher_rating import TeacherRating
 
 async def add_teacher(full_name: str):
     try:
-        teacher = Teacher(full_name=full_name.rstrip())
+        text = full_name.rstrip()
+        if len(text.split(" ")) != 3:
+            return
+        teacher = Teacher(full_name=text)
         await teacher.create()
 
     except UniqueViolationError:
