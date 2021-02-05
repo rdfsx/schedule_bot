@@ -16,6 +16,7 @@ from models.schedule import Sem
 
 from datetime import datetime, timedelta
 
+from utils.admin_tools.admins_notify import notify_admins
 from utils.db_api.commands.commands_teacher import select_teacher_by_name, add_teacher
 from utils.db_api.commands.commands_timetable import select_all_rows, delete_row, add_timetable
 from utils.db_api.commands.coomands_group import add_group, select_group
@@ -37,19 +38,15 @@ class APIMethodsGroup:
         }
         return await self.api.request("get/getRaspKaf", params, 10)
 
-    async def get_all_groups(self) -> list:
+    async def get_all_groups(self) -> BeautifulSoup:
         sem = Sem.get_sem()
         params = {
             'sem': sem.value,
             'brouser': 'Opera'
         }
-        groups = await self.api.request("nazn/select", params)
+        groups = await self.api.request("nazn/getSort", params)
         soup = BeautifulSoup(groups, 'html.parser')
-        groups_list: list = []
-        for li in soup.find_all('li'):
-            text = " ".join(li.get_text().split())
-            groups_list.append(text)
-        return groups_list
+        return soup
 
     @staticmethod
     async def get_lessons_from_soup(element: bs4.element.Tag, groups_list: List[str]):
@@ -128,12 +125,10 @@ class APIMethodsGroup:
             print(teacher[0].replace(".", ". "))
             await add_teacher(teacher[0].replace(".", ". "))
 
-    async def compare_all_groups(self):
-        groups_from_request = await self.get_all_groups()
+    async def __compare_groups(self, groups_from_request: List[str]):
         actual_groups_timetable = await self.__get_timetable_html(groups_from_request)
-        db_groups_timetable = select_all_rows()
+        db_groups_timetable = select_all_rows(groups_from_request)
         soup = BeautifulSoup(actual_groups_timetable, 'html.parser')
-        logger.info("Starting schedule update.")
         count_del = 0
         async for db_row in db_groups_timetable:
             have = False
@@ -164,6 +159,21 @@ class APIMethodsGroup:
                 for row in request_rows:
                     await add_timetable(*row)
                     count_add += 1
-        logger.info(f"Schedule update. {count_add} rows added, {count_del} rows deleted.")
-        for admin in admins:
-            await bot.send_message(admin, f"Обновление расписания: добавлено {count_add} строк, удалено {count_del}.")
+        return count_add, count_del
+
+    async def compare_all_groups(self):
+        sort_groups = await self.get_all_groups()
+        logger.info("Starting schedule update.")
+        for ul in sort_groups.find_all('ul'):
+            groups_category = []
+            for li in ul.find_all('li'):
+                text = " ".join(li.get_text().split())
+                groups_category.append(text)
+            add, delete = await self.__compare_groups(groups_category)
+            logger.info(f"Schedule update. {add} rows added, {delete} rows deleted.")
+            await notify_admins(f"Обновление расписания: добавлено {add} строк, удалено {delete}.")
+        logger.info("Schedule is up-to-date.")
+
+
+
+

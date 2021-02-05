@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from aiogram.utils.markdown import hbold
 
@@ -84,10 +84,15 @@ async def check_existence(day: Week, group: int, week: ThisNextWeek, subgroup: i
     )
 
 
-async def select_all_rows():
+async def select_all_rows(groups: List[str]):
+    groups_id: List[int] = []
+    for group_str in groups:
+        group = await select_group(group_str)
+        groups_id.append(group.id)
     rows = [Timetable.id, Timetable.day_week, Timetable.lesson_num, Timetable.week, Groups.group, Timetable.subgroup,
             Lessons.lesson, Timetable.lesson_kind]
-    for row in await db.select(rows).select_from(Timetable.join(Lessons).join(Groups)).gino.all():
+    stmt = db.select(rows).select_from(Timetable.join(Lessons).join(Groups))
+    for row in await stmt.where(Timetable.group_id.in_(groups_id)).gino.all():
         yield row.id, list(row)[1:]
 
 
