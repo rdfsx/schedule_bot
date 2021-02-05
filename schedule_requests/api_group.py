@@ -6,8 +6,6 @@ from typing import Optional, List
 import bs4
 from bs4 import BeautifulSoup
 
-from config import admins
-from loader import bot
 from models.fuckult import Fuckult
 from models.lessons import LessonKind
 from models.week import Week, UnderAboveWeek
