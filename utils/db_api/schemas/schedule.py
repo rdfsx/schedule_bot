@@ -5,7 +5,7 @@ from models.lessons import LessonKind
 from models.week import UnderAboveWeek, Week
 from utils.db_api.db_gino import TimedBaseModel, BaseModel
 from utils.db_api.schemas.group import GroupsRelatedModel
-from utils.db_api.schemas.teacher import Teacher
+from utils.db_api.schemas.teacher import Teacher, TeacherRelatedModelNotNull
 
 
 class Lessons(TimedBaseModel):
@@ -23,7 +23,7 @@ class LessonsRelatedModel(BaseModel):
                        nullable=False)
 
 
-class Timetable(GroupsRelatedModel, LessonsRelatedModel, TimedBaseModel):
+class Timetable(GroupsRelatedModel, LessonsRelatedModel, TeacherRelatedModelNotNull, TimedBaseModel):
     __tablename__ = 'timetables'
 
     id = Column(Integer, primary_key=True, unique=True)
@@ -33,7 +33,6 @@ class Timetable(GroupsRelatedModel, LessonsRelatedModel, TimedBaseModel):
     week = Column(Enum(UnderAboveWeek, native_enum=False), nullable=False)
     subgroup = Column(SmallInteger, nullable=False)
     lesson_kind = Column(Enum(LessonKind, native_enum=False))
-    teacher = Column(Integer, ForeignKey(f"{Teacher.__tablename__}.id"))
 
     group_idx = Index("group_idx", GroupsRelatedModel.group_id)
 

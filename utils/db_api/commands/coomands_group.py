@@ -16,7 +16,7 @@ async def add_group(group: str, fuck: Fuckult, subgroups: Optional[int] = 1):
         await new_group.create()
 
     except UniqueViolationError:
-        group = await select_group(group)
+        group = await select_group_exact_match(group)
         if group.fuck != fuck or group.subgroups != subgroups:
             await group.update(fuck=fuck, subgroups=subgroups).apply()
 
@@ -38,6 +38,10 @@ async def select_group_id(group_id: int):
 async def select_group(group: str):
     group = re.sub('[ -]', '', group.casefold())
     return await Groups.query.where(func.replace(Groups.group, '-', '').ilike(f"%{group}%")).gino.first()
+
+
+async def select_group_exact_match(group: str):
+    return await Groups.query.where(Groups.group == group).gino.first()
 
 
 async def delete_group(group: str):

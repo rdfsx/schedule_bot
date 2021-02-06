@@ -1,6 +1,6 @@
 from enum import Enum
 
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 from data.convert import lessons_emoji, university_time
 
@@ -20,12 +20,14 @@ class Lesson(Enum):
     def to_emoji(self) -> str:
         return lessons_emoji.get(self.value)
 
-    def to_str(self) -> str:
+    def to_time(self) -> str:
         return f"<i><u>{university_time.get(self.value)}</u></i>"
 
     def to_float_list(self) -> List[float]:
         time = university_time.get(self.value).replace(" ", "").split('-')
         return [float(time[0]), float(time[1])]
 
-    def do_lesson_str(self, lesson: str, lesson_kind: LessonKind) -> str:
-        return f"{self.to_emoji()} {lesson_kind.to_str()} {lesson} {self.to_str()}"
+    def do_lesson_str(self, lesson: str, lesson_kind: LessonKind, teacher: str) -> str:
+        if not teacher:
+            teacher = ''
+        return f"{self.to_emoji()} {lesson_kind.to_str()} {lesson} <code>{teacher}</code> {self.to_time()}"

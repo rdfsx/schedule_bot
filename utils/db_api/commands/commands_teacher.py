@@ -5,13 +5,15 @@ from utils.db_api.schemas.teacher import Teacher
 from utils.db_api.schemas.teacher_rating import TeacherRating
 
 
-async def add_teacher(full_name: str):
+async def add_teacher(full_name: str) -> int:
     try:
-        text = full_name.rstrip()
+        text = ' '.join(full_name.rstrip().split())
         if len(text.split(" ")) != 3:
-            return
+            print(text)
+            raise ValueError("The number of words must be divisible by 3!")
         teacher = Teacher(full_name=text)
         await teacher.create()
+        return teacher.id
 
     except UniqueViolationError:
         pass

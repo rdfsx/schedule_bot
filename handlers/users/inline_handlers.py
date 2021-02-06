@@ -3,24 +3,21 @@ import random
 
 from aiogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessageContent, CallbackQuery
 from aiogram.utils.markdown import hbold, hitalic
-from aiohttp import ClientConnectorError
 
-from data.convert import faculties, ERROR, PREPODS, sticker
-from keyboards.default import menu
+from data.convert import ERROR, PREPODS, sticker
 
 from keyboards.inline.callback_datas import day_week_inline, teacher_inline, delete_teacher_rating, other_week_inline, \
     teacher_schedule
-from keyboards.inline.inline_buttons import check_week, get_rating_kb, get_group_buttons, search_kb
+from keyboards.inline.inline_buttons import check_week, get_rating_kb, get_group_buttons, search_kb, teacher_schedule_kb
 
-from loader import dp, bot
+from loader import dp
 from models.week import Week, ThisNextWeek
-from schedule_requests.api_prepod import APIMethodsPrepod
 from states import States
 
 from utils.db_api.commands.commands_teacher import select_all_teachers, set_rating, select_teacher_id, delete_rating
 from utils.db_api.commands.coomands_group import select_groups_limit, select_group_id
 from utils.db_api.schemas.user import User
-from utils.db_api.commands.commands_timetable import get_some_day
+from utils.db_api.commands.commands_timetable import get_some_day, select_rows_by_teacher
 
 
 @dp.callback_query_handler(day_week_inline.filter())
@@ -121,7 +118,7 @@ async def set_rating_teacher(call: CallbackQuery, user: User, callback_data: dic
     rate = round(teacher.rating / teacher.count, 1)
     txt.append(hitalic(f"Вы поставили {rating}\nРейтинг: {rate}/5, количество оценок: {teacher.count}"))
     await call.answer('Рейтинг обновлён.')
-    await call.message.edit_text(('\n\n'.join(txt)), reply_markup=(get_rating_kb(teacher.id, user.id, True)))
+    await call.message.edit_text('\n\n'.join(txt), reply_markup=get_rating_kb(teacher.id, user.id, True))
 
 
 @dp.callback_query_handler(delete_teacher_rating.filter())
@@ -136,32 +133,19 @@ async def delete_teacher_rating_func(call: CallbackQuery, user: User, callback_d
         rate = round(teacher.rating / teacher.count, 1)
         txt.append(f"Вы отменили оценку.\nРейтинг: {rate}/5, количество оценок: {teacher.count}")
     await call.answer('Рейтинг обновлён.')
-    await call.message.edit_text(('\n'.join(txt)), reply_markup=(get_rating_kb(teacher.id, user.id, False)))
+    await call.message.edit_text('\n'.join(txt), reply_markup=get_rating_kb(teacher.id, user.id, False))
 
 
 @dp.callback_query_handler(teacher_schedule.filter())
 async def get_teacher_schedule(call: CallbackQuery, callback_data: dict):
-    await bot.send_chat_action(call.from_user.id, "typing")
     teacher_id = callback_data.get('teacher_id')
+    week = ThisNextWeek[callback_data.get('this_or_next')]
+    week_text = 'следующей' if week == ThisNextWeek.next_week else 'этой'
     teacher = await select_teacher_id(int(teacher_id))
-    teacher_list = teacher.full_name.split(" ")
-    teacher_initials = f"{teacher_list[0]} {teacher_list[1][0]}.{teacher_list[2][0]}."
-    try:
-        schedule = await APIMethodsPrepod(teacher_initials).get_prep_schedule()
-    except ClientConnectorError:
-        await call.answer()
-        return await call.message.answer(f"<b>{teacher.full_name}</b>\n\n"
-                                         f"Похоже, что университетский сервер с расписанием не работает️.\n"
-                                         f"Либо сотрудники отдела автоматизированных систем снова обиделись и "
-                                         f"внесли ip-адрес бота в чёрный список🤷‍♂",
-                                         reply_markup=menu)
-    txt = [hbold(f"{teacher.full_name}")]
-    if schedule:
-        txt += schedule
-    else:
-        txt.append("Похоже, что в ближайшую неделю у этого преподавателя не будет занятий.")
+    teacher_name = teacher.full_name
+    text = await select_rows_by_teacher(int(teacher_id), f'{teacher_name} на {week_text} неделе', week)
     await call.answer()
-    await call.message.answer("\n\n".join(txt), reply_markup=menu)
+    await call.message.answer("\n\n".join(text), reply_markup=teacher_schedule_kb(week, teacher_id))
 
 
 @dp.callback_query_handler(text='sticker')
