@@ -56,7 +56,7 @@ async def get_all_groups(inline_query: InlineQuery):
 async def check_group(message: types.Message, state: FSMContext):
     group = await select_group(message.text)
     if group.subgroups == 1:
-        await add_user(user_id=message.from_user.id, group=group.group)
+        await update_user_group(user_id=message.from_user.id, group=group.group)
         await state.reset_state()
         return await message.answer(hello_message, reply_markup=menu, disable_web_page_preview=True)
     await States.SUBGROUP.set()
