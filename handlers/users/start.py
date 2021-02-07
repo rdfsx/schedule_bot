@@ -15,8 +15,8 @@ from keyboards.inline import search_kb
 from loader import dp
 from states import States
 
-from utils.db_api.commands.commands_user import add_user
-from utils.db_api.commands.coomands_group import select_all_groups, select_group, select_group_id
+from utils.db_api.commands.commands_user import add_user, update_user_group
+from utils.db_api.commands.coomands_group import select_groups_limit, select_group, select_group_id
 
 
 @dp.message_handler(CommandStart())
@@ -32,14 +32,13 @@ async def get_all_groups(inline_query: InlineQuery):
     limit = 20
     offset = 0 if inline_query.offset == '' else int(inline_query.offset)
     results = []
-    data = await select_all_groups(inline_query.query, offset, limit)
+    data = await select_groups_limit(inline_query.query, offset, limit)
     if data:
         for group in data:
             results.append(InlineQueryResultArticle(
-                id=str(hashlib.md5(group.group.encode()).hexdigest()),
+                id=str(group.id),
                 title=group.group,
-                input_message_content=(InputTextMessageContent(group.group)),
-                thumb_url=faculties.get(group.fuck.name))
+                input_message_content=(InputTextMessageContent(group.group)),)
             )
     else:
         not_found = 'Нет такой группы'
@@ -57,7 +56,7 @@ async def get_all_groups(inline_query: InlineQuery):
 async def check_group(message: types.Message, state: FSMContext):
     group = await select_group(message.text)
     if group.subgroups == 1:
-        await add_user(user_id=message.from_user.id, group=group.group)
+        await update_user_group(user_id=message.from_user.id, group=group.group)
         await state.reset_state()
         return await message.answer(hello_message, reply_markup=menu, disable_web_page_preview=True)
     await States.SUBGROUP.set()
@@ -76,6 +75,6 @@ async def final(message: types.Message, state: FSMContext):
     group = await select_group_id(int(data.get('group')))
     if not message.text.isdigit() or int(message.text) > group.subgroups:
         return await message.answer('Выберите свою подгруппу:', reply_markup=subgroup_menu(group.subgroups))
-    await add_user(user_id=message.from_user.id, group=group.group, subgroup=int(message.text))
+    await update_user_group(user_id=message.from_user.id, group=group.group, subgroup=int(message.text))
     await state.reset_state()
     await message.answer(hello_message, reply_markup=menu, disable_web_page_preview=True)

@@ -8,7 +8,7 @@ from models.week import ThisNextWeek, Week
 kb_more = InlineKeyboardMarkup(
     inline_keyboard=[
         [InlineKeyboardButton(text='Сброс настроек', callback_data='reset')],
-        [InlineKeyboardButton(text='Стикер с расписанием звонков', callback_data='sticker')],
+        # [InlineKeyboardButton(text='Стикер с расписанием звонков', callback_data='sticker')],
         [InlineKeyboardButton(text='Рейтинг преподавателей', switch_inline_query_current_chat='#p ')],
         [InlineKeyboardButton(text='Чужое расписание', switch_inline_query_current_chat='')]
     ])
@@ -49,7 +49,7 @@ def get_rating_kb(teacher_id: str, user_id: str, rating_exist: bool = False) -> 
             buttons,
             [InlineKeyboardButton(
                 text='Расписание преподавателя',
-                callback_data=teacher_schedule.new(teacher_id=teacher_id))],
+                callback_data=teacher_schedule.new(teacher_id=teacher_id, this_or_next=ThisNextWeek.this_week.name))],
             [InlineKeyboardButton('Рейтинг преподавателей', switch_inline_query_current_chat='#p ')]
         ]
     )
@@ -89,3 +89,18 @@ def check_week(week: ThisNextWeek, day: Week) -> InlineKeyboardMarkup:
                 this_or_next=week.next().name)
         )]
     ])
+
+
+def teacher_schedule_kb(week: ThisNextWeek, teacher_id: int) -> InlineKeyboardMarkup:
+    week_text = 'Следующая' if week == week.this_week else 'Текущая'
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(
+                text=f"{week_text} неделя",
+                callback_data=teacher_schedule.new(
+                    teacher_id=teacher_id,
+                    this_or_next=week.next().name)
+            )
+        ]
+    ]
+    )

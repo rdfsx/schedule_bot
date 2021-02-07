@@ -1,17 +1,25 @@
-import re
-
 from asyncpg import UniqueViolationError
 from sqlalchemy import func, or_
 
-from utils.db_api.schemas.teacher import Teacher, TeacherRating
+from utils.db_api.schemas.teacher import Teacher
+from utils.db_api.schemas.teacher_rating import TeacherRating
 
 
-async def add_teacher(full_name: str):
+async def add_teacher(full_name: str) -> int:
     try:
-        teacher = Teacher(full_name=full_name)
+        text = ' '.join(full_name.rstrip().split())
+        if len(text.split(" ")) != 3:
+            raise ValueError("The number of words must be divisible by 3!")
+        teacher = await Teacher.query.where(Teacher.full_name == full_name).gino.first()
+        if teacher:
+            return teacher.id
+        teacher = Teacher(full_name=text)
         await teacher.create()
+        return teacher.id
 
     except UniqueViolationError:
+        pass
+    except ValueError:
         pass
 
 

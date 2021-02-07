@@ -8,7 +8,7 @@ from aiogram.utils.markdown import hbold, hitalic
 from config import admins
 from data.convert import to_rus
 from data.messages import base_message
-from filters import DayFilter, GroupFilter, TeacherFilter
+from filters import DayFilter, GroupFilter, TeacherFilter, RegisterFilter
 
 from keyboards.default import menu
 from keyboards.inline.callback_datas import message_for_admin
@@ -22,6 +22,45 @@ from utils.db_api.commands.commands_teacher import select_teacher_by_name, get_r
 from utils.db_api.commands.coomands_group import select_group, select_group_id
 from utils.db_api.schemas.user import User
 from utils.db_api.commands.commands_timetable import get_some_day, check_existence, get_day_raw
+
+
+@dp.message_handler(TeacherFilter())
+async def get_teacher(message: types.Message, user: User):
+    teachers = await select_teacher_by_name(message.text)
+    for teacher in teachers:
+        txt = [
+            hbold(f"{teacher.full_name}\n")]
+        rating = await get_rating(teacher.id, user.id)
+        if teacher.count == 0:
+            txt.append(hitalic('Пока нет оценок. Вы можете быть первым!'))
+        else:
+            if rating:
+                txt.append(hitalic(f"Вы поставили {rating.rate}"))
+            rate = round(teacher.rating / teacher.count, 1)
+            txt.append(hitalic(f"Рейтинг: {rate}/5, количество оценок: {teacher.count}"))
+        await message.answer('\n'.join(txt), reply_markup=get_rating_kb(teacher.id, user.id, True if rating else False))
+
+
+@dp.message_handler(GroupFilter())
+async def get_other_group(message: types.Message):
+    week = ThisNextWeek.this_week
+    group = await select_group(message.text)
+    day = Week.monday
+    result_message = [hbold(f"{day.value.title()} на этой неделе у группы {group.group}")]
+    for i in range(1, group.subgroups + 1):
+        initial_message = f"{i} подгруппа"
+        result_subgroup = await get_some_day(day, group.id, week, i, initial_message)
+        result_message.append(result_subgroup)
+    await message.answer('\n\n'.join(result_message), reply_markup=get_group_buttons(week, group.id, day))
+
+
+@dp.message_handler(RegisterFilter())
+async def is_registered(message: types.Message):
+    text = [
+        "Вы не выбрали группу.",
+        "Нажмите /start или /reset чтобы иметь возможность просматривать расписание.",
+    ]
+    await message.answer("\n".join(text))
 
 
 @dp.message_handler(Text(equals=['сегодня', 'завтра'], ignore_case=True))
@@ -105,45 +144,17 @@ async def get_now(message: types.Message, user: User):
 
 @dp.message_handler(Text(equals=['еще', 'ещё'], ignore_case=True))
 async def get_more(message: types.Message, user: User):
+    week = ThisNextWeek.this_week.convert_week()
     if not user.group_id:
         txt = ["Выберите действие:"]
     else:
         txt = [
+            f'Сейчас неделя <b>{"над" if week.above else "под"}</b> чертой\n'
             f'Выбранная группа {hbold((await select_group_id(user.group_id)).group)}\n'
             f'Подгруппа: {hbold(user.subgroup)}',
             f'Выберите действие:'
         ]
     await message.answer('\n'.join(txt), reply_markup=kb_more)
-
-
-@dp.message_handler(TeacherFilter())
-async def get_teacher(message: types.Message, user: User):
-    teachers = await select_teacher_by_name(message.text)
-    for teacher in teachers:
-        txt = [
-            hbold(f"{teacher.full_name}\n")]
-        rating = await get_rating(teacher.id, user.id)
-        if teacher.count == 0:
-            txt.append(hitalic('Пока нет оценок. Вы можете быть первым!'))
-        else:
-            if rating:
-                txt.append(hitalic(f"Вы поставили {rating.rate}"))
-            rate = round(teacher.rating / teacher.count, 1)
-            txt.append(hitalic(f"Рейтинг: {rate}/5, количество оценок: {teacher.count}"))
-        await message.answer('\n'.join(txt), reply_markup=get_rating_kb(teacher.id, user.id, True if rating else False))
-
-
-@dp.message_handler(GroupFilter())
-async def get_other_group(message: types.Message):
-    week = ThisNextWeek.this_week
-    group = await select_group(message.text)
-    day = Week.monday
-    result_message = [hbold(f"{day.value.title()} на этой неделе у группы {group.group}")]
-    for i in range(1, group.subgroups + 1):
-        initial_message = f"{i} подгруппа"
-        result_subgroup = await get_some_day(day, group.id, week, i, initial_message)
-        result_message.append(result_subgroup)
-    await message.answer('\n\n'.join(result_message), reply_markup=get_group_buttons(week, group.id, day))
 
 
 @dp.message_handler()
@@ -161,7 +172,7 @@ async def hot_handled(message: types.Message):
     ])
     for admin in admins:
         txt = [
-            f'Сообщение от пользователя:',
+            f'#message',
             f'Имя: <a href="tg://user?id={message.from_user.id}">{message.from_user.full_name}</a>',
             f"username: @{message.from_user.username}",
             "",

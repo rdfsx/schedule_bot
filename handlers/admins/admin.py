@@ -12,6 +12,7 @@ from keyboards.default import menu
 from keyboards.inline.callback_datas import message_for_admin
 from keyboards.inline.inline_buttons import cancel_markup
 from loader import dp, bot
+from schedule_requests.api_group import APIMethodsGroup
 
 from states.admin_state import AnswerAdmin, BroadcastAdmin
 
@@ -42,7 +43,7 @@ async def cancel_broadcast(call: CallbackQuery, state: FSMContext):
 @dp.message_handler(state=BroadcastAdmin.BROADCAST, user_id=admins)
 async def broadcast_to_users(message: types.Message, state: FSMContext):
     users = await select_all_users()
-    create_task(broadcaster(users, message.text))
+    create_task(broadcaster(users, message.html_text))
     await state.reset_state()
     txt = [
         'Сообщение рассылается пользователям.',
@@ -81,6 +82,12 @@ async def answer_to_user_msg(message: types.Message, state: FSMContext):
         await message.reply("Сообщение отправлено!")
 
     await state.reset_state()
+
+
+@dp.message_handler(Command('update_schedule'), user_id=admins)
+async def update_schedule(message: types.Message):
+    await message.answer("Начинаем обновлять расписание...")
+    create_task(APIMethodsGroup().compare_all_groups())
 
 
 @dp.message_handler(Command('backup'), user_id=admins)

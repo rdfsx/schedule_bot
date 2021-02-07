@@ -1,3 +1,4 @@
+from datetime import datetime
 from enum import Enum
 
 
@@ -15,3 +16,12 @@ class Sem(Enum):
 
     def next(self):
         return self.summer if self == self.winter else self.winter
+
+    @staticmethod
+    def get_sem():
+        date = datetime.today()
+        if datetime(month=1, day=24, year=date.year) <= date < datetime(month=6, day=30, year=date.year):
+            sem = Sem.summer
+        else:
+            sem = Sem.winter
+        return sem
