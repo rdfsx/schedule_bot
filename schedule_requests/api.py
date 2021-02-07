@@ -1,6 +1,7 @@
 from typing import Optional, Any, Dict
 
 import aiohttp
+from aiohttp import ClientConnectorError
 
 from loguru import logger
 
@@ -26,6 +27,6 @@ class API:
             async with aiohttp.ClientSession(timeout=timeout) as session:
                 async with session.get(url, params=params, headers=headers, timeout=timeout) as response:
                     return await response.text()
-        except UnicodeDecodeError:
+        except ClientConnectorError:
             logger.info(f"Request: Unicode error at {method} method")
             await notify_admins(f"Request: ошибка в методе {method}")
