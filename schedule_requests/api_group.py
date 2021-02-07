@@ -130,6 +130,8 @@ class APIMethodsGroup:
 
     async def __compare_groups(self, groups_from_request: List[str]):
         actual_groups_timetable = await self.__get_timetable_html(groups_from_request)
+        if not actual_groups_timetable:
+            return -1, -1
         db_groups_timetable = select_all_rows(groups_from_request)
         soup = BeautifulSoup(actual_groups_timetable, 'html.parser')
         count_del = 0
@@ -173,9 +175,12 @@ class APIMethodsGroup:
                 text = " ".join(li.get_text().split())
                 groups_category.append(text)
             add, delete = await self.__compare_groups(groups_category)
+            if add == -1:
+                logger.error("Schedule not updated.")
+                return await notify_admins("Обновление расписания закончилось с ошибкой -1.")
             logger.info(f"Schedule update. {', '.join(groups_category)}: {add} rows added, {delete} rows deleted.")
             await notify_admins(f"Обновление расписания {', '.join(groups_category)}: добавлено {add} строк, "
                                 f"удалено {delete}. Сплю 23-38 секунд.")
-            await asyncio.sleep(random.randint(5, 13))
+            await asyncio.sleep(random.randint(23, 38))
         logger.info("Schedule is up-to-date.")
         await notify_admins("Расписание обновлено.")
