@@ -1,5 +1,3 @@
-import asyncio
-
 from utils.db_api import db_gino
 from utils.misc.apscheduler_jobs import schedule_jobs
 from utils.set_bot_commands import set_default_commands
