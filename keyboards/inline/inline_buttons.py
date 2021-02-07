@@ -8,7 +8,7 @@ from models.week import ThisNextWeek, Week
 kb_more = InlineKeyboardMarkup(
     inline_keyboard=[
         [InlineKeyboardButton(text='Сброс настроек', callback_data='reset')],
-        [InlineKeyboardButton(text='Стикер с расписанием звонков', callback_data='sticker')],
+        # [InlineKeyboardButton(text='Стикер с расписанием звонков', callback_data='sticker')],
         [InlineKeyboardButton(text='Рейтинг преподавателей', switch_inline_query_current_chat='#p ')],
         [InlineKeyboardButton(text='Чужое расписание', switch_inline_query_current_chat='')]
     ])

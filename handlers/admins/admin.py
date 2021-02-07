@@ -43,7 +43,7 @@ async def cancel_broadcast(call: CallbackQuery, state: FSMContext):
 @dp.message_handler(state=BroadcastAdmin.BROADCAST, user_id=admins)
 async def broadcast_to_users(message: types.Message, state: FSMContext):
     users = await select_all_users()
-    create_task(broadcaster(users, message.text))
+    create_task(broadcaster(users, message.html_text))
     await state.reset_state()
     txt = [
         'Сообщение рассылается пользователям.',
@@ -85,7 +85,8 @@ async def answer_to_user_msg(message: types.Message, state: FSMContext):
 
 
 @dp.message_handler(Command('update_schedule'), user_id=admins)
-async def update_schedule():
+async def update_schedule(message: types.Message):
+    await message.answer("Начинаем обновлять расписание...")
     create_task(APIMethodsGroup().compare_all_groups())
 
 

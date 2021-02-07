@@ -18,7 +18,7 @@ async def notify_new_user(dp: Dispatcher, user_id: int, group: str) -> None:
     user = await dp.bot.get_chat(chat_id=user_id)
     pics = await dp.bot.get_user_profile_photos(user_id)
     txt = [
-        "Новый пользователь!",
+        "#new_user",
         f"Имя: {user.full_name}",
         f'id: <a href="tg://user?id={user.id}">{user_id}</a>',
         f"Группа: {group}",

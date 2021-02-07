@@ -17,7 +17,6 @@ from models.schedule import Sem
 
 from datetime import datetime, timedelta
 
-from schedule_requests.fuuuck import fuck_timetable
 from utils.admin_tools.admins_notify import notify_admins
 from utils.db_api.commands.commands_teacher import select_teacher_by_name, add_teacher
 from utils.db_api.commands.commands_timetable import select_all_rows, delete_row, add_timetable
@@ -125,7 +124,7 @@ class APIMethodsGroup:
             for available_teacher in find_teachers:
                 teacher_split = available_teacher.full_name.replace(".", "").split(' ')
                 teacher_initials = f"{teacher_split[0]} {teacher_split[1][0]}.{teacher_split[2][0]}."
-                if teacher_initials == teacher:
+                if teacher_initials.replace(" ", '') == teacher.replace(" ", ''):
                     return available_teacher.id
             return await add_teacher(teacher.replace(".", ". "))
 
@@ -167,6 +166,7 @@ class APIMethodsGroup:
     async def compare_all_groups(self):
         sort_groups = await self.get_all_groups()
         logger.info("Starting schedule update.")
+        await asyncio.sleep(random.randint(5, 17))
         for ul in sort_groups.find_all('ul'):
             groups_category = []
             for li in ul.find_all('li'):
@@ -175,7 +175,7 @@ class APIMethodsGroup:
             add, delete = await self.__compare_groups(groups_category)
             logger.info(f"Schedule update. {', '.join(groups_category)}: {add} rows added, {delete} rows deleted.")
             await notify_admins(f"Обновление расписания {', '.join(groups_category)}: добавлено {add} строк, "
-                                f"удалено {delete}.")
+                                f"удалено {delete}. Сплю 23-38 секунд.")
             await asyncio.sleep(random.randint(5, 13))
         logger.info("Schedule is up-to-date.")
         await notify_admins("Расписание обновлено.")

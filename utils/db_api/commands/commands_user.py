@@ -12,12 +12,14 @@ from utils.notify_admins import notify_new_user
 
 async def add_user(user_id: int, group: Optional[str] = None, subgroup: Optional[int] = 1):
     group_id = await Groups.select('id').where(Groups.group == group).gino.scalar()
+    user = await User.get(user_id)
+    if user:
+        return
     try:
         user = User(id=user_id, group_id=group_id, subgroup=subgroup)
         await user.create()
 
     except UniqueViolationError:
-        user = await User.get(user_id)
         if not user.group_id and group is not None:
             await notify_new_user(dp, user_id, group)
         await user.update(group_id=group_id, subgroup=subgroup).apply()
@@ -37,6 +39,7 @@ async def count_users():
 
 async def update_user_group(user_id: int, group: str, subgroup: int = 1):
     user = await User.get(user_id)
-    if not user.group_id and group is not None:
+    group_id = await Groups.select('id').where(Groups.group == group).gino.scalar()
+    if not user.group_id:
         await notify_new_user(dp, user_id, group)
-        await user.update(group=group, subgroup=subgroup).apply()
+    await user.update(group_id=group_id, subgroup=subgroup).apply()

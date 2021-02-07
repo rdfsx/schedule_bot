@@ -20,6 +20,6 @@ class TeacherRelatedModel(BaseModel):
                         nullable=False)
 
 
-class TeacherRelatedModelNotNull(BaseModel):
+class TeacherRelatedModelNull(BaseModel):
     __abstract__ = True
     teacher_id = Column(ForeignKey(f"{Teacher.__tablename__}.id", ondelete='CASCADE', onupdate='CASCADE'))
