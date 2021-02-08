@@ -37,6 +37,7 @@ services:
       REDIS_HOST: redis
       POSTGRES_HOST: db
       RUN_MIGRATIONS: 'true'
+      TZ: "Europe/Minsk"
     depends_on:
       - db
       - redis
