@@ -112,7 +112,7 @@ async def get_now(message: types.Message, user: User):
     if now < Lesson(schedule[0][0]).to_float_list()[0]:
         return await message.answer(
             hbold('Следующим:\n\n') +
-            Lesson(schedule[0][0]).do_lesson_str(schedule[0][1]),
+            Lesson(schedule[0][0]).do_lesson_str(schedule[0][1], schedule[0][2], schedule[0][3]),
             reply_markup=menu
         )
     for num, lesson in enumerate(schedule):
@@ -123,12 +123,12 @@ async def get_now(message: types.Message, user: User):
         begin = time_tuple[0]
         end = time_tuple[1]
         if begin <= now <= end:
-            now_lesson = Lesson(lesson[0]).do_lesson_str(lesson[1])
+            now_lesson = Lesson(lesson[0]).do_lesson_str(lesson[1], lesson[2], lesson[3])
             num += 1
         elif now < begin:
             now_lesson = "Премена"
         if num < len(schedule) and now_lesson:
-            next_lesson = Lesson(schedule[num][0]).do_lesson_str(schedule[num][1])
+            next_lesson = Lesson(schedule[num][0]).do_lesson_str(schedule[num][1], schedule[num][2], schedule[num][3])
             break
         elif now_lesson:
             next_lesson = "Сегодня больше не будет пар!"
