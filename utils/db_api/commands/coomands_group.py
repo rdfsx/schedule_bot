@@ -23,7 +23,7 @@ async def add_group(group: str, fuck: Fuckult, subgroups: Optional[int] = 1):
 
 async def select_groups_limit(group: str, offset: Optional[int] = 0, limit: Optional[int] = 20):
     group = re.sub('[ -]', '', group.casefold())
-    return await Groups.query.where(func.replace(Groups.group, '-', '').ilike(f"%{group}%"))\
+    return await Groups.query.where(func.replace(Groups.group, '-', '').ilike(f"{group}%"))\
         .order_by(Groups.id).limit(limit).offset(offset).gino.all()
 
 
@@ -37,7 +37,7 @@ async def select_group_id(group_id: int):
 
 async def select_group(group: str):
     group = re.sub('[ -]', '', group.casefold())
-    return await Groups.query.where(func.replace(Groups.group, '-', '').ilike(f"%{group}%")).gino.first()
+    return await Groups.query.where(func.replace(Groups.group, '-', '').ilike(f"{group}%")).gino.first()
 
 
 async def select_group_exact_match(group: str):
