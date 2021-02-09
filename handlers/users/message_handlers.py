@@ -149,7 +149,7 @@ async def get_more(message: types.Message, user: User):
         txt = ["Выберите действие:"]
     else:
         txt = [
-            f'Сейчас неделя <b>{"над" if week.above else "под"}</b> чертой\n'
+            f'Сейчас неделя <b>{"над" if week == week.under else "под"}</b> чертой\n'
             f'Выбранная группа {hbold((await select_group_id(user.group_id)).group)}\n'
             f'Подгруппа: {hbold(user.subgroup)}',
             f'Выберите действие:'
