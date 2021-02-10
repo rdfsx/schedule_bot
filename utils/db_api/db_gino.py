@@ -1,4 +1,5 @@
 from typing import List
+from loguru import logger
 
 from aiogram import Dispatcher
 from gino import Gino
@@ -38,5 +39,5 @@ class TimedBaseModel(BaseModel):
 
 
 async def on_startup(dispatcher: Dispatcher):
-    print("Установка связи с PostgreSQL")
+    logger.info("Установка связи с PostgreSQL")
     await db.set_bind(config.POSTGRES_URI)

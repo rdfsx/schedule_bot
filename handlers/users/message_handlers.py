@@ -158,7 +158,7 @@ async def get_more(message: types.Message, user: User):
 
 
 @dp.message_handler()
-async def hot_handled(message: types.Message):
+async def hot_handled(message: types.Message, user: User):
     markup = InlineKeyboardMarkup(inline_keyboard=[
         [
             InlineKeyboardButton(
@@ -173,10 +173,10 @@ async def hot_handled(message: types.Message):
     for admin in admins:
         txt = [
             f'#message',
+            f'Группа: {(await select_group_id(user.group_id)).group}',
             f'Имя: <a href="tg://user?id={message.from_user.id}">{message.from_user.full_name}</a>',
             f"username: @{message.from_user.username}",
             "",
-            "Текст:",
             message.text,
         ]
         await bot.send_message(admin, '\n'.join(txt), reply_markup=markup)
