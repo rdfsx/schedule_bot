@@ -17,13 +17,19 @@ from schedule_requests.api_group import APIMethodsGroup
 from states.admin_state import AnswerAdmin, BroadcastAdmin
 
 from utils.admin_tools.broadcast import broadcaster
-from utils.db_api.commands.commands_user import select_all_users, count_users
+from utils.db_api.commands.commands_user import select_all_users, count_users, count_users_with_group
 
 
 @dp.message_handler(Command('count'), user_id=admins)
 async def get_count_users(message: types.Message):
     count = await count_users()
     await message.answer(f"Количество пользователей в базе: {count}")
+
+
+@dp.message_handler(Command('group_count'), user_id=admins)
+async def get_count_users_with_group(message: types.Message):
+    count = await count_users_with_group()
+    await message.answer(f"Количество пользователей, выбравших группу: {count}")
 
 
 @dp.message_handler(Command('broadcast'), user_id=admins)

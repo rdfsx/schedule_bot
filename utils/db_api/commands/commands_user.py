@@ -37,6 +37,10 @@ async def count_users():
     return await db.func.count(User.id).gino.scalar()
 
 
+async def count_users_with_group():
+    return await db.func.count(User.id).filter(Groups.group.isnot(None)).gino.scalar()
+
+
 async def update_user_group(user_id: int, group: str, subgroup: int = 1):
     user = await User.get(user_id)
     group_id = await Groups.select('id').where(Groups.group == group).gino.scalar()
