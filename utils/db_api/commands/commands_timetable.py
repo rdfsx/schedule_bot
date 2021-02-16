@@ -120,7 +120,7 @@ async def select_rows_by_teacher(teacher_id: int, initial_message: str, week: Th
                 if lessons_num:
                     groups = [list_[3] for list_ in lessons_num]
                     lesson = Lesson(lessons_num[0][0])
-                    result.append(f"{lesson.to_emoji()} <i><u>{lessons_num[0][2].value}</u></i> "
+                    result.append(f"{lesson.to_emoji()} <i>({lessons_num[0][2].value})</i> "
                                   f"{lessons_num[0][1]} <code>{teacher_initials}</code> <b>{', '.join(groups)}</b> "
                                   f"{lesson.to_time()}")
     return result
