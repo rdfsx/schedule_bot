@@ -1,8 +1,6 @@
-from itertools import count
 from typing import Optional
 
 from asyncpg import UniqueViolationError
-from sqlalchemy import func
 
 from loader import dp
 
