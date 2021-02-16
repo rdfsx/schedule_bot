@@ -1,6 +1,8 @@
+from itertools import count
 from typing import Optional
 
 from asyncpg import UniqueViolationError
+from sqlalchemy import func
 
 from loader import dp
 
@@ -38,7 +40,7 @@ async def count_users():
 
 
 async def count_users_with_group():
-    return await db.func.count(User.id).filter(Groups.group.isnot(None)).gino.scalar()
+    return await db.func.count(User.group_id).gino.scalar()
 
 
 async def update_user_group(user_id: int, group: str, subgroup: int = 1):

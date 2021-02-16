@@ -59,7 +59,7 @@ lessons_emoji = {
     8: '8️⃣'
 }
 
-sticker = 'CAADAgADAwAD_RDZHHMtrppgZOhvFgQ'
+sticker = 'CAACAgIAAxkBAAIWeGArd5tiyK_trkbYl0HDlEVd8SPOAAIvAQACbdh8FFaU7sVczbs6HgQ'
 
 faculties = {
     'FAIS': 'https://abiturient.gstu.by/sites/default/files/images/tax-faculties/fais.jpeg',
