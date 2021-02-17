@@ -2,11 +2,8 @@ from typing import Optional, Any, Dict
 
 import aiohttp
 from aiohttp import ClientConnectorError
-
 from loguru import logger
 
-from config import admins
-from loader import bot
 from utils.admin_tools.admins_notify import notify_admins
 
 DEFAULT_DB_URL = "http://rasp.gstu.by/rasp_df/db/"

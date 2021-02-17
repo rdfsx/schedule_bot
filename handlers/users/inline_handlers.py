@@ -5,19 +5,16 @@ from aiogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessag
 from aiogram.utils.markdown import hbold, hitalic
 
 from data.convert import ERROR, PREPODS, sticker
-
 from keyboards.inline.callback_datas import day_week_inline, teacher_inline, delete_teacher_rating, other_week_inline, \
     teacher_schedule
 from keyboards.inline.inline_buttons import check_week, get_rating_kb, get_group_buttons, search_kb, teacher_schedule_kb
-
 from loader import dp
 from models.week import Week, ThisNextWeek
 from states import States
-
 from utils.db_api.commands.commands_teacher import select_all_teachers, set_rating, select_teacher_id, delete_rating
+from utils.db_api.commands.commands_timetable import get_some_day, select_rows_by_teacher
 from utils.db_api.commands.coomands_group import select_groups_limit, select_group_id
 from utils.db_api.schemas.user import User
-from utils.db_api.commands.commands_timetable import get_some_day, select_rows_by_teacher
 
 
 @dp.callback_query_handler(day_week_inline.filter())

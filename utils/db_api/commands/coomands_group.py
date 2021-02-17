@@ -2,7 +2,6 @@ import re
 from typing import Optional
 
 from asyncpg import UniqueViolationError
-
 from sqlalchemy import func
 
 from models.fuckult import Fuckult

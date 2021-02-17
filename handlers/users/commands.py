@@ -4,10 +4,8 @@ from aiogram.dispatcher.filters import Command
 from data.convert import sticker
 from data.messages import hello_message
 from keyboards.default import menu
-
 from keyboards.inline import search_kb
 from keyboards.inline.inline_buttons import search_teacher
-
 from loader import dp
 from states import States
 

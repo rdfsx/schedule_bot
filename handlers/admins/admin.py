@@ -1,21 +1,17 @@
 from asyncio import create_task
 
-from aiogram.dispatcher import FSMContext
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from aiogram import types
+from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Command
+from aiogram.types import CallbackQuery
 from aiogram.utils.exceptions import BotBlocked, UserDeactivated, TelegramAPIError
 
 from config import admins
-from data.messages import base_message
-from keyboards.default import menu
 from keyboards.inline.callback_datas import message_for_admin
 from keyboards.inline.inline_buttons import cancel_markup
 from loader import dp, bot
 from schedule_requests.api_group import APIMethodsGroup
-
 from states.admin_state import AnswerAdmin, BroadcastAdmin
-
 from utils.admin_tools.broadcast import broadcaster
 from utils.db_api.commands.commands_user import select_all_users, count_users, count_users_with_group
 

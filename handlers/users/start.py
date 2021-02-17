@@ -5,16 +5,13 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.builtin import CommandStart
 from aiogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessageContent
 
-from data.convert import faculties, ERROR
+from data.convert import ERROR
 from data.messages import hello_message
 from filters import GroupFilter
-
 from keyboards.default import menu, subgroup_menu
 from keyboards.inline import search_kb
-
 from loader import dp
 from states import States
-
 from utils.db_api.commands.commands_user import add_user, update_user_group
 from utils.db_api.commands.coomands_group import select_groups_limit, select_group, select_group_id
 

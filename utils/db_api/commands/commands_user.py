@@ -3,7 +3,6 @@ from typing import Optional
 from asyncpg import UniqueViolationError
 
 from loader import dp
-
 from utils.db_api.db_gino import db
 from utils.db_api.schemas.group import Groups
 from utils.db_api.schemas.user import User

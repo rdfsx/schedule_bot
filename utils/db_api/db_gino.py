@@ -1,9 +1,9 @@
 from typing import List
-from loguru import logger
 
+import sqlalchemy as sa
 from aiogram import Dispatcher
 from gino import Gino
-import sqlalchemy as sa
+from loguru import logger
 from sqlalchemy import Column, DateTime
 
 import config

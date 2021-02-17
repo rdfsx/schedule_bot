@@ -1,6 +1,6 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-from data.convert import to_eng
 
+from data.convert import to_eng
 from keyboards.inline.callback_datas import day_week_inline, other_week_inline, teacher_inline, teacher_schedule, \
     delete_teacher_rating
 from models.week import ThisNextWeek, Week

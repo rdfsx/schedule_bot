@@ -5,7 +5,7 @@ from models.lessons import LessonKind
 from models.week import UnderAboveWeek, Week
 from utils.db_api.db_gino import TimedBaseModel, BaseModel
 from utils.db_api.schemas.group import GroupsRelatedModel
-from utils.db_api.schemas.teacher import Teacher, TeacherRelatedModelNull
+from utils.db_api.schemas.teacher import TeacherRelatedModelNull
 
 
 class Lessons(TimedBaseModel):

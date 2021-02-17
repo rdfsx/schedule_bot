@@ -1,7 +1,7 @@
-from loguru import logger
 import asyncio
 
 from aiogram.utils import exceptions
+from loguru import logger
 
 from config import admins
 from loader import bot

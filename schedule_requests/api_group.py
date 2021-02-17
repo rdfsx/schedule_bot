@@ -1,22 +1,18 @@
 import asyncio
 import random
-
-from loguru import logger
-
 import re
+from datetime import datetime, timedelta
 from typing import Optional, List
 
 import bs4
 from bs4 import BeautifulSoup
+from loguru import logger
 
 from models.fuckult import Fuckult
 from models.lessons import LessonKind
+from models.schedule import Sem
 from models.week import Week, UnderAboveWeek
 from schedule_requests.api import API
-from models.schedule import Sem
-
-from datetime import datetime, timedelta
-
 from utils.admin_tools.admins_notify import notify_admins
 from utils.db_api.commands.commands_teacher import select_teacher_by_name, add_teacher
 from utils.db_api.commands.commands_timetable import select_all_rows, delete_row, add_timetable

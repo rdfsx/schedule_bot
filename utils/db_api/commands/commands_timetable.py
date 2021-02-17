@@ -1,16 +1,13 @@
 from typing import Optional, List
 
 from aiogram.utils.markdown import hbold
-
 from asyncpg import UniqueViolationError, NotNullViolationError
-
 from sqlalchemy import select, or_
 
 from models.lessons import Lesson, LessonKind
 from models.week import UnderAboveWeek, Week, ThisNextWeek
 from utils.db_api.commands.commands_teacher import select_teacher_id
 from utils.db_api.commands.coomands_group import select_group_exact_match
-
 from utils.db_api.db_gino import db
 from utils.db_api.schemas.group import Groups
 from utils.db_api.schemas.schedule import Timetable, Lessons

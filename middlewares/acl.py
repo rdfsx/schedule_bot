@@ -1,5 +1,5 @@
 from aiogram import types
-from aiogram.dispatcher.handler import CancelHandler, current_handler
+from aiogram.dispatcher.handler import CancelHandler
 from aiogram.dispatcher.middlewares import BaseMiddleware
 from aiogram.types import ReplyKeyboardRemove
 

@@ -1,6 +1,5 @@
 from enum import Enum
-
-from typing import List, Tuple, Optional
+from typing import List
 
 from data.convert import lessons_emoji, university_time
 
