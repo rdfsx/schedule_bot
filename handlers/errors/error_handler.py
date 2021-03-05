@@ -1,3 +1,5 @@
+from aiogram.types import Update
+from aiogram.utils.markdown import italic
 from loguru import logger
 
 from loader import dp
@@ -39,20 +41,33 @@ async def errors_handler(update, exception):
         logger.info(f'Unauthorized: {exception}')
         return True
 
+    text = "Вызвано необрабатываемое исплючение. Перешлите это сообщение @rdfsx\n\n"
     if isinstance(exception, InvalidQueryID):
-        logger.exception(f'InvalidQueryID: {exception} \nUpdate: {update}')
+        error = f'InvalidQueryID: {exception} \nUpdate: {update}'
+        logger.exception(error)
+        await Update.get_current().message.answer(text + italic(error))
         return True
 
     if isinstance(exception, TelegramAPIError):
-        logger.exception(f'TelegramAPIError: {exception} \nUpdate: {update}')
+        error = f'TelegramAPIError: {exception} \nUpdate: {update}'
+        logger.exception(error)
+        await Update.get_current().message.answer(text + italic(error))
         return True
     if isinstance(exception, RetryAfter):
-        logger.exception(f'RetryAfter: {exception} \nUpdate: {update}')
+        error = f'RetryAfter: {exception} \nUpdate: {update}'
+        logger.exception(error)
+        await Update.get_current().message.answer(text + italic(error))
         return True
     if isinstance(exception, CantParseEntities):
-        logger.exception(f'CantParseEntities: {exception} \nUpdate: {update}')
+        error = f'CantParseEntities: {exception} \nUpdate: {update}'
+        logger.exception(error)
+        await Update.get_current().message.answer(text + italic(error))
         return True
     if isinstance(exception, BadRequest):
-        logger.exception(f'CantParseEntities: {exception} \nUpdate: {update}')
+        error = f'CantParseEntities: {exception} \nUpdate: {update}'
+        logger.exception(error)
+        await Update.get_current().message.answer(text + italic(error))
         return True
-    logger.exception(f'Update: {update} \n{exception}')
+    error = f'Update: {update} \n{exception}'
+    logger.exception(error)
+    await Update.get_current().message.answer(text + italic(error))
