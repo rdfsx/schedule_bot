@@ -8,8 +8,10 @@ from aiogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessag
 from data.convert import ERROR
 from data.messages import hello_message
 from filters import GroupFilter
-from keyboards.default import menu, subgroup_menu
+from keyboards.default import menu
 from keyboards.inline import search_kb
+from keyboards.inline.callback_datas import group_subgroups
+from keyboards.inline.inline_buttons import subgroup_menu
 from loader import dp
 from states import States
 from utils.db_api.commands.commands_user import add_user, update_user_group
@@ -35,7 +37,7 @@ async def get_all_groups(inline_query: InlineQuery):
             results.append(InlineQueryResultArticle(
                 id=str(group.id),
                 title=group.group,
-                input_message_content=(InputTextMessageContent(group.group)),)
+                input_message_content=(InputTextMessageContent(group.group)), )
             )
     else:
         not_found = 'Нет такой группы'
@@ -66,12 +68,13 @@ async def failed_process_group(message: types.Message):
     await message.answer('Что-то не так. Найдите свою группу:', reply_markup=search_kb)
 
 
-@dp.message_handler(state=States.SUBGROUP)
-async def final(message: types.Message, state: FSMContext):
+@dp.callback_query_handler(group_subgroups.filter(), state=States.SUBGROUP)
+async def set_subgroup(call: types.CallbackQuery, callback_data: dict, state: FSMContext):
+    subgroup = callback_data.get('number')
     data = await state.get_data()
     group = await select_group_id(int(data.get('group')))
-    if not message.text.isdigit() or int(message.text) > group.subgroups:
-        return await message.answer('Выберите свою подгруппу:', reply_markup=subgroup_menu(group.subgroups))
-    await update_user_group(user_id=message.from_user.id, group=group.group, subgroup=int(message.text))
+    await update_user_group(user_id=call.from_user.id, group=group.group, subgroup=int(subgroup))
     await state.reset_state()
-    await message.answer(hello_message, reply_markup=menu, disable_web_page_preview=True)
+    await call.message.edit_text(call.message.text)
+    await call.answer('Добро пожаловать!')
+    await call.message.answer(hello_message, reply_markup=menu, disable_web_page_preview=True)

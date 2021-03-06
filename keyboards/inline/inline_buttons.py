@@ -2,7 +2,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from data.convert import to_eng
 from keyboards.inline.callback_datas import day_week_inline, other_week_inline, teacher_inline, teacher_schedule, \
-    delete_teacher_rating
+    delete_teacher_rating, group_subgroups
 from models.week import ThisNextWeek, Week
 
 kb_more = InlineKeyboardMarkup(
@@ -146,3 +146,15 @@ def teacher_schedule_kb(week: ThisNextWeek, teacher_id: int) -> InlineKeyboardMa
             ]
         ]
     )
+
+
+def subgroup_menu(num: int) -> InlineKeyboardMarkup:
+    keyboard = []
+    for i in range(num):
+        sub = str(i + 1)
+        keyboard.append(
+            [
+                InlineKeyboardButton(text=sub, callback_data=group_subgroups.new(number=sub)),
+            ]
+        )
+    return InlineKeyboardMarkup(inline_keyboard=keyboard)

@@ -1,1 +1,1 @@
-from .menu import menu, subgroup_menu
+from .menu import menu
