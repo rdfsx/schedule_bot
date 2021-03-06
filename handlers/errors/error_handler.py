@@ -1,5 +1,5 @@
 from aiogram.types import Update
-from aiogram.utils.markdown import italic
+from aiogram.utils.markdown import hcode
 from loguru import logger
 
 from loader import dp
@@ -45,29 +45,29 @@ async def errors_handler(update, exception):
     if isinstance(exception, InvalidQueryID):
         error = f'InvalidQueryID: {exception} \nUpdate: {update}'
         logger.exception(error)
-        await Update.get_current().message.answer(text + italic(error))
+        await Update.get_current().message.answer(text + hcode(error))
         return True
 
     if isinstance(exception, TelegramAPIError):
         error = f'TelegramAPIError: {exception} \nUpdate: {update}'
         logger.exception(error)
-        await Update.get_current().message.answer(text + italic(error))
+        await Update.get_current().message.answer(text + hcode(error))
         return True
     if isinstance(exception, RetryAfter):
         error = f'RetryAfter: {exception} \nUpdate: {update}'
         logger.exception(error)
-        await Update.get_current().message.answer(text + italic(error))
+        await Update.get_current().message.answer(text + hcode(error))
         return True
     if isinstance(exception, CantParseEntities):
         error = f'CantParseEntities: {exception} \nUpdate: {update}'
         logger.exception(error)
-        await Update.get_current().message.answer(text + italic(error))
+        await Update.get_current().message.answer(text + hcode(error))
         return True
     if isinstance(exception, BadRequest):
         error = f'CantParseEntities: {exception} \nUpdate: {update}'
         logger.exception(error)
-        await Update.get_current().message.answer(text + italic(error))
+        await Update.get_current().message.answer(text + hcode(error))
         return True
     error = f'Update: {update} \n{exception}'
     logger.exception(error)
-    await Update.get_current().message.answer(text + italic(error))
+    await Update.get_current().message.answer(text + hcode(error))
