@@ -78,3 +78,8 @@ async def set_subgroup(call: types.CallbackQuery, callback_data: dict, state: FS
     await call.message.edit_text(call.message.text)
     await call.answer('Добро пожаловать!')
     await call.message.answer(hello_message, reply_markup=menu, disable_web_page_preview=True)
+
+
+@dp.message_handler(state=States.SUBGROUP)
+async def failed_process_subgroup(message: types.Message):
+    await message.answer('Выберите свою подгруппу☝️')
