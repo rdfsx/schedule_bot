@@ -39,7 +39,7 @@ async def get_kb(message: types.Message):
 
 
 @dp.message_handler(Command('info'))
-async def get_kb(message: types.Message):
+async def get_info(message: types.Message):
     text = [
         "Ботдаёт возможнность просматривать расписание групп и преподавателей ГГТУ Сухого.",
         "Доступны команды:",

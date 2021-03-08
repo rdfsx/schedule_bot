@@ -15,9 +15,9 @@ async def add_group(group: str, fuck: Fuckult, subgroups: Optional[int] = 1):
         await new_group.create()
 
     except UniqueViolationError:
-        group = await select_group_exact_match(group)
-        if group.fuck != fuck or group.subgroups != subgroups:
-            await group.update(fuck=fuck, subgroups=subgroups).apply()
+        group_obj = await select_group_exact_match(group)
+        if group_obj.fuck != fuck or group_obj.subgroups != subgroups:
+            await group_obj.update(fuck=fuck, subgroups=subgroups).apply()
 
 
 async def select_groups_limit(group: str, offset: Optional[int] = 0, limit: Optional[int] = 20):
@@ -52,6 +52,6 @@ async def count_groups():
 
 
 async def update_group(group: str, fuck: Fuckult, subgroups: Optional[int]):
-    group = await Groups.get(group)
-    if group.fuck != fuck or group.subgroups != subgroups:
-        group.update(fuck=fuck, subgroups=subgroups).apply()
+    group_obj = await Groups.get(group)
+    if group_obj.fuck != fuck or group_obj.subgroups != subgroups:
+        group_obj.update(fuck=fuck, subgroups=subgroups).apply()

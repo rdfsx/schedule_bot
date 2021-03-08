@@ -21,7 +21,6 @@ class Sem(Enum):
     def get_sem():
         date = datetime.today()
         if datetime(month=1, day=24, year=date.year) <= date < datetime(month=6, day=30, year=date.year):
-            sem = Sem.summer
+            return Sem.summer
         else:
-            sem = Sem.winter
-        return sem
+            return Sem.winter

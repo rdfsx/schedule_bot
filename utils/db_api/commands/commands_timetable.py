@@ -53,12 +53,12 @@ async def get_some_day(day: Week, group: int, week: ThisNextWeek, subgroup: int,
 
 
 async def get_day_raw(day: Week, group: int, subgroup: int, week: ThisNextWeek = ThisNextWeek.this_week):
-    week = week.convert_week()
+    calendar_week = week.convert_week()
     join = Timetable.join(Lessons).outerjoin(Teacher)
     stmt = select([Timetable.lesson_num, Lessons.lesson, Timetable.lesson_kind, Teacher.full_name]).select_from(join)
     condition = stmt \
         .where(Timetable.day_week == day.name) \
-        .where(or_(Timetable.week == week.name, Timetable.week == week.all)) \
+        .where(or_(Timetable.week == calendar_week.name, Timetable.week == calendar_week.all)) \
         .where(Timetable.group_id == group) \
         .where(or_(Timetable.subgroup == subgroup, Timetable.subgroup == 0))
     return await condition.order_by(Timetable.lesson_num).gino.all()
@@ -87,12 +87,12 @@ async def select_all_rows(groups: List[str]):
 
 
 async def select_by_teacher(teacher_id: int, week: ThisNextWeek = ThisNextWeek.this_week):
-    week = week.convert_week()
+    week_calendar = week.convert_week()
     join = Timetable.join(Lessons).join(Groups)
     stmt = select([Timetable.lesson_num, Lessons.lesson, Timetable.lesson_kind, Groups.group, Timetable.day_week])\
         .select_from(join)
     condition = stmt \
-        .where(or_(Timetable.week == week.name, Timetable.week == week.all)) \
+        .where(or_(Timetable.week == week_calendar.name, Timetable.week == week_calendar.all)) \
         .where(Timetable.teacher_id == teacher_id)
     return await condition.order_by(Timetable.lesson_num).gino.all()
 

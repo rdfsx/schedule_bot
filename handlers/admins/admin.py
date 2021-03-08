@@ -103,5 +103,5 @@ async def add_group(message: types.Message, state: FSMContext):
 
 
 @dp.message_handler(Command('add_teacher'), user_id=admins)
-async def add_group(message: types.Message, state: FSMContext):
+async def add_teacher(message: types.Message, state: FSMContext):
     pass

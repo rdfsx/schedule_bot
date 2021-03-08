@@ -70,12 +70,12 @@ async def failed_process_group(message: types.Message):
 
 @dp.callback_query_handler(group_subgroups.filter(), state=States.SUBGROUP)
 async def set_subgroup(call: types.CallbackQuery, callback_data: dict, state: FSMContext):
-    subgroup = callback_data.get('number')
+    subgroup = str(callback_data.get('number'))
     data = await state.get_data()
     group = await select_group_id(int(data.get('group')))
     await update_user_group(user_id=call.from_user.id, group=group.group, subgroup=int(subgroup))
     await state.reset_state()
-    await call.message.edit_text(call.message.text)
+    await call.message.edit_reply_markup()
     await call.answer('Добро пожаловать!')
     await call.message.answer(hello_message, reply_markup=menu, disable_web_page_preview=True)
 

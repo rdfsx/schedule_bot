@@ -22,7 +22,7 @@ class InterceptHandler(logging.Handler):
 
 
 # noinspection PyArgumentList
-async def setup(level: Union[str, int] = "INFO", ignored: List[str] = ""):
+async def setup(level: Union[str, int] = "INFO", ignored: str = ""):
     logging.basicConfig(handlers=[InterceptHandler()], level=logging.getLevelName(level))
     for ignore in ignored:
         logger.disable(ignore)

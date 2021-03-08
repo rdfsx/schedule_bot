@@ -23,11 +23,12 @@ class APIMethodsGroup:
     def __init__(self, api_: Optional[API] = None):
         self.api = api_ or API()
 
-    async def __get_timetable_html(self, groups: List[str], sem: Optional[Sem] = Sem.get_sem()) -> str:
+    async def __get_timetable_html(self, groups: List[str]) -> str:
         date = datetime.today() - timedelta(days=datetime.today().weekday() % 7)
-        groups = "','".join(groups)
+        groups_str = "','".join(groups)
+        sem = Sem.get_sem()
         params = {
-            'GRU': f"'{groups}'",
+            'GRU': f"'{groups_str}'",
             'sem': sem.value,
             'Type': 'Print',
             'theDate': date.strftime('%Y-%m-%d'),
@@ -111,8 +112,8 @@ class APIMethodsGroup:
 
     @staticmethod
     async def is_prepod_in_db(text: str) -> int:
-        text = text.replace("\t", "").strip().split("\n")
-        search_teacher = re.findall(r"[А-ЯЁ][а-яё]+\s+[А-ЯЁ]\.+[А-ЯЁ]\.", text[-1])
+        new_text = text.replace("\t", "").strip().split("\n")
+        search_teacher = re.findall(r"[А-ЯЁ][а-яё]+\s+[А-ЯЁ]\.+[А-ЯЁ]\.", new_text[-1])
         if search_teacher:
             teacher = search_teacher[0]
             find_row = teacher.split(" ")
