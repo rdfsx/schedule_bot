@@ -35,7 +35,8 @@ async def get_teacher(message: types.Message, user: User):
                 txt.append(hitalic(f"Вы поставили {rating.rate}"))
             rate = round(teacher.rating / teacher.count, 1)
             txt.append(hitalic(f"Рейтинг: {rate}/5, количество оценок: {teacher.count}"))
-        await message.answer('\n'.join(txt), reply_markup=get_rating_kb(teacher.id, user.id, True if rating else False))
+        await message.answer('\n'.join(txt),
+                             reply_markup=get_rating_kb(teacher.id, str(user.id), True if rating else False))
 
 
 @dp.message_handler(GroupFilter())

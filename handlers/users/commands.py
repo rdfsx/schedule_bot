@@ -30,7 +30,7 @@ async def get_sticker(message: types.Message):
 @dp.message_handler(Command('search'))
 async def get_group_schedule(message: types.Message):
     await message.answer('Нажмите на кнопку ниже и начинайте вводить или просто отправьте боту название группы.',
-                         reply_markup=search_teacher)
+                         reply_markup=search_kb)
 
 
 @dp.message_handler(Command('b'))
