@@ -150,7 +150,6 @@ async def get_more(message: types.Message, user: User):
             f'Сейчас неделя <b>{"над" if week == week.under else "под"}</b> чертой\n'
             f'Выбранная группа {hbold((await select_group_id(user.group_id)).group)}\n'
             f'Подгруппа: {hbold(user.subgroup)}',
-            f'Выберите действие:'
         ]
     await message.answer('\n'.join(txt), reply_markup=kb_more)
 
