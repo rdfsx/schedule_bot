@@ -5,6 +5,7 @@ from aiogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessag
 from aiogram.utils.markdown import hbold, hitalic
 
 from data.convert import ERROR, PREPODS, sticker
+from data.messages import donuts
 from keyboards.inline.callback_datas import day_week_inline, teacher_inline, delete_teacher_rating, other_week_inline, \
     teacher_schedule
 from keyboards.inline.inline_buttons import check_week, get_rating_kb, get_group_buttons, search_kb, teacher_schedule_kb
@@ -149,6 +150,12 @@ async def get_teacher_schedule(call: CallbackQuery, callback_data: dict):
 async def send_sticker(call: CallbackQuery):
     await call.answer()
     await call.message.answer_sticker(sticker=sticker)
+
+
+@dp.callback_query_handler(text='donuts')
+async def send_donut(call: CallbackQuery):
+    await call.answer()
+    await call.message.answer(donuts)
 
 
 @dp.callback_query_handler(text='reset')

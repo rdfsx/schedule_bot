@@ -26,4 +26,4 @@ class API:
                     return await response.text()
         except ClientConnectorError:
             logger.info(f"Request: Unicode error at {method} method")
-            await notify_admins(f"Request: ошибка в методе {method}")
+            return await notify_admins(f"Request: ошибка в методе {method}")

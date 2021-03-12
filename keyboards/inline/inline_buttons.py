@@ -19,6 +19,9 @@ kb_more = InlineKeyboardMarkup(
         [
             InlineKeyboardButton(text='Чужое расписание', switch_inline_query_current_chat='')
         ],
+        [
+            InlineKeyboardButton(text='Поддержать разработчика', callback_data='donuts')
+        ],
     ]
 )
 

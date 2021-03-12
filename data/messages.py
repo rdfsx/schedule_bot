@@ -1,3 +1,5 @@
+import config
+
 base_message = """
 Возможно, ты хотел найти расписание группы или рейтинг преподавателя, но ввёл несуществующее название.
 
@@ -16,3 +18,17 @@ hello_message = """
 Приветствую в боте!
 Исходный код доступен на github https://github.com/rdfsx/schedule_bot
 """
+
+donuts = """
+Здесь можно скинуть денежку на оплату сервера или на кофе:3
+
+<code>{card}</code>
+<code>{card_date}</code>
+
+Bitcoin:
+<code>{bitcoin}</code>
+
+Ethereum:
+<code>{ethereum}</code>
+""".format(card=config.CARD_FOR_DONUTS, card_date=config.CARD_VALID_THRU_DONUTS, bitcoin=config.BITCOIN_DONUTS,
+           ethereum=config.ETHEREUM_DONUTS)

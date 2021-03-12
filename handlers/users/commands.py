@@ -2,7 +2,7 @@ from aiogram import types
 from aiogram.dispatcher.filters import Command
 
 from data.convert import sticker
-from data.messages import hello_message
+from data.messages import hello_message, donuts
 from keyboards.default import menu
 from keyboards.inline import search_kb
 from keyboards.inline.inline_buttons import search_teacher
@@ -49,3 +49,8 @@ async def get_info(message: types.Message):
         "/start или /reset - сброс настроек"
     ]
     await message.answer("\n\n".join(text), reply_markup=menu)
+
+
+@dp.message_handler(Command('donuts'))
+async def get_donuts(message: types.Message):
+    await message.answer(donuts, reply_markup=menu)

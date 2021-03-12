@@ -7,5 +7,6 @@ async def set_default_commands(dp):
         types.BotCommand('reset', 'Сброс настроек'),
         types.BotCommand('prepods', 'Рейтинг преподавателей'),
         types.BotCommand('search', 'Расписание чужой группы'),
+        types.BotCommand('donuts', 'Поддержать разработчика'),
         types.BotCommand('calls', 'Стикер с расписанием звонков')
     ])
