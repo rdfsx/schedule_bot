@@ -40,7 +40,7 @@ async def errors_handler(update, exception):
     if isinstance(exception, Unauthorized):
         logger.info(f'Unauthorized: {exception}')
         return True
-
+    # TODO переделать
     text = "Вызвано необрабатываемое исключение. Перешлите это сообщение @rdfsx\n\n"
     if isinstance(exception, InvalidQueryID):
         error = f'InvalidQueryID: {exception} \nUpdate: {update}'

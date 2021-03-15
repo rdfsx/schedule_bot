@@ -2,7 +2,7 @@ from datetime import datetime
 
 from aiogram import types
 from aiogram.dispatcher.filters import Text
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ContentType
 from aiogram.utils.markdown import hbold, hitalic
 
 from config import admins
@@ -154,7 +154,7 @@ async def get_more(message: types.Message, user: User):
     await message.answer('\n'.join(txt), reply_markup=kb_more)
 
 
-@dp.message_handler()
+@dp.message_handler(content_types=types.ContentType.ANY)
 async def hot_handled(message: types.Message, user: User):
     markup = InlineKeyboardMarkup(inline_keyboard=[
         [
@@ -173,8 +173,11 @@ async def hot_handled(message: types.Message, user: User):
             f'Группа: {(await select_group_id(user.group_id)).group}',
             f'Имя: <a href="tg://user?id={message.from_user.id}">{message.from_user.full_name}</a>',
             f"username: @{message.from_user.username}",
-            "",
-            message.text,
         ]
+        if message.content_type == ContentType.TEXT:
+            txt.append(f"\n{message.text}")
+        else:
+            txt.append(f"Content type: <u>{message.content_type}</u>")
+            await message.send_copy(admin)
         await bot.send_message(admin, '\n'.join(txt), reply_markup=markup)
     await message.answer(base_message, reply_markup=menu)

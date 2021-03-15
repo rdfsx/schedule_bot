@@ -66,13 +66,11 @@ async def get_other_schedule(call: CallbackQuery, state: FSMContext, callback_da
     await call.message.answer("Введите сообщение:", reply_markup=cancel_markup)
 
 
-@dp.message_handler(state=AnswerAdmin.ANSWER, user_id=admins)
+@dp.message_handler(state=AnswerAdmin.ANSWER, user_id=admins, content_types=types.ContentType.ANY)
 async def answer_to_user_msg(message: types.Message, state: FSMContext):
     data = await state.get_data()
     try:
-        await bot.send_message(chat_id=data.get('from_user_id'),
-                               reply_to_message_id=data.get('message_id'),
-                               text=message.text)
+        await message.send_copy(data.get('from_user_id'), reply_to_message_id=data.get('message_id'))
 
     except BotBlocked:
         await message.reply("Сообщение не отправлено: бот заблокирован пользователем.")
