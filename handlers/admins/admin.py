@@ -45,7 +45,7 @@ async def cancel_broadcast(call: CallbackQuery, state: FSMContext):
 @dp.message_handler(state=BroadcastAdmin.BROADCAST, user_id=admins)
 async def broadcast_to_users(message: types.Message, state: FSMContext):
     users = await select_all_users()
-    create_task(broadcaster(users, message.html_text))
+    create_task(broadcaster(users, message.text))
     await state.reset_state()
     txt = [
         'Сообщение рассылается пользователям.',
