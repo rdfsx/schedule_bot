@@ -68,7 +68,7 @@ async def get_today_tomorrow(message: types.Message, user: User):
     week = ThisNextWeek.this_week
     group = user.group_id
     initial_message = message.text.title()
-    if day in (Week.saturday, Week.sunday):
+    if Week.today() in (Week.saturday, Week.sunday):
         if not await check_existence(day, group, week, subgroup):
             initial_message = 'В понедельник на следующей неделе'
             week = week.next()

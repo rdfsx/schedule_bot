@@ -61,6 +61,8 @@ lessons_emoji = {
 
 sticker = 'CAACAgIAAxkBAAIWeGArd5tiyK_trkbYl0HDlEVd8SPOAAIvAQACbdh8FFaU7sVczbs6HgQ'
 
+start_sticker = "CAACAgIAAxkBAAEIsYhgUgs2VB8LIk544EnUwE40s9mGLwACIgADTlzSKWF0vv5zFvwUHgQ"
+
 faculties = {
     'FAIS': 'https://abiturient.gstu.by/sites/default/files/images/tax-faculties/fais.jpeg',
     'GEF': 'https://abiturient.gstu.by/sites/default/files/images/tax-faculties/gef.jpeg',

@@ -16,7 +16,7 @@ async def send_message(user_id: int, txt: str, disable_notification: bool = Fals
     :return:
     """
     try:
-        await bot.send_message(user_id, txt, disable_web_page_preview=True, disable_notification=disable_notification)
+        await bot.send_message(user_id, txt, disable_notification=disable_notification)
     except exceptions.BotBlocked:
         logger.error(f"Target [ID:{user_id}]: blocked by user")
     except exceptions.ChatNotFound:
