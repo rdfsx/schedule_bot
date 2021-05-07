@@ -129,7 +129,7 @@ async def delete_teacher_rating_func(call: CallbackQuery, user: User, callback_d
         txt.append(hitalic('Вы отменили оценку.\nПока что у преподавателя нет оценок.'))
     else:
         rate = round(teacher.rating / teacher.count, 1)
-        txt.append(f"Вы отменили оценку.\nРейтинг: {rate}/5, количество оценок: {teacher.count}")
+        txt.append(hitalic(f"Вы отменили оценку.\nРейтинг: {rate}/5, количество оценок: {teacher.count}"))
     await call.answer('Рейтинг обновлён.')
     await call.message.edit_text('\n'.join(txt), reply_markup=get_rating_kb(teacher.id, str(user.id), False))
 
