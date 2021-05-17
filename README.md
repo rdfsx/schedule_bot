@@ -64,8 +64,8 @@ POSTGRES_PASSWORD=пароль придумайте какой-нибудь
 
 CARD_FOR_DONUTS="1234 5678 9112 3456" #номер карты для приема донатов
 CARD_VALID_THRU_DONUTS= 11/22 #срок действия карты
-ETHEREUM_DONUTS=0xFB9079A75E24Ed93DBb083B0aFf34365DFc46399 #Ethereum-адрес для донатов
-BITCOIN_DONUTS=bc1q4qgjkfe78pc89lyse9dpe67ddzme08afmtl7am #Bitcoin-адрес для донатов
+ETHEREUM_DONUTS=0x0000000000000000000000000000000000000000 #Ethereum-адрес для донатов
+BITCOIN_DONUTS=qwertyuiopasdfghjkl1234567890zxcvbnmpoiuyt #Bitcoin-адрес для донатов
 ```
 
 ## Использование
