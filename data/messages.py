@@ -34,5 +34,5 @@ Bitcoin:
 
 Ethereum:
 <code>{ethereum}</code>
-""".format(card=config.CARD_FOR_DONUTS, card_date=config.CARD_VALID_THRU_DONUTS, bitcoin=config.BITCOIN_DONUTS,
-           ethereum=config.ETHEREUM_DONUTS)
+""".format(card=config.CARD_FOR_DONUTS.replace('"', ''), card_date=config.CARD_VALID_THRU_DONUTS,
+           bitcoin=config.BITCOIN_DONUTS, ethereum=config.ETHEREUM_DONUTS)
