@@ -1,3 +1,5 @@
+import asyncio
+from loguru import logger
 from asyncio import create_task
 
 from aiogram import types
@@ -26,6 +28,24 @@ async def get_count_users(message: types.Message):
 async def get_count_users_with_group(message: types.Message):
     count = await count_users_with_group()
     await message.answer(f"Количество пользователей, выбравших группу: {count}")
+
+
+@dp.message_handler(Command('exists_count'), user_id=admins)
+async def get_exists_count(message: types.Message):
+    users = await select_all_users()
+    count = 0
+    await message.answer("Начинаем подсчет...")
+    try:
+        for user in users:
+            try:
+                if await bot.send_chat_action(user.id, "typing"):
+                    count += 1
+            except Exception as e:
+                logger.exception(e)
+            await asyncio.sleep(.05)
+    finally:
+        for admin in admins:
+            await bot.send_message(admin, f"{count} активных пользователей.")
 
 
 @dp.message_handler(Command('broadcast'), user_id=admins)
