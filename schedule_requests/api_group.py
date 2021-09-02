@@ -25,6 +25,8 @@ class APIMethodsGroup:
 
     async def __get_timetable_html(self, groups: List[str]) -> str:
         date = datetime.today() - timedelta(days=datetime.today().weekday() % 7)
+        if date.month == 8:
+            date = date + timedelta(days=7)
         groups_str = "','".join(groups)
         sem = Sem.get_sem()
         params = {
@@ -106,7 +108,10 @@ class APIMethodsGroup:
             week = UnderAboveWeek.all
         group_idx = groups_list.index(group)
         result: List[List] = []
-        for i in range(group_idx, group_idx + quantity):
+        limit = group_idx + quantity
+        if limit > len(groups_list):
+            limit = len(groups_list)
+        for i in range(group_idx, limit):
             result.append([day_week, lesson_num, week, groups_list[i], subgroup, text, lesson_kind, teacher_id])
         return result
 

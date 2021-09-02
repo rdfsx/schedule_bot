@@ -1,3 +1,4 @@
+from contextlib import suppress
 from typing import Optional, List
 
 from aiogram.utils.markdown import hbold
@@ -15,11 +16,8 @@ from utils.db_api.schemas.teacher import Teacher
 
 
 async def add_lesson(lesson: str):
-    try:
+    with suppress(UniqueViolationError):
         await Lessons(lesson=lesson).create()
-
-    except UniqueViolationError:
-        pass
 
 
 async def add_timetable(day_week: Week, lesson_num: int, week: UnderAboveWeek, group: str, subgroup: int, lesson: str,

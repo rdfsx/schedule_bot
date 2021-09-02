@@ -104,7 +104,7 @@ async def answer_to_user_msg(message: types.Message, state: FSMContext):
     await state.reset_state()
 
 
-@dp.message_handler(Command('update_schedule'), user_id=admins)
+@dp.message_handler(Command('update_schedule'), user_id=admins, state='*')
 async def update_schedule(message: types.Message):
     await message.answer("Начинаем обновлять расписание...")
     create_task(APIMethodsGroup().compare_all_groups())
