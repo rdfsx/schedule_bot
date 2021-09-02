@@ -1,6 +1,7 @@
 import logging
 
 from aiogram import Dispatcher
+from aiogram.utils.markdown import quote_html
 
 from config import admins
 
@@ -19,7 +20,7 @@ async def notify_new_user(dp: Dispatcher, user_id: int, group: str) -> None:
     pics = await dp.bot.get_user_profile_photos(user_id)
     txt = [
         "#new_user",
-        f"Имя: {user.full_name}",
+        f"Имя: {quote_html(user.full_name)}",
         f'id: <a href="tg://user?id={user.id}">{user_id}</a>',
         f"Группа: {group}",
         f"username: @{user.username}"

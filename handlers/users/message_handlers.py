@@ -19,6 +19,7 @@ from utils.db_api.commands.commands_teacher import select_teacher_by_name, get_r
 from utils.db_api.commands.commands_timetable import get_some_day, check_existence, get_day_raw
 from utils.db_api.commands.coomands_group import select_group, select_group_id
 from utils.db_api.schemas.user import User
+from aiogram.utils.markdown import quote_html
 
 
 @dp.message_handler(TeacherFilter())
@@ -171,11 +172,12 @@ async def hot_handled(message: types.Message, user: User):
         txt = [
             f'#message',
             f'Группа: {(await select_group_id(user.group_id)).group}',
-            f'Имя: <a href="tg://user?id={message.from_user.id}">{message.from_user.full_name}</a>',
+            f'Имя: <a href="tg://user?id={message.from_user.id}">'
+            f'{quote_html(message.from_user.full_name)}</a>',
             f"username: @{message.from_user.username}",
         ]
         if message.content_type == ContentType.TEXT:
-            txt.append(f"\n{message.text}")
+            txt.append(f"\n{quote_html(message.text)}")
         else:
             txt.append(f"Content type: <u>{message.content_type}</u>")
             await message.send_copy(admin)
