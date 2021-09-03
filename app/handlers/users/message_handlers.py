@@ -13,8 +13,8 @@ from app.keyboards.default import menu
 from app.keyboards.inline.callback_datas import message_for_admin
 from app.keyboards.inline.inline_buttons import check_week, kb_more, get_group_buttons, get_rating_kb
 from app.loader import dp, bot
-from app.models.lessons import Lesson
-from app.models.week import Week, ThisNextWeek
+from app.enums.lessons import Lesson
+from app.enums.week import Week, ThisNextWeek
 from app.utils.db_api.commands.commands_teacher import select_teacher_by_name, get_rating
 from app.utils.db_api.commands.commands_timetable import get_some_day, check_existence, get_day_raw
 from app.utils.db_api.commands.coomands_group import select_group, select_group_id

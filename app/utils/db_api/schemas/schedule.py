@@ -1,8 +1,8 @@
 from sqlalchemy import Column, String, sql, Integer, ForeignKey, SmallInteger, Index
 from sqlalchemy import Enum
 
-from app.models.lessons import LessonKind
-from app.models.week import UnderAboveWeek, Week
+from app.enums.lessons import LessonKind
+from app.enums.week import UnderAboveWeek, Week
 from app.utils.db_api.db_gino import TimedBaseModel, BaseModel
 from app.utils.db_api.schemas.group import GroupsRelatedModel
 from app.utils.db_api.schemas.teacher import TeacherRelatedModelNull

@@ -3,7 +3,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from app.data.convert import to_eng
 from app.keyboards.inline.callback_datas import day_week_inline, other_week_inline, teacher_inline, teacher_schedule, \
     delete_teacher_rating, group_subgroups
-from app.models.week import ThisNextWeek, Week
+from app.enums.week import ThisNextWeek, Week
 
 kb_more = InlineKeyboardMarkup(
     inline_keyboard=[

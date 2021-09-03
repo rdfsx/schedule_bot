@@ -4,7 +4,7 @@ from typing import Optional
 from asyncpg import UniqueViolationError
 from sqlalchemy import func
 
-from app.models.fuckult import Fuckult
+from app.enums.fuckult import Fuckult
 from app.utils.db_api.db_gino import db
 from app.utils.db_api.schemas.group import Groups
 

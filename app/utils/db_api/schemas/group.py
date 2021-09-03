@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String, sql, Integer, SmallInteger, Enum, ForeignKey
 
-from app.models.fuckult import Fuckult
+from app.enums.fuckult import Fuckult
 from app.utils.db_api.db_gino import TimedBaseModel, BaseModel
 
 

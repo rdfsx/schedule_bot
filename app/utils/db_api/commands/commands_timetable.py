@@ -5,8 +5,8 @@ from aiogram.utils.markdown import hbold
 from asyncpg import UniqueViolationError, NotNullViolationError
 from sqlalchemy import select, or_
 
-from app.models.lessons import Lesson, LessonKind
-from app.models.week import UnderAboveWeek, Week, ThisNextWeek
+from app.enums.lessons import Lesson, LessonKind
+from app.enums.week import UnderAboveWeek, Week, ThisNextWeek
 from app.utils.db_api.commands.commands_teacher import select_teacher_id
 from app.utils.db_api.commands.coomands_group import select_group_exact_match
 from app.utils.db_api.db_gino import db

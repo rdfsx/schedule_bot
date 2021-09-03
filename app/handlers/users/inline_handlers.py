@@ -10,7 +10,7 @@ from app.keyboards.inline.callback_datas import day_week_inline, teacher_inline,
     teacher_schedule
 from app.keyboards.inline.inline_buttons import check_week, get_rating_kb, get_group_buttons, search_kb, teacher_schedule_kb
 from app.loader import dp
-from app.models.week import Week, ThisNextWeek
+from app.enums.week import Week, ThisNextWeek
 from app.states import States
 from app.utils.db_api.commands.commands_teacher import select_all_teachers, set_rating, select_teacher_id, delete_rating
 from app.utils.db_api.commands.commands_timetable import get_some_day, select_rows_by_teacher

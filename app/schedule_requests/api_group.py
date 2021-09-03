@@ -8,10 +8,10 @@ import bs4
 from bs4 import BeautifulSoup
 from loguru import logger
 
-from app.models.fuckult import Fuckult
-from app.models.lessons import LessonKind
-from app.models.schedule import Sem
-from app.models.week import Week, UnderAboveWeek
+from app.enums.fuckult import Fuckult
+from app.enums.lessons import LessonKind
+from app.enums.schedule import Sem
+from app.enums.week import Week, UnderAboveWeek
 from app.schedule_requests.api import API
 from app.utils.admin_tools.admins_notify import notify_admins
 from app.utils.db_api.commands.commands_teacher import select_teacher_by_name, add_teacher
