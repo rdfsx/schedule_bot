@@ -2,7 +2,7 @@ version: "3"
 
 services:
   db:
-    container_name: database-yyyyyyyyyyyyy
+    container_name: database
     image: postgres:alpine
     restart: on-failure
     environment:
@@ -15,7 +15,7 @@ services:
     - ./postgresql:/var/lib/postgresql/data
 
   redis:
-    container_name: redis-67777777777777777
+    container_name: redis
     image: redis:alpine
     restart: on-failure
     volumes:
@@ -24,7 +24,7 @@ services:
       - 6379:6379
 
   bot:
-    container_name: botjhgutdftydfsgldfg
+    container_name: bot
     build:
       context: .
     restart: always
