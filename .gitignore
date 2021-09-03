@@ -139,4 +139,4 @@ dmypy.json
 .idea/vagrant.xml
 .idea/vcs.xml
 /.idea/schedule_bot.iml
-/utils/db_api/test.py
+/app/utils/db_api/test.py
