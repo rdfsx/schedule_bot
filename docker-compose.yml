@@ -27,7 +27,6 @@ services:
     container_name: bot
     build:
       context: .
-    command: python app.py
     restart: always
     env_file:
       - .env
