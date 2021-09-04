@@ -13,7 +13,7 @@ config = context.config
 fileConfig(config.config_file_name)
 target_metadata = db
 
-config.set_main_option('sqlalchemy.url', POSTGRES_URI)
+config.set_main_option('sqlalchemy.url', POSTGRES_URI.replace('%', '%%'))
 
 
 def run_migrations_offline():
