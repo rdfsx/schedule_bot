@@ -5,7 +5,6 @@ from aiogram import Dispatcher
 from gino import Gino
 from loguru import logger
 from sqlalchemy import Column, DateTime
-from sqlalchemy.ext.declarative import DeclarativeMeta
 
 from app import config
 
@@ -15,10 +14,7 @@ db = Gino()
 # Пример из https://github.com/aiogram/bot/blob/master/app/models/db.py
 
 
-MyModel: DeclarativeMeta = db.Model
-
-
-class BaseModel(MyModel):
+class BaseModel(db.Model):
     __abstract__ = True
 
     def __str__(self):
