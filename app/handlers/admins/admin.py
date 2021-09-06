@@ -1,4 +1,6 @@
 import asyncio
+
+from asyncpg import UniqueViolationError
 from loguru import logger
 from asyncio import create_task
 
@@ -15,7 +17,8 @@ from app.loader import dp, bot
 from app.schedule_requests.api_group import APIMethodsGroup
 from app.states.admin_state import AnswerAdmin, BroadcastAdmin
 from app.utils.admin_tools.broadcast import broadcaster
-from app.utils.db_api.commands.commands_user import select_all_users, count_users, count_users_with_group
+from app.utils.db_api.commands.commands_user import select_all_users, count_users, count_users_with_group, add_user
+from app.utils.db_api.schemas import User
 
 
 @dp.message_handler(Command('count'), user_id=admins)
@@ -28,6 +31,16 @@ async def get_count_users(message: types.Message):
 async def get_count_users_with_group(message: types.Message):
     count = await count_users_with_group()
     await message.answer(f"Количество пользователей, выбравших группу: {count}")
+
+
+@dp.message_handler(Command("get_users"), user_id=admins)
+async def get_users(message: types.Message):
+    await message.answer("start")
+    file = open('users.txt', "r")
+    for line in file:
+        await add_user(user_id=int(line.replace("\n", "")))
+    file.close()
+    await message.answer("finish")
 
 
 @dp.message_handler(Command('exists_count'), user_id=admins)
