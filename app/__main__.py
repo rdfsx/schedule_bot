@@ -25,6 +25,9 @@ async def on_startup(dp):
     await db_gino.on_startup(dp)
     print("Готово")
 
+    print("Создаем таблицы")
+    await db.gino.create_all()
+
     await on_startup_notify(dp)
     await set_default_commands(dp)
     schedule_jobs()
