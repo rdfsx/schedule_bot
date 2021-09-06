@@ -31,3 +31,23 @@ jobs:
     - name: Stop containers
       if: always()
       run: docker-compose -f "docker-compose.yml" down
+
+    - name: Copy repository contents via scp
+      uses: appleboy/scp-action@master
+      env:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+      with:
+        source: "."
+        target: "~/schedule_bot"
+
+    - name: Build and restart
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: docker-compose build && docker-compose restart && docker image rm $(docker image ls -f dangling=true -q)
