@@ -1,7 +1,33 @@
-name: first-github-action
-on: [push]
+name: Test
+
+on:
+  push:
+    branches:
+    - master
+    - features/**
+  pull_request:
+    branches:
+    - main
+
 jobs:
-  write-to-console:
-    runs-on: ubuntu-latest
+  docker:
+    runs-on: ubuntu-20.04
+
     steps:
-      - run: echo 'Hello world!'
+    - name: Checkout
+      uses: actions/checkout@v1
+
+    - name: Start containers
+      run: docker-compose -f "docker-compose.yml" up -d --build
+      env:
+        REDIS_HOST: localhost
+        REDIS_PORT: 6379
+        POSTGRES_HOST: localhost
+        POSTGRES_PORT: 5432
+        POSTGRES_DB: localhost
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: test_password
+
+    - name: Stop containers
+      if: always()
+      run: docker-compose -f "docker-compose.yml" down
