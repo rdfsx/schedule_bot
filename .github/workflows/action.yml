@@ -1,4 +1,4 @@
-name: Test
+name: Build and deploy
 
 on:
   push:
@@ -26,8 +26,8 @@ jobs:
         cat .env
 
     - name: Build containers
-      run: docker-compose build
+      run: docker-compose -f "docker-compose.yml" up -d --build
 
     - name: Stop containers
       if: always()
-      run: docker-compose down
+      run: docker-compose -f "docker-compose.yml" down
