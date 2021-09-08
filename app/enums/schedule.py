@@ -1,21 +1,19 @@
 from datetime import datetime
 from enum import Enum
 
+from app.enums import NextMixin
 
-class FuckultSchedule(Enum):
+
+class FuckultSchedule(NextMixin, Enum):
     zf = 'zf'
     df = 'df'
+    mag_df = 'mag_df'
+    mag_zf = 'mag'
 
-    def next(self):
-        return self.zf if self == self.df else self.df
 
-
-class Sem(Enum):
+class Sem(NextMixin, Enum):
     summer = 'summer'
     winter = 'winter'
-
-    def next(self):
-        return self.summer if self == self.winter else self.winter
 
     @staticmethod
     def get_sem():
