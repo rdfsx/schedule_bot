@@ -10,7 +10,7 @@ from loguru import logger
 
 from app.enums.fuckult import Fuckult
 from app.enums.lessons import LessonKind
-from app.enums.schedule import Sem
+from app.enums.schedule import Sem, FuckultSchedule
 from app.enums.week import Week, UnderAboveWeek
 from app.schedule_requests.api import API
 from app.utils.admin_tools.admins_notify import notify_admins
@@ -163,6 +163,7 @@ class APIMethodsGroup:
                 count_del += 1
         if result_rows:
             for result_row in result_rows:
+                result_row.append(FuckultSchedule.df)
                 await add_timetable(*result_row)
                 count_add += 1
         return count_add, count_del

@@ -1,3 +1,5 @@
+from typing import Union
+
 from asyncpg import UniqueViolationError
 from sqlalchemy import func, or_
 
@@ -23,7 +25,7 @@ async def add_teacher(full_name: str) -> int:
         pass
 
 
-async def select_all_teachers(teacher: str, offset: int = 0, limit: int = 20):
+async def select_all_teachers(teacher: str = '', offset: int = 0, limit: Union[int, None] = 20):
     teacher = teacher.replace(' ', '').casefold()
     return await Teacher.query\
         .where(func.replace(Teacher.full_name, ' ', '').ilike(f"%{teacher}%"))\

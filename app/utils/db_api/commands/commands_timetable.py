@@ -6,6 +6,7 @@ from asyncpg import UniqueViolationError, NotNullViolationError
 from sqlalchemy import select, or_
 
 from app.enums.lessons import Lesson, LessonKind
+from app.enums.schedule import FuckultSchedule
 from app.enums.week import UnderAboveWeek, Week, ThisNextWeek
 from app.utils.db_api.commands.commands_teacher import select_teacher_id
 from app.utils.db_api.commands.coomands_group import select_group_exact_match
@@ -21,7 +22,8 @@ async def add_lesson(lesson: str):
 
 
 async def add_timetable(day_week: Week, lesson_num: int, week: UnderAboveWeek, group: str, subgroup: int, lesson: str,
-                        lesson_kind: Optional[LessonKind] = None, teacher: Optional[int] = None):
+                        lesson_kind: Optional[LessonKind] = None, teacher: Optional[int] = None,
+                        fuckult: Optional[FuckultSchedule] = None):
     await add_lesson(lesson)
     try:
         timetable = Timetable(
@@ -33,6 +35,7 @@ async def add_timetable(day_week: Week, lesson_num: int, week: UnderAboveWeek, g
             lesson_id=await Lessons.select('id').where(Lessons.lesson == lesson).gino.scalar(),
             lesson_kind=lesson_kind,
             teacher_id=teacher,
+            fuckult=fuckult,
         )
         await timetable.create()
 

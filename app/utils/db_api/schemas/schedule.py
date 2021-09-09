@@ -2,6 +2,7 @@ from sqlalchemy import Column, String, sql, Integer, ForeignKey, SmallInteger, I
 from sqlalchemy import Enum
 
 from app.enums.lessons import LessonKind
+from app.enums.schedule import FuckultSchedule
 from app.enums.week import UnderAboveWeek, Week
 from app.utils.db_api.db_gino import TimedBaseModel, BaseModel
 from app.utils.db_api.schemas.group import GroupsRelatedModel
@@ -33,6 +34,7 @@ class Timetable(GroupsRelatedModel, LessonsRelatedModel, TeacherRelatedModelNull
     week = Column(Enum(UnderAboveWeek, native_enum=False), nullable=False)
     subgroup = Column(SmallInteger, nullable=False)
     lesson_kind = Column(Enum(LessonKind, native_enum=False))
+    fuckult = Column(Enum(FuckultSchedule, native_enum=False))
 
     group_idx = Index("group_idx", GroupsRelatedModel.group_id)
 
