@@ -34,9 +34,10 @@ async def select_group_id(group_id: int):
     return await Groups.query.where(Groups.id == group_id).gino.first()
 
 
-async def select_group(group: str):
+async def select_group(group: str, exactly: bool = False):
     group = re.sub('[ -]', '', group.casefold())
-    return await Groups.query.where(func.replace(Groups.group, '-', '').ilike(f"{group}%")).gino.first()
+    group_ilike = f"{group}%" if not exactly else group
+    return await Groups.query.where(func.replace(Groups.group, '-', '').ilike(group_ilike)).gino.first()
 
 
 async def select_group_exact_match(group: str):
