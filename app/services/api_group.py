@@ -12,7 +12,7 @@ from app.enums.fuckult import Fuckult
 from app.enums.lessons import LessonKind
 from app.enums.schedule import Sem
 from app.enums.week import Week, UnderAboveWeek
-from app.schedule_requests.api import API
+from app.services.api import API
 from app.utils.admin_tools.admins_notify import notify_admins
 from app.utils.db_api.commands.commands_teacher import select_teacher_by_name, add_teacher
 from app.utils.db_api.commands.commands_timetable import select_all_rows, delete_row, add_timetable

@@ -1,7 +1,7 @@
 import random
 
 from app.loader import scheduler
-from app.schedule_requests.api_group import APIMethodsGroup
+from app.services.api_group import APIMethodsGroup
 
 
 def schedule_jobs():

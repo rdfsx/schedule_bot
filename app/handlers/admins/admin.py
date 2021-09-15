@@ -14,7 +14,7 @@ from app.config import admins
 from app.keyboards.inline.callback_datas import message_for_admin
 from app.keyboards.inline.inline_buttons import cancel_markup
 from app.loader import dp, bot
-from app.schedule_requests.api_group import APIMethodsGroup
+from app.services.api_group import APIMethodsGroup
 from app.states.admin_state import AnswerAdmin, BroadcastAdmin
 from app.utils.admin_tools.broadcast import broadcaster
 from app.utils.db_api.commands.commands_user import select_all_users, count_users, count_users_with_group, add_user
