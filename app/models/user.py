@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import expression
 
 from app.models.base import TimedBaseModel
-from app.models.group import GroupRelatedModel
+from app.models.group import GroupRelatedModel, GroupModel
 
 
 class UserModel(GroupRelatedModel, TimedBaseModel):
@@ -11,13 +11,14 @@ class UserModel(GroupRelatedModel, TimedBaseModel):
 
     id = Column(BigInteger, primary_key=True, index=True, unique=True)
     is_superuser = Column(Boolean, server_default=expression.false())
-    group = relationship("GroupModel")
+
+    group = relationship(GroupModel.__tablename__)
 
 
 class UserRelatedModel:
     __abstract__ = True
 
     user_id = Column(
-        ForeignKey(f"{UserModel.__tablename__}.id", ondelete="CASCADE", onupdate="CASCADE"),
+        ForeignKey(f"{UserModel.__tablename__}.id", ondelete="CASCADE", onupdate="CASCADE"),  # TODO
         nullable=False,
     )
