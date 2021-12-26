@@ -4,7 +4,7 @@ from sqlalchemy.sql import expression
 from app.models.base import TimedBaseModel
 
 
-class User(TimedBaseModel):
+class UserModel(TimedBaseModel):
     __tablename__ = "user"
 
     id = Column(BigInteger, primary_key=True, index=True, unique=True)
@@ -12,10 +12,10 @@ class User(TimedBaseModel):
     subgroup = Column(SmallInteger)
 
 
-class UserRelatedMixin:
+class UserRelatedModel:
     __abstract__ = True
 
     user_id = Column(
-        ForeignKey(f"{User.__tablename__}.id", ondelete="CASCADE", onupdate="CASCADE"),
+        ForeignKey(f"{UserModel.__tablename__}.id", ondelete="CASCADE", onupdate="CASCADE"),
         nullable=False,
     )

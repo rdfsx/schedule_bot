@@ -9,8 +9,12 @@ class LessonKind(Enum):
     prac = 'практ.'
     lab = 'лаб.'
 
-    def to_str(self) -> str:
+    def __str__(self) -> str:
         return f"<i>({self.value})</i>"
+
+
+wtf = LessonKind.lec
+print(wtf)
 
 
 class Lesson(Enum):
@@ -31,4 +35,4 @@ class Lesson(Enum):
     def do_lesson_str(self, lesson: str, lesson_kind: LessonKind, teacher: str) -> str:
         if not teacher:
             teacher = ''
-        return f"{self.to_emoji()} {lesson_kind.to_str()} {lesson} <code>{teacher}</code> {self.to_time()}"
+        return f"{self.to_emoji()} {lesson_kind} {lesson} <code>{teacher}</code> {self.to_time()}"

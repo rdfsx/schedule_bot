@@ -1,20 +1,21 @@
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String, Enum, SmallInteger
 
+from app.enums.fuckult import Fuckult
 from app.models.base import TimedBaseModel
 
 
-class Group(TimedBaseModel):
+class GroupModel(TimedBaseModel):
     __tablename__ = 'groups'
 
     id = Column(Integer, primary_key=True, unique=True)
-    group = Column(String(20), unique=True, nullable=False)
+    name = Column(String(20), unique=True, nullable=False)
     fuck = Column(Enum(Fuckult, native_enum=False), nullable=False)
-    subgroups = Column(SmallInteger, nullable=False)
+    subgroup = Column(SmallInteger, nullable=False)
 
 
-class GroupsRelatedModel:
+class GroupRelatedModel:
     __abstract__ = True
 
     group_id = Column(
-        ForeignKey(f"{Group.__tablename__}.id", ondelete='CASCADE', onupdate='CASCADE'),
+        ForeignKey(f"{GroupModel.__tablename__}.id", ondelete='CASCADE', onupdate='CASCADE'),
     )

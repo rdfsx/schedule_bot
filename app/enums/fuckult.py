@@ -7,3 +7,4 @@ class Fuckult(Enum):
     EF = 3
     MTF = 4
     MSF = 5
+    UNKNOWN = 6

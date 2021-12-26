@@ -4,7 +4,7 @@ from aiogram.types import BotCommandScopeChat
 from app.config import Config
 
 
-async def set_default_commands(dp: Dispatcher):
+async def set_commands(dp: Dispatcher):
     await dp.bot.set_my_commands(
         [
             types.BotCommand('b', 'Если исчезли кнопки'),

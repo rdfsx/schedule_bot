@@ -1,9 +1,9 @@
-from app.loader import db, scheduler
+from app.loader import scheduler
 from app.utils.db import db_gino
-from app.utils.misc.apscheduler_jobs import schedule_jobs
+from app.utils.apscheduler_jobs import schedule_jobs
 from app.utils.set_bot_commands import set_default_commands
 
-from app import middlewares, filters, handlers
+from app import middlewares, filters
 
 from app.loader import dp
 
