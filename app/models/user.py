@@ -19,8 +19,3 @@ class UserRelatedMixin:
         ForeignKey(f"{User.__tablename__}.id", ondelete="CASCADE", onupdate="CASCADE"),
         nullable=False,
     )
-
-
-class UserDB:
-    async def save(self, user: User) -> User:
-        pass

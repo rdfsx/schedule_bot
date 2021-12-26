@@ -1,6 +1,9 @@
 import os
+from pathlib import Path
+from typing import NamedTuple
 
 from dotenv import load_dotenv
+from environs import Env
 
 load_dotenv()
 
@@ -42,3 +45,28 @@ CARD_FOR_DONUTS = str(os.getenv('CARD_FOR_DONUTS'))
 CARD_VALID_THRU_DONUTS = str(os.getenv('CARD_VALID_THRU_DONUTS'))
 ETHEREUM_DONUTS = str(os.getenv('ETHEREUM_DONUTS'))
 BITCOIN_DONUTS = str(os.getenv('BITCOIN_DONUTS'))
+
+
+class Config(NamedTuple):
+    __env = Env()
+    __env.read_env()
+
+    BASE_DIR = Path(__name__).resolve().parent.parent
+    LOCALES_PATH = BASE_DIR / 'locales'
+
+    BOT_TOKEN = __env.str('BOT_TOKEN')
+
+    ADMINS = __env.list('ADMIN_ID')
+
+    MONGODB_DATABASE = __env.str('MONGODB_DATABASE')
+    MONGODB_USERNAME = __env.str('MONGODB_USERNAME')
+    MONGODB_PASSWORD = __env.str('MONGODB_PASSWORD')
+    MONGODB_HOSTNAME = __env.str('MONGODB_HOSTNAME')
+    MONGODB_PORT = __env.str('MONGODB_PORT')
+    MONGODB_URI = 'mongodb://'
+
+    if MONGODB_USERNAME and MONGODB_PASSWORD:
+        MONGODB_URI += f"{MONGODB_USERNAME}:{MONGODB_PASSWORD}@"
+    MONGODB_URI += f"{MONGODB_HOSTNAME}:{MONGODB_PORT}"
+
+    STATISTICS_TOKEN = __env.str('STATISTICS_TOKEN')
