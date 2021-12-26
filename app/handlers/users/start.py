@@ -5,8 +5,8 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.builtin import CommandStart
 from aiogram.types import InlineQuery, InlineQueryResultArticle, InputTextMessageContent
 
-from app.data.convert import ERROR, start_sticker
-from app.data.messages import hello_message
+from app.constants.convert import ERROR, start_sticker
+from app.constants.messages import hello_message
 from app.filters import GroupFilter
 from app.keyboards.default import menu
 from app.keyboards.inline import search_kb
@@ -14,8 +14,8 @@ from app.keyboards.inline.callback_datas import group_subgroups
 from app.keyboards.inline.inline_buttons import subgroup_menu
 from app.loader import dp
 from app.states import States
-from app.utils.db_api.commands.commands_user import add_user, update_user_group
-from app.utils.db_api.commands.coomands_group import select_groups_limit, select_group, select_group_id
+from app.utils.db.commands.commands_user import add_user, update_user_group
+from app.utils.db.commands.coomands_group import select_groups_limit, select_group, select_group_id
 
 
 @dp.message_handler(CommandStart())

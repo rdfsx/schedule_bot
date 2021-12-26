@@ -1,8 +1,8 @@
 from aiogram import types
 from aiogram.dispatcher.filters import Command
 
-from app.data.convert import sticker
-from app.data.messages import hello_message, donuts
+from app.constants.convert import sticker
+from app.constants.messages import hello_message, donuts
 from app.keyboards.default import menu
 from app.keyboards.inline import search_kb
 from app.keyboards.inline.inline_buttons import search_teacher

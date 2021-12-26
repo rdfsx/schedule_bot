@@ -3,9 +3,9 @@ from typing import Optional
 from asyncpg import UniqueViolationError
 
 from app.loader import dp
-from app.utils.db_api.db_gino import db
-from app.utils.db_api.schemas.group import Groups
-from app.utils.db_api.schemas.user import User
+from app.utils.db.db_gino import db
+from app.utils.db.schemas.group import Groups
+from app.utils.db.schemas.user import User
 from app.utils.notify_admins import notify_new_user
 
 

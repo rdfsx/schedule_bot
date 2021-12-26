@@ -1,7 +1,7 @@
 from sqlalchemy import Column, BigInteger, sql, SmallInteger, ForeignKey
 
-from app.utils.db_api.db_gino import TimedBaseModel, BaseModel
-from app.utils.db_api.schemas.schedule import GroupsRelatedModel
+from app.utils.db.db_gino import TimedBaseModel, BaseModel
+from app.utils.db.schemas.schedule import GroupsRelatedModel
 
 
 class User(GroupsRelatedModel, TimedBaseModel):

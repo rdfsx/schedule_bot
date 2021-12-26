@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import List
 
-from app.data.convert import lessons_emoji, university_time
+from app.constants.convert import lessons_emoji, university_time
 
 
 class LessonKind(Enum):

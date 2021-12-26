@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String, sql, Integer, SmallInteger, Enum, ForeignKey
 
 from app.enums.fuckult import Fuckult
-from app.utils.db_api.db_gino import TimedBaseModel, BaseModel
+from app.utils.db.db_gino import TimedBaseModel, BaseModel
 
 
 class Groups(TimedBaseModel):

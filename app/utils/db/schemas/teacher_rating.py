@@ -1,8 +1,8 @@
 from sqlalchemy import Column, Integer, String, Index, UniqueConstraint, sql
 
-from app.utils.db_api.db_gino import TimedBaseModel
-from app.utils.db_api.schemas.teacher import TeacherRelatedModel
-from app.utils.db_api.schemas.user import UserRelatedModel
+from app.utils.db.db_gino import TimedBaseModel
+from app.utils.db.schemas.teacher import TeacherRelatedModel
+from app.utils.db.schemas.user import UserRelatedModel
 
 
 class TeacherRating(UserRelatedModel, TeacherRelatedModel, TimedBaseModel):

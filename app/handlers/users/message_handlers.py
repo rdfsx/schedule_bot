@@ -6,8 +6,8 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ContentTyp
 from aiogram.utils.markdown import hbold, hitalic
 
 from app.config import admins
-from app.data.convert import to_rus
-from app.data.messages import base_message
+from app.constants.convert import to_rus
+from app.constants.messages import base_message
 from app.filters import DayFilter, GroupFilter, TeacherFilter, RegisterFilter
 from app.keyboards.default import menu
 from app.keyboards.inline.callback_datas import message_for_admin
@@ -15,10 +15,10 @@ from app.keyboards.inline.inline_buttons import check_week, kb_more, get_group_b
 from app.loader import dp, bot
 from app.enums.lessons import Lesson
 from app.enums.week import Week, ThisNextWeek
-from app.utils.db_api.commands.commands_teacher import select_teacher_by_name, get_rating
-from app.utils.db_api.commands.commands_timetable import get_some_day, check_existence, get_day_raw
-from app.utils.db_api.commands.coomands_group import select_group, select_group_id
-from app.utils.db_api.schemas.user import User
+from app.utils.db.commands.commands_teacher import select_teacher_by_name, get_rating
+from app.utils.db.commands.commands_timetable import get_some_day, check_existence, get_day_raw
+from app.utils.db.commands.coomands_group import select_group, select_group_id
+from app.utils.db.schemas.user import User
 from aiogram.utils.markdown import quote_html
 
 

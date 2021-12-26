@@ -1,5 +1,5 @@
 from app.loader import db, scheduler
-from app.utils.db_api import db_gino
+from app.utils.db import db_gino
 from app.utils.misc.apscheduler_jobs import schedule_jobs
 from app.utils.set_bot_commands import set_default_commands
 

@@ -1,7 +1,7 @@
 from aiogram import types
 from aiogram.dispatcher.filters import BoundFilter
 
-from app.utils.db_api.commands.commands_teacher import select_teacher_by_name
+from app.utils.db.commands.commands_teacher import select_teacher_by_name
 
 
 class TeacherFilter(BoundFilter):

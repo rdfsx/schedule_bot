@@ -3,9 +3,9 @@ from sqlalchemy import Enum
 
 from app.enums.lessons import LessonKind
 from app.enums.week import UnderAboveWeek, Week
-from app.utils.db_api.db_gino import TimedBaseModel, BaseModel
-from app.utils.db_api.schemas.group import GroupsRelatedModel
-from app.utils.db_api.schemas.teacher import TeacherRelatedModelNull
+from app.utils.db.db_gino import TimedBaseModel, BaseModel
+from app.utils.db.schemas.group import GroupsRelatedModel
+from app.utils.db.schemas.teacher import TeacherRelatedModelNull
 
 
 class Lessons(TimedBaseModel):

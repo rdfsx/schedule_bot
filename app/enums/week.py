@@ -1,7 +1,7 @@
 from datetime import datetime
 from enum import Enum
 
-from app.data.convert import week_correction
+from app.constants.convert import week_correction
 
 
 class Week(Enum):

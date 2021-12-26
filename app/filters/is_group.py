@@ -1,7 +1,7 @@
 from aiogram import types
 from aiogram.dispatcher.filters import BoundFilter
 
-from app.utils.db_api.commands.coomands_group import select_group
+from app.utils.db.commands.coomands_group import select_group
 
 
 class GroupFilter(BoundFilter):

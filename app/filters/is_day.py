@@ -1,7 +1,7 @@
 from aiogram import types
 from aiogram.dispatcher.filters import BoundFilter
 
-from app.data.convert import to_rus
+from app.constants.convert import to_rus
 
 
 class DayFilter(BoundFilter):

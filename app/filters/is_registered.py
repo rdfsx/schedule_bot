@@ -1,7 +1,7 @@
 from aiogram import types
 from aiogram.dispatcher.filters import BoundFilter
 
-from app.utils.db_api.schemas.user import User
+from app.utils.db.schemas.user import User
 
 
 class RegisterFilter(BoundFilter):

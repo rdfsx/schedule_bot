@@ -4,8 +4,8 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from app.config import POSTGRES_URI
-from app.utils.db_api.db_gino import db
-from app.utils.db_api.schemas import *
+from app.utils.db.db_gino import db
+from app.utils.db.schemas import *
 
 from alembic import context
 

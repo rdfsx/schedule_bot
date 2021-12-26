@@ -7,12 +7,12 @@ from sqlalchemy import select, or_
 
 from app.enums.lessons import Lesson, LessonKind
 from app.enums.week import UnderAboveWeek, Week, ThisNextWeek
-from app.utils.db_api.commands.commands_teacher import select_teacher_id
-from app.utils.db_api.commands.coomands_group import select_group_exact_match
-from app.utils.db_api.db_gino import db
-from app.utils.db_api.schemas.group import Groups
-from app.utils.db_api.schemas.schedule import Timetable, Lessons
-from app.utils.db_api.schemas.teacher import Teacher
+from app.utils.db.commands.commands_teacher import select_teacher_id
+from app.utils.db.commands.coomands_group import select_group_exact_match
+from app.utils.db.db_gino import db
+from app.utils.db.schemas.group import Groups
+from app.utils.db.schemas.schedule import Timetable, Lessons
+from app.utils.db.schemas.teacher import Teacher
 
 
 async def add_lesson(lesson: str):

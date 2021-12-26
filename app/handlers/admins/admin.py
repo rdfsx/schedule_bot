@@ -17,8 +17,8 @@ from app.loader import dp, bot
 from app.services.api_group import APIMethodsGroup
 from app.states.admin_state import AnswerAdmin, BroadcastAdmin
 from app.utils.admin_tools.broadcast import broadcaster
-from app.utils.db_api.commands.commands_user import select_all_users, count_users, count_users_with_group, add_user
-from app.utils.db_api.schemas import User
+from app.utils.db.commands.commands_user import select_all_users, count_users, count_users_with_group, add_user
+from app.utils.db.schemas import User
 
 
 @dp.message_handler(Command('count'), user_id=admins)

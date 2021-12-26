@@ -4,8 +4,8 @@ from aiogram.dispatcher.middlewares import BaseMiddleware
 from aiogram.types import ReplyKeyboardRemove
 
 from app.loader import bot
-from app.utils.db_api.commands.commands_user import add_user
-from app.utils.db_api.schemas.user import User
+from app.utils.db.commands.commands_user import add_user
+from app.utils.db.schemas.user import User
 
 
 class ACLMiddleware(BaseMiddleware):

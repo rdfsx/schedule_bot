@@ -5,8 +5,8 @@ from asyncpg import UniqueViolationError
 from sqlalchemy import func
 
 from app.enums.fuckult import Fuckult
-from app.utils.db_api.db_gino import db
-from app.utils.db_api.schemas.group import Groups
+from app.utils.db.db_gino import db
+from app.utils.db.schemas.group import Groups
 
 
 async def add_group(group: str, fuck: Fuckult, subgroups: Optional[int] = 1):

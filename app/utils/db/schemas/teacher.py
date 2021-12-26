@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String, sql, Integer, ForeignKey
 
-from app.utils.db_api.db_gino import TimedBaseModel, BaseModel
+from app.utils.db.db_gino import TimedBaseModel, BaseModel
 
 
 class Teacher(TimedBaseModel):
