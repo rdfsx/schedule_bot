@@ -1,14 +1,14 @@
-from sqlalchemy import Column, Integer, Enum, String, SmallInteger
+from sqlalchemy import Column, Integer, Enum, SmallInteger
 
 from app.enums.lessons import LessonKind
 from app.enums.week import Week, UnderAboveWeek
 from app.models.base import TimedBaseModel
+from app.models.group import GroupRelatedModel
 from app.models.lesson import LessonRelatedModel
 from app.models.teacher import TeacherRelatedModelNull
-from app.utils.db.schemas.group import GroupsRelatedModel
 
 
-class Timetable(GroupsRelatedModel,
+class Timetable(GroupRelatedModel,
                 LessonRelatedModel,
                 TeacherRelatedModelNull,
                 TimedBaseModel):

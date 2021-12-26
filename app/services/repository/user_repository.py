@@ -1,17 +1,22 @@
-import typing
+
 from decimal import Decimal
+from typing import Optional
 
 from sqlalchemy.exc import IntegrityError
 
+from app.models.group import GroupModel
 from app.models.user import UserModel
-from app.services.repository.base import BaseRepository, Model
+from app.services.repository.base_repository import BaseRepository, Model
 from app.utils.db.utils import filter_payload, manual_cast
 
 
 class UserRepository(BaseRepository[UserModel]):
     model = UserModel
 
-    async def add_user(self, *, user_id: int, group: Optional[str] = None, subgroup: Optional[int] = 1) -> Model:
+    async def add_user(self, *,
+                       user_id: int,
+                       group: Optional[GroupModel] = None,
+                       subgroup: Optional[int] = 1) -> Model:
         prepared_payload = filter_payload(locals())
         return manual_cast(await self._insert(**prepared_payload))
 
