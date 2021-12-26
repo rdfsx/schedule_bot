@@ -1,5 +1,3 @@
-
-from decimal import Decimal
 from typing import Optional
 
 from sqlalchemy.exc import IntegrityError
@@ -17,8 +15,9 @@ class UserRepository(BaseRepository[UserModel]):
     async def add_user(self, *,
                        user_id: int,
                        group: Optional[GroupModel] = None) -> Model:
-        group = list(group)
-        prepared_payload = filter_payload(locals())
+        locals_vars = locals()
+        locals_vars['group'] = list(group)
+        prepared_payload = filter_payload(locals_vars)
         return manual_cast(await self._insert(**prepared_payload))
 
     async def delete_user(self, user_id: int) -> None:
