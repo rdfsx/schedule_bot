@@ -1,6 +1,6 @@
 import typing
 
-from app.services.repository.base import Model
+from app.services.repository.base_repository import Model
 
 T = typing.TypeVar("T")
 Dictionary = typing.TypeVar("Dictionary", bound=typing.Dict[typing.Any, typing.Any])
