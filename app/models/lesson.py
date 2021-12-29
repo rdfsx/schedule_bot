@@ -1,19 +1,31 @@
-from sqlalchemy import Integer, Column, String, ForeignKey
+import enum
 
-from app.models.base import TimedBaseModel
+import sqlalchemy as sa
+from sqlalchemy.orm import declared_attr
+
+from app.models.base import TimeBaseModel
 
 
-class LessonModel(TimedBaseModel):
-    __tablename__ = 'lesson'
+class LessonKind(enum.Enum):
+    LEC = 'лекц.'
+    PRAC = 'практ.'
+    LAB = 'лаб.'
 
-    id = Column(Integer, primary_key=True, index=True, unique=True)
-    lesson = Column(String(300), nullable=False, unique=True)
+    def __str__(self) -> str:
+        return f"<i>({self.value})</i>"
+
+
+class LessonModel(TimeBaseModel):
+    id: int = sa.Column(sa.Integer, primary_key=True, index=True, unique=True)
+    name: str = sa.Column(sa.String(500), nullable=False, unique=True)
 
 
 class LessonRelatedModel:
     __abstract__ = True
 
-    lesson_id = Column(
-        ForeignKey(f"{LessonModel.__tablename__}.id", ondelete='CASCADE', onupdate='CASCADE'),
-        nullable=False
-    )
+    @declared_attr
+    def lesson_id(self):
+        return sa.Column(
+            sa.ForeignKey(f"{LessonModel.__tablename__}.id", ondelete='CASCADE', onupdate='CASCADE'),
+            nullable=False,
+        )

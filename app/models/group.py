@@ -1,21 +1,36 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, Enum, SmallInteger
+import enum
+import typing
 
-from app.enums.fuckult import Fuckult
-from app.models.base import TimedBaseModel
+import sqlalchemy as sa
+from sqlalchemy.orm import declared_attr
+
+from app.models.base import TimeBaseModel
 
 
-class GroupModel(TimedBaseModel):
-    __tablename__ = 'groups'
+class Fuckult(enum.Enum):
+    FAIS = 1
+    GEF = 2
+    EF = 3
+    MTF = 4
+    MSF = 5
+    UNKNOWN = 6
 
-    id = Column(Integer, primary_key=True, unique=True)
-    name = Column(String(20), unique=True, nullable=False)
-    fuck = Column(Enum(Fuckult, native_enum=False), nullable=False)
-    subgroup = Column(SmallInteger, nullable=False)
+
+class GroupModel(TimeBaseModel):
+    id: int = sa.Column(sa.Integer, primary_key=True, index=True, unique=True)
+    name: str = sa.Column(sa.String(20), nullable=False)
+    subgroup: int = sa.Column(sa.SmallInteger, nullable=False)
+
+    __table_args__ = (
+        sa.UniqueConstraint(name, typing.cast(sa.Column, subgroup)),
+    )
 
 
 class GroupRelatedModel:
     __abstract__ = True
 
-    group_id = Column(
-        ForeignKey(f"{GroupModel.__tablename__}.id", ondelete='CASCADE', onupdate='CASCADE'),
-    )
+    @declared_attr
+    def group_id(self):
+        return sa.Column(
+            sa.ForeignKey(f"{GroupModel.__tablename__}.id", ondelete='CASCADE', onupdate='CASCADE'),
+        )

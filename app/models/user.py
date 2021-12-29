@@ -1,24 +1,24 @@
-from sqlalchemy import Column, BigInteger, Boolean, ForeignKey, SmallInteger
-from sqlalchemy.orm import relationship
+import sqlalchemy as sa
+from sqlalchemy.orm import declared_attr, relationship
 from sqlalchemy.sql import expression
 
-from app.models.base import TimedBaseModel
+from app.models.base import TimeBaseModel
 from app.models.group import GroupRelatedModel, GroupModel
 
 
-class UserModel(GroupRelatedModel, TimedBaseModel):
-    __tablename__ = "user"
+class UserModel(GroupRelatedModel, TimeBaseModel):
+    id: int = sa.Column(sa.BigInteger, primary_key=True, index=True, unique=True)
+    is_superuser: bool = sa.Column(sa.Boolean, server_default=expression.false())
 
-    id = Column(BigInteger, primary_key=True, index=True, unique=True)
-    is_superuser = Column(Boolean, server_default=expression.false())
-
-    group = relationship(GroupModel.__tablename__)
+    group: GroupModel = relationship(GroupModel.__name__)
 
 
 class UserRelatedModel:
     __abstract__ = True
 
-    user_id = Column(
-        ForeignKey(f"{UserModel.__tablename__}.id", ondelete="CASCADE", onupdate="CASCADE"),  # TODO
-        nullable=False,
-    )
+    @declared_attr
+    def user_id(self):
+        return sa.Column(
+            sa.ForeignKey(f"{UserModel.__tablename__}.id", ondelete="CASCADE", onupdate="CASCADE"),
+            nullable=False,
+        )

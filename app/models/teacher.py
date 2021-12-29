@@ -1,40 +1,47 @@
-from sqlalchemy import Column, String, Integer, ForeignKey, Index, UniqueConstraint
+import typing
 
-from app.models.base import TimedBaseModel
+import sqlalchemy as sa
+from sqlalchemy.orm import declared_attr
+
+from app.models.base import TimeBaseModel
 from app.models.user import UserRelatedModel
 
 
-class TeacherModel(TimedBaseModel):
-    __tablename__ = 'teacher'
+class TeacherModel(TimeBaseModel):
+    id: int = sa.Column(sa.Integer, primary_key=True, index=True, unique=True)
+    first_name: str = sa.Column((sa.String(100)), nullable=False, unique=True)
+    surname: str = sa.Column((sa.String(100)), nullable=False)
+    patronymic: str = sa.Column((sa.String(100)), nullable=False)
+    full_name: str = sa.Column((sa.String(300)), nullable=False, unique=True)
 
-    id = Column(Integer, primary_key=True, index=True, unique=True)
-    full_name = Column((String(150)), nullable=False)
-    rating = Column(Integer, default=0)
-    count = Column(Integer, default=0)
+    __table_args__ = (
+        sa.UniqueConstraint(first_name, surname, patronymic),
+    )
 
 
 class TeacherRelatedModel:
     __abstract__ = True
 
-    teacher_id = Column(
-        ForeignKey(f"{TeacherModel.__tablename__}.id", ondelete='CASCADE', onupdate='CASCADE'),
-        nullable=False
-    )
+    @declared_attr
+    def teacher_id(self):
+        return sa.Column(
+            sa.ForeignKey(f"{TeacherModel.__tablename__}.id", ondelete='CASCADE', onupdate='CASCADE'),
+            nullable=False,
+        )
 
 
-class TeacherRelatedModelNull:
+class TeacherRelatedNullModel:
     __abstract__ = True
 
-    teacher_id = Column(
-        ForeignKey(f"{TeacherModel.__tablename__}.id", ondelete='CASCADE', onupdate='CASCADE'),
-    )
+    @declared_attr
+    def teacher_id(self):
+        return sa.Column(
+            sa.ForeignKey(f"{TeacherModel.__tablename__}.id", ondelete='CASCADE', onupdate='CASCADE'),
+        )
 
 
-class TeacherRating(UserRelatedModel, TeacherRelatedModel, TimedBaseModel):
-    __tablename__ = 'teacher_rating'
+class TeacherRatingModel(UserRelatedModel, TeacherRelatedModel, TimeBaseModel):
+    id: int = sa.Column(sa.Integer, primary_key=True, index=True, unique=True)
+    rate: typing.Literal[1, 2, 3, 4, 5] = sa.Column(sa.SmallInteger, nullable=False)
 
-    rate = Column(Integer, nullable=False)
-
-    rate_idx = Index("rate_idx", UserRelatedModel.user_id, TeacherRelatedModel.teacher_id)
-
-    __table_args__ = UniqueConstraint(UserRelatedModel.user_id, TeacherRelatedModel.teacher_id)
+    rate_idx = sa.Index("rate_idx", UserRelatedModel.user_id, TeacherRelatedModel.teacher_id, unique=True)
