@@ -11,7 +11,7 @@ from app.keyboards.inline.callback_datas import day_week_inline, teacher_inline,
 from app.keyboards.inline.inline_buttons import check_week, get_rating_kb, get_group_buttons, search_kb, teacher_schedule_kb
 from app.loader import dp
 from app.enums.week import Week, ThisNextWeek
-from app.states import States
+from app.states import StartStates
 from app.utils.db.commands.commands_teacher import select_all_teachers, set_rating, select_teacher_id, delete_rating
 from app.utils.db.commands.commands_timetable import get_some_day, select_rows_by_teacher
 from app.utils.db.commands.coomands_group import select_groups_limit, select_group_id
@@ -161,5 +161,5 @@ async def send_donut(call: CallbackQuery):
 @dp.callback_query_handler(text='reset')
 async def reset_user(call: CallbackQuery):
     await call.answer('Настройки сброшены.')
-    await States.GROUP.set()
+    await StartStates.GROUP.set()
     await call.message.answer('Найдите свою группу:', reply_markup=search_kb)

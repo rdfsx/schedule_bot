@@ -13,21 +13,21 @@ from app.keyboards.inline import search_kb
 from app.keyboards.inline.callback_datas import group_subgroups
 from app.keyboards.inline.inline_buttons import subgroup_menu
 from app.loader import dp
-from app.states import States
+from app.states import StartStates
 from app.utils.db.commands.commands_user import add_user, update_user_group
 from app.utils.db.commands.coomands_group import select_groups_limit, select_group, select_group_id
 
 
 @dp.message_handler(CommandStart())
 async def bot_start(message: types.Message):
-    await States.GROUP.set()
+    await StartStates.GROUP.set()
     await message.answer_sticker(sticker=start_sticker)
     await add_user(message.from_user.id)
     await message.answer(f"Приветствую, {message.from_user.full_name}!\n"
                          "Найди свою группу:", reply_markup=search_kb)
 
 
-@dp.inline_handler(state=States.GROUP)
+@dp.inline_handler(state=StartStates.GROUP)
 async def get_all_groups(inline_query: InlineQuery):
     limit = 20
     offset = 0 if inline_query.offset == '' else int(inline_query.offset)
@@ -52,24 +52,24 @@ async def get_all_groups(inline_query: InlineQuery):
     await inline_query.answer(results=results, next_offset=next_offset)
 
 
-@dp.message_handler(GroupFilter(), state=States.GROUP)
+@dp.message_handler(GroupFilter(), state=StartStates.GROUP)
 async def check_group(message: types.Message, state: FSMContext):
     group = await select_group(message.text)
     if group.subgroups == 1:
         await update_user_group(user_id=message.from_user.id, group=group.group)
         await state.reset_state()
         return await message.answer(hello_message, reply_markup=menu, disable_web_page_preview=True)
-    await States.SUBGROUP.set()
+    await StartStates.SUBGROUP.set()
     await state.update_data(group=group.id)
     await message.answer('Выберите свою подгруппу:', reply_markup=subgroup_menu(group.subgroups))
 
 
-@dp.message_handler(state=States.GROUP)
+@dp.message_handler(state=StartStates.GROUP)
 async def failed_process_group(message: types.Message):
     await message.answer('Что-то не так. Найдите свою группу:', reply_markup=search_kb)
 
 
-@dp.callback_query_handler(group_subgroups.filter(), state=States.SUBGROUP)
+@dp.callback_query_handler(group_subgroups.filter(), state=StartStates.SUBGROUP)
 async def set_subgroup(call: types.CallbackQuery, callback_data: dict, state: FSMContext):
     subgroup = str(callback_data.get('number'))
     data = await state.get_data()
@@ -81,6 +81,6 @@ async def set_subgroup(call: types.CallbackQuery, callback_data: dict, state: FS
     await call.message.answer(hello_message, reply_markup=menu, disable_web_page_preview=True)
 
 
-@dp.message_handler(state=States.SUBGROUP)
+@dp.message_handler(state=StartStates.SUBGROUP)
 async def failed_process_subgroup(message: types.Message):
     await message.answer('Выберите свою подгруппу☝️')

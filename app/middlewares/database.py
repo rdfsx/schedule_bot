@@ -1,6 +1,6 @@
 from aiogram.dispatcher.middlewares import LifetimeControllerMiddleware
 from aiogram.types.base import TelegramObject
-from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy.orm import sessionmaker
 
 
 class DatabaseMiddleware(LifetimeControllerMiddleware):
@@ -12,7 +12,7 @@ class DatabaseMiddleware(LifetimeControllerMiddleware):
 
     async def pre_process(self, obj: TelegramObject, data: dict, *args):
         session = self.pool()
-        data["session"]: Session = session
+        data["session"] = session
 
     async def post_process(self, obj: TelegramObject, data: dict, *args):
         if session := data.get('session', None):

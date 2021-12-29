@@ -7,12 +7,12 @@ from app.keyboards.default import menu
 from app.keyboards.inline import search_kb
 from app.keyboards.inline.inline_buttons import search_teacher
 from app.loader import dp
-from app.states import States
+from app.states import StartStates
 
 
 @dp.message_handler(Command('reset'))
 async def do_reset(message: types.Message):
-    await States.GROUP.set()
+    await StartStates.GROUP.set()
     await message.answer('Найди свою группу:', reply_markup=search_kb)
 
 

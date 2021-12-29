@@ -1,7 +1,7 @@
 from aiogram.dispatcher.filters.state import StatesGroup, State
 
 
-class States(StatesGroup):
+class StartStates(StatesGroup):
     GROUP = State()
     SUBGROUP = State()
     REG = State()
