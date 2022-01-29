@@ -9,9 +9,9 @@ from app.constants.convert import ERROR, start_sticker
 from app.constants.messages import hello_message
 from app.filters import GroupFilter
 from app.keyboards.default import menu
-from app.keyboards.inline import search_kb
-from app.keyboards.inline.callback_datas import group_subgroups
-from app.keyboards.inline.inline_buttons import subgroup_menu
+from app.keyboards.inline_ import search_kb
+from app.keyboards.inline_.callback_datas import group_subgroups
+from app.keyboards.inline_.inline_buttons import subgroup_menu
 from app.loader import dp
 from app.states import StartStates
 from app.utils.db.commands.commands_user import add_user, update_user_group

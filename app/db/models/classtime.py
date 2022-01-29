@@ -1,7 +1,7 @@
 import sqlalchemy as sa
 from sqlalchemy.orm import declared_attr
 
-from app.models.base import TimeBaseModel
+from app.db.models.base import TimeBaseModel
 
 
 class ClassTimeModel(TimeBaseModel):

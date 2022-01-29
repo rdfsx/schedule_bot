@@ -1,10 +1,8 @@
-from typing import Optional
-
 from sqlalchemy.exc import IntegrityError
 
-from app.models.group import GroupModel
-from app.models.user import UserModel
-from app.services.repository.base_repository import BaseRepository, Model
+from app.db.models.group import GroupModel
+from app.db.models import UserModel
+from app.db.repository.base_repository import BaseRepository, Model
 from app.utils.db.utils import filter_payload, manual_cast
 from app.utils.exceptions import UnableToDelete
 

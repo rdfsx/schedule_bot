@@ -2,7 +2,7 @@ from aiogram.dispatcher.middlewares import LifetimeControllerMiddleware
 from aiogram.types.base import TelegramObject
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.services.repository.repository import Repositories
+from app.db.repository import Repositories
 
 
 class RepoMiddleware(LifetimeControllerMiddleware):

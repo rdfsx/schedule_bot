@@ -11,8 +11,8 @@ from aiogram.types import CallbackQuery
 from aiogram.utils.exceptions import BotBlocked, UserDeactivated, TelegramAPIError
 
 from app.config import admins
-from app.keyboards.inline.callback_datas import message_for_admin
-from app.keyboards.inline.inline_buttons import cancel_markup
+from app.keyboards.inline_.callback_datas import message_for_admin
+from app.keyboards.inline_.inline_buttons import cancel_markup
 from app.loader import dp, bot
 from app.services.api_group import APIMethodsGroup
 from app.states.admin_state import AnswerAdmin, BroadcastAdmin

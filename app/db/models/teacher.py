@@ -3,8 +3,8 @@ import typing
 import sqlalchemy as sa
 from sqlalchemy.orm import declared_attr
 
-from app.models.base import TimeBaseModel
-from app.models.user import UserRelatedModel
+from app.db.models.base import TimeBaseModel
+from app.db.models.user import UserRelatedModel
 
 
 class TeacherModel(TimeBaseModel):

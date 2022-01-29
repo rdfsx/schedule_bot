@@ -1,7 +1,7 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from app.constants.convert import to_eng
-from app.keyboards.inline.callback_datas import day_week_inline, other_week_inline, teacher_inline, teacher_schedule, \
+from app.keyboards.inline_.callback_datas import day_week_inline, other_week_inline, teacher_inline, teacher_schedule, \
     delete_teacher_rating, group_subgroups
 from app.enums.week import ThisNextWeek, Week
 

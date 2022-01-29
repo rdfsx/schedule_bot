@@ -10,8 +10,8 @@ from app.constants.convert import to_rus
 from app.constants.messages import base_message
 from app.filters import DayFilter, GroupFilter, TeacherFilter, RegisterFilter
 from app.keyboards.default import menu
-from app.keyboards.inline.callback_datas import message_for_admin
-from app.keyboards.inline.inline_buttons import check_week, kb_more, get_group_buttons, get_rating_kb
+from app.keyboards.inline_.callback_datas import message_for_admin
+from app.keyboards.inline_.inline_buttons import check_week, kb_more, get_group_buttons, get_rating_kb
 from app.loader import dp, bot
 from app.enums.lessons import Lesson
 from app.enums.week import Week, ThisNextWeek

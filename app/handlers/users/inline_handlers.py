@@ -6,9 +6,9 @@ from aiogram.utils.markdown import hbold, hitalic
 
 from app.constants.convert import ERROR, PREPODS, sticker
 from app.constants.messages import donuts
-from app.keyboards.inline.callback_datas import day_week_inline, teacher_inline, delete_teacher_rating, other_week_inline, \
+from app.keyboards.inline_.callback_datas import day_week_inline, teacher_inline, delete_teacher_rating, other_week_inline, \
     teacher_schedule
-from app.keyboards.inline.inline_buttons import check_week, get_rating_kb, get_group_buttons, search_kb, teacher_schedule_kb
+from app.keyboards.inline_.inline_buttons import check_week, get_rating_kb, get_group_buttons, search_kb, teacher_schedule_kb
 from app.loader import dp
 from app.enums.week import Week, ThisNextWeek
 from app.states import StartStates

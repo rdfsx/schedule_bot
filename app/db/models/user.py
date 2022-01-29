@@ -2,8 +2,8 @@ import sqlalchemy as sa
 from sqlalchemy.orm import declared_attr, relationship
 from sqlalchemy.sql import expression
 
-from app.models.base import TimeBaseModel
-from app.models.group import GroupRelatedModel, GroupModel
+from app.db.models.base import TimeBaseModel
+from app.db.models.group import GroupRelatedModel, GroupModel
 
 
 class UserModel(GroupRelatedModel, TimeBaseModel):

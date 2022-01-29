@@ -4,12 +4,12 @@ from datetime import datetime
 import sqlalchemy as sa
 from sqlalchemy.orm import relationship
 
-from app.models.base import TimeBaseModel
-from app.models.classroom import ClassRoomRelatedModel, ClassRoomModel
-from app.models.classtime import ClassTimeRelatedModel, ClassTimeModel
-from app.models.group import GroupRelatedModel, GroupModel
-from app.models.lesson import LessonRelatedModel, LessonModel, LessonKind
-from app.models.teacher import TeacherRelatedNullModel, TeacherModel
+from app.db.models.base import TimeBaseModel
+from app.db.models.classroom import ClassRoomRelatedModel, ClassRoomModel
+from app.db.models.classtime import ClassTimeRelatedModel, ClassTimeModel
+from app.db.models.group import GroupRelatedModel, GroupModel
+from app.db.models.lesson import LessonRelatedModel, LessonModel, LessonKind
+from app.db.models.teacher import TeacherRelatedNullModel, TeacherModel
 
 
 class Week(enum.Enum):
@@ -57,8 +57,8 @@ class TimetableModel(GroupRelatedModel,
     lesson_kind: LessonKind = sa.Column(sa.Enum(LessonKind, native_enum=False))
     source: SourceTimetable = sa.Column(sa.Enum(SourceTimetable, native_enum=False))
 
-    group: GroupModel = relationship(GroupModel.__name__)
-    lesson: LessonModel = relationship(LessonModel.__name__)
-    teacher: TeacherModel = relationship(TeacherModel.__name__)
-    classroom: ClassRoomModel = relationship(ClassRoomModel.__name__)
-    classtime: ClassTimeModel = relationship(ClassTimeModel.__name__)
+    group: GroupModel = relationship(GroupModel.__name__, lazy='joined')
+    lesson: LessonModel = relationship(LessonModel.__name__, lazy='joined')
+    teacher: TeacherModel = relationship(TeacherModel.__name__, lazy='joined')
+    classroom: ClassRoomModel = relationship(ClassRoomModel.__name__, lazy='joined')
+    classtime: ClassTimeModel = relationship(ClassTimeModel.__name__, lazy='joined')
