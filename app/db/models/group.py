@@ -19,10 +19,10 @@ class Fuckult(enum.Enum):
 class GroupModel(TimeBaseModel):
     id: int = sa.Column(sa.Integer, primary_key=True, index=True, unique=True)
     name: str = sa.Column(sa.String(20), nullable=False)
-    subgroup: int = sa.Column(sa.SmallInteger, nullable=False)
+    subgroups: int = sa.Column(sa.SmallInteger, nullable=False)
 
     __table_args__ = (
-        sa.UniqueConstraint(name, typing.cast(sa.Column, subgroup)),
+        sa.UniqueConstraint(name, typing.cast(sa.Column, subgroups)),
     )
 
 

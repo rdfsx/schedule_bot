@@ -3,9 +3,7 @@ from typing import List, Union
 
 from aiogram.types import (
     InlineKeyboardButton,
-    InlineKeyboardMarkup,
     KeyboardButton,
-    ReplyKeyboardMarkup,
 )
 
 
@@ -23,8 +21,8 @@ class BaseMarkupConstructor(ABC):
             raise ValueError(f"properties_amount can't be less then {self.properties_amount}")
 
     def _replace_aliases(
-        self,
-        action,
+            self,
+            action,
     ):
         for value, aliases in self.aliases.items():
             if isinstance(aliases, tuple) or isinstance(aliases, list):
@@ -40,8 +38,8 @@ class BaseMarkupConstructor(ABC):
                 )
 
     def _check_properties(
-        self,
-        action,
+            self,
+            action,
     ):
         button_data = dict()
         for key in action:
@@ -59,8 +57,8 @@ class BaseMarkupConstructor(ABC):
 
     @staticmethod
     def create_keyboard_layout(
-        buttons: List[Union[InlineKeyboardButton, KeyboardButton]], scheme: List[int]
-    ) -> List[List[Union[InlineKeyboardMarkup, ReplyKeyboardMarkup]]]:
+            buttons: List[Union[InlineKeyboardButton, KeyboardButton]], scheme: List[int]
+    ) -> List[List[Union[InlineKeyboardButton, KeyboardButton]]]:
         if sum(scheme) != len(buttons):
             raise ValueError("The number of buttons does not match the scheme")
         keyboard = []

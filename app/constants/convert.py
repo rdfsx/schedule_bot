@@ -1,5 +1,7 @@
 week_correction = 0
 
+main_week_days = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ']
+
 to_rus = {
     'monday': 'понедельник',
     'tuesday': 'вторник',

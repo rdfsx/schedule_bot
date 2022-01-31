@@ -40,7 +40,7 @@ class UnderAboveWeek(enum.Enum):
 
 
 class SourceTimetable(enum.Enum):
-    DAYTIME, DISTANCE, MASTERS = range(3)
+    REGULAR, DISTANCE, MASTERS = range(3)
 
 
 class TimetableModel(GroupRelatedModel,

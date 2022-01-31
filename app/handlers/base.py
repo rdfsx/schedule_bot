@@ -13,18 +13,19 @@ Model = typing.TypeVar("Model")
 
 class BaseInlineHandler(InlineQueryHandler, ABC):
 
-    buttons: list[InlineQueryResultArticle]
-
     @abstractmethod
     async def handle(self) -> Any:
         pass
 
-    async def send_inline_buttons(self,
-                                  items: list[Model],
-                                  action: typing.Callable = None,
-                                  **fields: str) -> AnswerInlineQuery:
+    @abstractmethod
+    async def build_button(self, model: Model) -> InlineQueryResultArticle:
+        pass
+
+    def send_inline_buttons(self,
+                            items: list[Model],
+                            limit: int = 20,
+                            cache_time: int = 120) -> AnswerInlineQuery:
         inline_query = self.event
-        limit = 20
         offset = int(inline_query.offset or 0)
         result = []
 
@@ -38,18 +39,11 @@ class BaseInlineHandler(InlineQueryHandler, ABC):
                     thumb_url=ERROR
                 )
             )
-            return inline_query.answer(result, 120)
+            return inline_query.answer(result, cache_time)
 
         for item in items:
-            kwargs = {key: getattr(fields.get(key, ''), item, None) for key, value in fields.items()}
-            kwargs['input_message_content'] = InputTextMessageContent(
-                message_text=kwargs.pop('input_message_content')
-            )
-            kwargs['id'] = str(kwargs.pop('id'))
-            if action:
-                kwargs = action(item, **kwargs)
-            result.append(InlineQueryResultArticle(**kwargs))
+            result.append(self.build_button(item))
 
         next_offset = offset + limit if len(items) >= limit else None
 
-        return inline_query.answer(result, 120, next_offset=str(next_offset))
+        return inline_query.answer(result, cache_time, next_offset=str(next_offset))
