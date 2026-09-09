@@ -140,3 +140,13 @@ dmypy.json
 .idea/vcs.xml
 /.idea/schedule_bot.iml
 /app/utils/db_api/test.py
+# Telegram Serverless
+node_modules/
+.tgcloud/
+!serverless/lib/
+!serverless/lib/**
+serverless/lib/config.js
+serverless/backups/
+*.dump
+*.backup
+.DS_Store

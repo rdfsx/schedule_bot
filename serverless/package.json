@@ -1,0 +1,15 @@
+{
+  "name": "gstu-teacher-rating",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.16" },
+  "scripts": {
+    "test": "node --experimental-vm-modules --test test/*.test.js",
+    "cloud:test": "node scripts/cloud-test.js",
+    "cloud": "node scripts/cli.js",
+    "import": "node scripts/transfer.js import",
+    "verify": "node scripts/transfer.js verify"
+  },
+  "devDependencies": { "@tgcloud/cli": "0.1.2" }
+}
